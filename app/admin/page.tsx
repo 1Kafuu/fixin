@@ -1,16 +1,10 @@
 "use client";
 
-import { useState } from "react";
-import Image from "next/image";
 import {
   Users,
   CalendarCheck,
   DollarSign,
   Activity,
-  Settings,
-  Bell,
-  ChevronDown,
-  Search,
   TrendingUp,
   TrendingDown,
   Clock,
@@ -29,8 +23,6 @@ import {
   YAxis,
   Tooltip,
   ResponsiveContainer,
-  LineChart,
-  Line,
   CartesianGrid,
   Area,
   AreaChart,
@@ -155,21 +147,11 @@ const performanceMetrics = [
   { label: "Server Load", value: "34%", icon: Cpu, status: "good" },
 ];
 
-const tabs = [
-  "Overview",
-  "User",
-  "Services",
-  "Technician",
-  "Content",
-  "Financial",
-  "Analytics",
-];
-
 // Custom tooltip for revenue chart
 function RevenueTooltip({ active, payload, label }: { active?: boolean; payload?: { value: number }[]; label?: string }) {
   if (active && payload && payload.length) {
     return (
-      <div className="rounded-lg border border-border bg-white px-3 py-2 shadow-lg">
+      <div className="rounded-lg border border-border bg-background px-3 py-2 shadow-lg">
         <p className="text-sm font-medium text-foreground">{label}</p>
         <p className="text-sm text-blue-500">Rp {payload[0].value}M</p>
       </div>
@@ -182,7 +164,7 @@ function RevenueTooltip({ active, payload, label }: { active?: boolean; payload?
 function HealthTooltip({ active, payload, label }: { active?: boolean; payload?: { value: number }[]; label?: string }) {
   if (active && payload && payload.length) {
     return (
-      <div className="rounded-lg border border-border bg-white px-3 py-2 shadow-lg">
+      <div className="rounded-lg border border-border bg-background px-3 py-2 shadow-lg">
         <p className="text-sm font-medium text-foreground">{label}</p>
         <p className="text-sm text-emerald-500">{payload[0].value}%</p>
       </div>
@@ -246,251 +228,174 @@ function ProgressBar({ percentage }: { percentage: number }) {
 }
 
 export default function AdminDashboard() {
-  const [activeTab, setActiveTab] = useState("Overview");
-  const [showProfile, setShowProfile] = useState(false);
-
   return (
-    <div className="min-h-screen bg-background">
-      {/* Top Navigation */}
-      <header className="sticky top-0 z-50 border-b border-border bg-white">
-        <div className="flex h-16 items-center justify-between px-6">
-          {/* Logo */}
-          <div className="flex items-center gap-3">
-            <Image src="/logo.svg" alt="FixIn Logo" width={100} height={100} />
+    <div className="p-6">
+      {/* Page Header */}
+      <div className="mb-6">
+        <h1 className="text-2xl font-semibold text-foreground">Dashboard Overview</h1>
+        <p className="mt-1 text-sm text-muted-foreground">
+          Monitor your platform performance and key metrics
+        </p>
+      </div>
+
+      {/* KPI Cards */}
+      <div className="mb-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {kpiData.map((kpi) => (
+          <KPICard key={kpi.title} {...kpi} />
+        ))}
+      </div>
+
+      {/* Charts Row */}
+      <div className="mb-6 grid gap-6 lg:grid-cols-2">
+        {/* Revenue Overview - Bar Chart */}
+        <div className="rounded-xl border border-border bg-card p-5 shadow-sm">
+          <div className="mb-4 flex items-center justify-between">
+            <h3 className="font-semibold text-foreground">Revenue Overview</h3>
+            <select className="rounded-md border border-input bg-background px-3 py-1 text-sm text-muted-foreground">
+              <option>This Year</option>
+              <option>Last Year</option>
+            </select>
           </div>
-
-          {/* Right side */}
-          <div className="flex items-center gap-4">
-            {/* Search */}
-            <div className="relative hidden md:block">
-              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-              <input
-                type="text"
-                placeholder="Search..."
-                className="h-9 w-64 rounded-lg border border-input bg-background pl-10 pr-4 text-sm placeholder:text-muted-foreground focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
-              />
+          <ResponsiveContainer width="100%" height={200}>
+            <BarChart data={revenueData} margin={{ top: 5, right: 5, left: -20, bottom: 5 }}>
+              <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: "oklch(0.556 0 0)" }} />
+              <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: "oklch(0.556 0 0)" }} tickFormatter={(v) => `${v}M`} />
+              <Tooltip content={<RevenueTooltip />} cursor={{ fill: "oklch(0.97 0 0)" }} />
+              <Bar dataKey="value" fill="#3b82f6" radius={[4, 4, 0, 0]} />
+            </BarChart>
+          </ResponsiveContainer>
+          <div className="mt-4 flex items-center justify-between border-t border-border pt-4">
+            <div>
+              <p className="text-sm text-muted-foreground">Total Revenue</p>
+              <p className="text-xl font-semibold text-foreground">Rp 564.5M</p>
             </div>
-
-            {/* Notifications */}
-            <button className="relative rounded-lg p-2 text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground">
-              <Bell className="h-5 w-5" />
-              <span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-red-500" />
-            </button>
-
-            {/* Settings */}
-            <button className="rounded-lg p-2 text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground">
-              <Settings className="h-5 w-5" />
-            </button>
-
-            {/* Profile */}
-            <div className="relative">
-              <button
-                onClick={() => setShowProfile(!showProfile)}
-                className="flex items-center gap-2 rounded-lg px-2 py-1.5 transition-colors hover:bg-secondary"
-              >
-                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-500 text-sm font-medium text-white">
-                  AD
-                </div>
-                <span className="hidden text-sm font-medium text-foreground md:block">Admin</span>
-                <ChevronDown className="hidden h-4 w-4 text-muted-foreground md:block" />
-              </button>
-              {showProfile && (
-                <div className="absolute right-0 top-full mt-2 w-48 rounded-lg border border-border bg-white py-1 shadow-lg">
-                  <a href="#" className="block px-4 py-2 text-sm text-foreground hover:bg-secondary">
-                    Profile Settings
-                  </a>
-                  <a href="#" className="block px-4 py-2 text-sm text-foreground hover:bg-secondary">
-                    Help & Support
-                  </a>
-                  <hr className="my-1 border-border" />
-                  <a href="#" className="block px-4 py-2 text-sm text-red-500 hover:bg-secondary">
-                    Sign Out
-                  </a>
-                </div>
-              )}
+            <div className="flex items-center gap-1 text-emerald-500">
+              <TrendingUp className="h-4 w-4" />
+              <span className="text-sm font-medium">+23.5%</span>
             </div>
           </div>
         </div>
 
-        {/* Tab Navigation */}
-        <nav className="flex gap-1 px-6">
-          {tabs.map((tab) => (
-            <button
-              key={tab}
-              onClick={() => setActiveTab(tab)}
-              className={`px-4 py-3 text-sm font-medium transition-colors ${
-                activeTab === tab
-                  ? "border-b-2 border-blue-500 text-blue-500"
-                  : "text-muted-foreground hover:text-foreground"
-              }`}
-            >
-              {tab}
-            </button>
-          ))}
-        </nav>
-      </header>
-
-      {/* Main Content */}
-      <main className="p-6">
-        {/* KPI Cards */}
-        <div className="mb-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {kpiData.map((kpi) => (
-            <KPICard key={kpi.title} {...kpi} />
-          ))}
-        </div>
-
-        {/* Charts Row */}
-        <div className="mb-6 grid gap-6 lg:grid-cols-2">
-          {/* Revenue Overview - Bar Chart */}
-          <div className="rounded-xl border border-border bg-card p-5 shadow-sm">
-            <div className="mb-4 flex items-center justify-between">
-              <h3 className="font-semibold text-foreground">Revenue Overview</h3>
-              <select className="rounded-md border border-input bg-background px-3 py-1 text-sm text-muted-foreground">
-                <option>This Year</option>
-                <option>Last Year</option>
-              </select>
-            </div>
-            <ResponsiveContainer width="100%" height={200}>
-              <BarChart data={revenueData} margin={{ top: 5, right: 5, left: -20, bottom: 5 }}>
-                <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: "oklch(0.556 0 0)" }} />
-                <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: "oklch(0.556 0 0)" }} tickFormatter={(v) => `${v}M`} />
-                <Tooltip content={<RevenueTooltip />} cursor={{ fill: "oklch(0.97 0 0)" }} />
-                <Bar dataKey="value" fill="#3b82f6" radius={[4, 4, 0, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
-            <div className="mt-4 flex items-center justify-between border-t border-border pt-4">
-              <div>
-                <p className="text-sm text-muted-foreground">Total Revenue</p>
-                <p className="text-xl font-semibold text-foreground">Rp 564.5M</p>
-              </div>
-              <div className="flex items-center gap-1 text-emerald-500">
-                <TrendingUp className="h-4 w-4" />
-                <span className="text-sm font-medium">+23.5%</span>
-              </div>
+        {/* System Health - Area Chart */}
+        <div className="rounded-xl border border-border bg-card p-5 shadow-sm">
+          <div className="mb-4 flex items-center justify-between">
+            <h3 className="font-semibold text-foreground">System Health</h3>
+            <div className="flex items-center gap-2">
+              <span className="h-2 w-2 animate-pulse rounded-full bg-emerald-500" />
+              <span className="text-sm text-emerald-500">Live</span>
             </div>
           </div>
-
-          {/* System Health - Area Chart */}
-          <div className="rounded-xl border border-border bg-card p-5 shadow-sm">
-            <div className="mb-4 flex items-center justify-between">
-              <h3 className="font-semibold text-foreground">System Health</h3>
-              <div className="flex items-center gap-2">
-                <span className="h-2 w-2 animate-pulse rounded-full bg-emerald-500" />
-                <span className="text-sm text-emerald-500">Live</span>
-              </div>
+          <ResponsiveContainer width="100%" height={200}>
+            <AreaChart data={healthData} margin={{ top: 5, right: 5, left: -20, bottom: 5 }}>
+              <defs>
+                <linearGradient id="healthGradient" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#10b981" stopOpacity={0.3} />
+                  <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
+                </linearGradient>
+              </defs>
+              <CartesianGrid strokeDasharray="3 3" stroke="oklch(0.92 0 0)" vertical={false} />
+              <XAxis dataKey="time" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: "oklch(0.556 0 0)" }} />
+              <YAxis domain={[99, 100]} axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: "oklch(0.556 0 0)" }} tickFormatter={(v) => `${v}%`} />
+              <Tooltip content={<HealthTooltip />} />
+              <Area type="monotone" dataKey="value" stroke="#10b981" strokeWidth={2} fill="url(#healthGradient)" />
+            </AreaChart>
+          </ResponsiveContainer>
+          <div className="mt-4 grid grid-cols-3 gap-4 border-t border-border pt-4">
+            <div>
+              <p className="text-xs text-muted-foreground">CPU Usage</p>
+              <p className="text-lg font-semibold text-foreground">34%</p>
             </div>
-            <ResponsiveContainer width="100%" height={200}>
-              <AreaChart data={healthData} margin={{ top: 5, right: 5, left: -20, bottom: 5 }}>
-                <defs>
-                  <linearGradient id="healthGradient" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#10b981" stopOpacity={0.3} />
-                    <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
-                  </linearGradient>
-                </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke="oklch(0.92 0 0)" vertical={false} />
-                <XAxis dataKey="time" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: "oklch(0.556 0 0)" }} />
-                <YAxis domain={[99, 100]} axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: "oklch(0.556 0 0)" }} tickFormatter={(v) => `${v}%`} />
-                <Tooltip content={<HealthTooltip />} />
-                <Area type="monotone" dataKey="value" stroke="#10b981" strokeWidth={2} fill="url(#healthGradient)" />
-              </AreaChart>
-            </ResponsiveContainer>
-            <div className="mt-4 grid grid-cols-3 gap-4 border-t border-border pt-4">
-              <div>
-                <p className="text-xs text-muted-foreground">CPU Usage</p>
-                <p className="text-lg font-semibold text-foreground">34%</p>
-              </div>
-              <div>
-                <p className="text-xs text-muted-foreground">Memory</p>
-                <p className="text-lg font-semibold text-foreground">67%</p>
-              </div>
-              <div>
-                <p className="text-xs text-muted-foreground">Disk I/O</p>
-                <p className="text-lg font-semibold text-foreground">12%</p>
-              </div>
+            <div>
+              <p className="text-xs text-muted-foreground">Memory</p>
+              <p className="text-lg font-semibold text-foreground">67%</p>
+            </div>
+            <div>
+              <p className="text-xs text-muted-foreground">Disk I/O</p>
+              <p className="text-lg font-semibold text-foreground">12%</p>
             </div>
           </div>
         </div>
+      </div>
 
-        {/* Info Panels Row */}
-        <div className="grid gap-6 lg:grid-cols-3">
-          {/* Recent Activity */}
-          <div className="rounded-xl border border-border bg-card p-5 shadow-sm">
-            <div className="mb-4 flex items-center justify-between">
-              <h3 className="font-semibold text-foreground">Recent Activity</h3>
-              <button className="text-sm text-blue-500 hover:underline">View All</button>
-            </div>
-            <div className="space-y-4">
-              {recentActivity.map((activity) => (
-                <div key={activity.id} className="flex items-start gap-3">
-                  <div
-                    className={`mt-0.5 rounded-full p-1 ${
-                      activity.type === "success"
-                        ? "bg-emerald-100 text-emerald-500"
-                        : activity.type === "warning"
-                        ? "bg-amber-100 text-amber-500"
-                        : "bg-blue-100 text-blue-500"
-                    }`}
-                  >
-                    {activity.type === "success" ? (
-                      <CheckCircle className="h-3.5 w-3.5" />
-                    ) : activity.type === "warning" ? (
-                      <AlertCircle className="h-3.5 w-3.5" />
-                    ) : (
-                      <Clock3 className="h-3.5 w-3.5" />
-                    )}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm text-foreground truncate">{activity.action}</p>
-                    <p className="text-xs text-muted-foreground">
-                      {activity.user} • {activity.time}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
+      {/* Info Panels Row */}
+      <div className="grid gap-6 lg:grid-cols-3">
+        {/* Recent Activity */}
+        <div className="rounded-xl border border-border bg-card p-5 shadow-sm">
+          <div className="mb-4 flex items-center justify-between">
+            <h3 className="font-semibold text-foreground">Recent Activity</h3>
+            <button className="text-sm text-blue-500 hover:underline">View All</button>
           </div>
-
-          {/* Top Services */}
-          <div className="rounded-xl border border-border bg-card p-5 shadow-sm">
-            <div className="mb-4 flex items-center justify-between">
-              <h3 className="font-semibold text-foreground">Top Services</h3>
-              <Wrench className="h-5 w-5 text-muted-foreground" />
-            </div>
-            <div className="space-y-4">
-              {topServices.map((service) => (
-                <div key={service.name}>
-                  <div className="mb-1 flex items-center justify-between">
-                    <span className="text-sm text-foreground">{service.name}</span>
-                    <span className="text-sm font-medium text-foreground">{service.requests}</span>
-                  </div>
-                  <ProgressBar percentage={service.percentage} />
+          <div className="space-y-4">
+            {recentActivity.map((activity) => (
+              <div key={activity.id} className="flex items-start gap-3">
+                <div
+                  className={`mt-0.5 rounded-full p-1 ${
+                    activity.type === "success"
+                      ? "bg-emerald-100 text-emerald-500"
+                      : activity.type === "warning"
+                      ? "bg-amber-100 text-amber-500"
+                      : "bg-blue-100 text-blue-500"
+                  }`}
+                >
+                  {activity.type === "success" ? (
+                    <CheckCircle className="h-3.5 w-3.5" />
+                  ) : activity.type === "warning" ? (
+                    <AlertCircle className="h-3.5 w-3.5" />
+                  ) : (
+                    <Clock3 className="h-3.5 w-3.5" />
+                  )}
                 </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Performance Metrics */}
-          <div className="rounded-xl border border-border bg-card p-5 shadow-sm">
-            <div className="mb-4 flex items-center justify-between">
-              <h3 className="font-semibold text-foreground">Performance Metrics</h3>
-              <Activity className="h-5 w-5 text-muted-foreground" />
-            </div>
-            <div className="space-y-4">
-              {performanceMetrics.map((metric) => (
-                <div key={metric.label} className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className="rounded-lg bg-blue-50 p-2">
-                      <metric.icon className="h-4 w-4 text-blue-500" />
-                    </div>
-                    <span className="text-sm text-foreground">{metric.label}</span>
-                  </div>
-                  <span className="font-medium text-foreground">{metric.value}</span>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm text-foreground truncate">{activity.action}</p>
+                  <p className="text-xs text-muted-foreground">
+                    {activity.user} • {activity.time}
+                  </p>
                 </div>
-              ))}
-            </div>
+              </div>
+            ))}
           </div>
         </div>
-      </main>
+
+        {/* Top Services */}
+        <div className="rounded-xl border border-border bg-card p-5 shadow-sm">
+          <div className="mb-4 flex items-center justify-between">
+            <h3 className="font-semibold text-foreground">Top Services</h3>
+            <Wrench className="h-5 w-5 text-muted-foreground" />
+          </div>
+          <div className="space-y-4">
+            {topServices.map((service) => (
+              <div key={service.name}>
+                <div className="mb-1 flex items-center justify-between">
+                  <span className="text-sm text-foreground">{service.name}</span>
+                  <span className="text-sm font-medium text-foreground">{service.requests}</span>
+                </div>
+                <ProgressBar percentage={service.percentage} />
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Performance Metrics */}
+        <div className="rounded-xl border border-border bg-card p-5 shadow-sm">
+          <div className="mb-4 flex items-center justify-between">
+            <h3 className="font-semibold text-foreground">Performance Metrics</h3>
+            <Activity className="h-5 w-5 text-muted-foreground" />
+          </div>
+          <div className="space-y-4">
+            {performanceMetrics.map((metric) => (
+              <div key={metric.label} className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="rounded-lg bg-blue-50 p-2">
+                    <metric.icon className="h-4 w-4 text-blue-500" />
+                  </div>
+                  <span className="text-sm text-foreground">{metric.label}</span>
+                </div>
+                <span className="font-medium text-foreground">{metric.value}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
