@@ -22,6 +22,19 @@ import {
   AlertCircle,
   Clock3,
 } from "lucide-react";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer,
+  LineChart,
+  Line,
+  CartesianGrid,
+  Area,
+  AreaChart,
+} from "recharts";
 
 // Mock data
 const kpiData = [
@@ -152,58 +165,30 @@ const tabs = [
   "Analytics",
 ];
 
-// Simple bar chart component
-function BarChart({ data }: { data: { month: string; value: number }[] }) {
-  const max = Math.max(...data.map((d) => d.value));
-  return (
-    <div className="flex h-40 items-end justify-between gap-2 px-2">
-      {data.map((item, i) => (
-        <div key={i} className="flex flex-1 flex-col items-center gap-1">
-          <div
-            className="w-full rounded-t-sm bg-blue-500 transition-all hover:bg-blue-600"
-            style={{ height: `${(item.value / max) * 100}%` }}
-          />
-          <span className="text-[10px] text-muted-foreground">{item.month}</span>
-        </div>
-      ))}
-    </div>
-  );
+// Custom tooltip for revenue chart
+function RevenueTooltip({ active, payload, label }: { active?: boolean; payload?: { value: number }[]; label?: string }) {
+  if (active && payload && payload.length) {
+    return (
+      <div className="rounded-lg border border-border bg-white px-3 py-2 shadow-lg">
+        <p className="text-sm font-medium text-foreground">{label}</p>
+        <p className="text-sm text-blue-500">Rp {payload[0].value}M</p>
+      </div>
+    );
+  }
+  return null;
 }
 
-// Line chart component for health
-function LineChart({ data }: { data: { time: string; value: number }[] }) {
-  const max = 100;
-  const min = 99;
-  const points = data.map((d, i) => ({
-    x: (i / (data.length - 1)) * 100,
-    y: ((max - d.value) / (max - min)) * 80 + 10,
-  }));
-
-  const pathD = points
-    .map((p, i) => (i === 0 ? `M ${p.x} ${p.y}` : `L ${p.x} ${p.y}`))
-    .join(" ");
-
-  return (
-    <div className="relative h-40 w-full">
-      <svg viewBox="0 0 100 100" className="h-full w-full" preserveAspectRatio="none">
-        {/* Grid lines */}
-        <line x1="0" y1="20" x2="100" y2="20" stroke="oklch(0.92 0 0)" strokeWidth="0.3" />
-        <line x1="0" y1="50" x2="100" y2="50" stroke="oklch(0.92 0 0)" strokeWidth="0.3" />
-        <line x1="0" y1="80" x2="100" y2="80" stroke="oklch(0.92 0 0)" strokeWidth="0.3" />
-        {/* Line */}
-        <path d={pathD} fill="none" stroke="oklch(0.55 0.01 250)" strokeWidth="1.5" />
-        {/* Points */}
-        {points.map((p, i) => (
-          <circle key={i} cx={p.x} cy={p.y} r="2" fill="oklch(0.55 0.01 250)" />
-        ))}
-      </svg>
-      <div className="absolute bottom-0 flex w-full justify-between px-2 text-[10px] text-muted-foreground">
-        {data.map((d, i) => (
-          <span key={i}>{d.time}</span>
-        ))}
+// Custom tooltip for health chart
+function HealthTooltip({ active, payload, label }: { active?: boolean; payload?: { value: number }[]; label?: string }) {
+  if (active && payload && payload.length) {
+    return (
+      <div className="rounded-lg border border-border bg-white px-3 py-2 shadow-lg">
+        <p className="text-sm font-medium text-foreground">{label}</p>
+        <p className="text-sm text-emerald-500">{payload[0].value}%</p>
       </div>
-    </div>
-  );
+    );
+  }
+  return null;
 }
 
 // KPI Card component
@@ -271,7 +256,7 @@ export default function AdminDashboard() {
         <div className="flex h-16 items-center justify-between px-6">
           {/* Logo */}
           <div className="flex items-center gap-3">
-            <Image src="/logo.svg" alt="FixIn Logo" width={100} height={40} />
+            <Image src="/logo.svg" alt="FixIn Logo" width={100} height={100} />
           </div>
 
           {/* Right side */}
@@ -356,7 +341,7 @@ export default function AdminDashboard() {
 
         {/* Charts Row */}
         <div className="mb-6 grid gap-6 lg:grid-cols-2">
-          {/* Revenue Overview */}
+          {/* Revenue Overview - Bar Chart */}
           <div className="rounded-xl border border-border bg-card p-5 shadow-sm">
             <div className="mb-4 flex items-center justify-between">
               <h3 className="font-semibold text-foreground">Revenue Overview</h3>
@@ -365,7 +350,14 @@ export default function AdminDashboard() {
                 <option>Last Year</option>
               </select>
             </div>
-            <BarChart data={revenueData} />
+            <ResponsiveContainer width="100%" height={200}>
+              <BarChart data={revenueData} margin={{ top: 5, right: 5, left: -20, bottom: 5 }}>
+                <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: "oklch(0.556 0 0)" }} />
+                <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: "oklch(0.556 0 0)" }} tickFormatter={(v) => `${v}M`} />
+                <Tooltip content={<RevenueTooltip />} cursor={{ fill: "oklch(0.97 0 0)" }} />
+                <Bar dataKey="value" fill="#3b82f6" radius={[4, 4, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
             <div className="mt-4 flex items-center justify-between border-t border-border pt-4">
               <div>
                 <p className="text-sm text-muted-foreground">Total Revenue</p>
@@ -378,7 +370,7 @@ export default function AdminDashboard() {
             </div>
           </div>
 
-          {/* System Health */}
+          {/* System Health - Area Chart */}
           <div className="rounded-xl border border-border bg-card p-5 shadow-sm">
             <div className="mb-4 flex items-center justify-between">
               <h3 className="font-semibold text-foreground">System Health</h3>
@@ -387,7 +379,21 @@ export default function AdminDashboard() {
                 <span className="text-sm text-emerald-500">Live</span>
               </div>
             </div>
-            <LineChart data={healthData} />
+            <ResponsiveContainer width="100%" height={200}>
+              <AreaChart data={healthData} margin={{ top: 5, right: 5, left: -20, bottom: 5 }}>
+                <defs>
+                  <linearGradient id="healthGradient" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#10b981" stopOpacity={0.3} />
+                    <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" stroke="oklch(0.92 0 0)" vertical={false} />
+                <XAxis dataKey="time" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: "oklch(0.556 0 0)" }} />
+                <YAxis domain={[99, 100]} axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: "oklch(0.556 0 0)" }} tickFormatter={(v) => `${v}%`} />
+                <Tooltip content={<HealthTooltip />} />
+                <Area type="monotone" dataKey="value" stroke="#10b981" strokeWidth={2} fill="url(#healthGradient)" />
+              </AreaChart>
+            </ResponsiveContainer>
             <div className="mt-4 grid grid-cols-3 gap-4 border-t border-border pt-4">
               <div>
                 <p className="text-xs text-muted-foreground">CPU Usage</p>
@@ -451,7 +457,7 @@ export default function AdminDashboard() {
               <Wrench className="h-5 w-5 text-muted-foreground" />
             </div>
             <div className="space-y-4">
-              {topServices.map((service, i) => (
+              {topServices.map((service) => (
                 <div key={service.name}>
                   <div className="mb-1 flex items-center justify-between">
                     <span className="text-sm text-foreground">{service.name}</span>
