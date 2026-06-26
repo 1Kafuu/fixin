@@ -43,3 +43,5 @@ next-env.d.ts
 # docs
 docs/
 graphify-out/
+scout-*
+progress.md

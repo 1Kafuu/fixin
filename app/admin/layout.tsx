@@ -18,8 +18,8 @@ const tabs = [
   { name: "Overview", href: "/admin" },
   { name: "User", href: "/admin/users" },
   { name: "Services", href: "/admin/services" },
-  { name: "Technician", href: "/admin/technician" },
-  { name: "Content", href: "/admin/content" },
+  { name: "Technician", href: "/admin/approval" },
+  { name: "Content", href: "/admin/post" },
   { name: "Financial", href: "/admin/financial" },
   { name: "Analytics", href: "/admin/analytics" },
 ];
