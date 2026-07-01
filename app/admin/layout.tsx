@@ -12,6 +12,8 @@ import {
   LogOut,
   User,
   HelpCircle,
+  Menu,
+  X,
 } from "lucide-react";
 
 const tabs = [
@@ -31,27 +33,27 @@ export default function AdminLayout({
 }) {
   const pathname = usePathname();
   const [showProfile, setShowProfile] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
     <div className="min-h-screen bg-background">
       {/* Top Navigation */}
       <header className="sticky top-0 z-50 border-b border-border bg-card">
-        <div className="flex h-16 items-center justify-between px-6">
+        <div className="flex h-14 sm:h-16 items-center justify-between px-4 sm:px-6">
           {/* Logo */}
-          <Link href="/admin" className="flex items-center gap-3">
-            <Image src="/logo.svg" alt="FixIn Logo" width={36} height={32} />
-            <span className="text-lg font-semibold text-foreground">FixIn</span>
+          <Link href="/admin" className="flex items-center gap-2 sm:gap-3">
+            <Image src="/logo.svg" alt="FixIn Logo" width={80} height={80} className="w-16 h-16 sm:w-20 sm:h-20" />
           </Link>
 
-          {/* Right side */}
-          <div className="flex items-center gap-4">
+          {/* Right side - Desktop */}
+          <div className="hidden md:flex items-center gap-3 lg:gap-4">
             {/* Search */}
-            <div className="relative hidden md:block">
+            <div className="relative">
               <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
               <input
                 type="text"
                 placeholder="Search..."
-                className="h-9 w-64 rounded-lg border border-input bg-background pl-10 pr-4 text-sm text-foreground placeholder:text-muted-foreground focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                className="h-9 w-48 lg:w-64 rounded-lg border border-input bg-background pl-10 pr-4 text-sm text-foreground placeholder:text-muted-foreground focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
               />
             </div>
 
@@ -78,10 +80,10 @@ export default function AdminLayout({
                 <div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-500 text-sm font-medium text-white">
                   AD
                 </div>
-                <span className="hidden text-sm font-medium text-foreground md:block">
+                <span className="text-sm font-medium text-foreground">
                   Admin
                 </span>
-                <ChevronDown className="hidden h-4 w-4 text-muted-foreground md:block" />
+                <ChevronDown className="h-4 w-4 text-muted-foreground" />
               </button>
               {showProfile && (
                 <>
@@ -120,10 +122,18 @@ export default function AdminLayout({
               )}
             </div>
           </div>
+
+          {/* Mobile menu button */}
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="md:hidden rounded-lg p-2 text-muted-foreground hover:bg-accent"
+          >
+            {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+          </button>
         </div>
 
-        {/* Tab Navigation */}
-        <nav className="flex gap-1 px-6">
+        {/* Tab Navigation - Desktop */}
+        <nav className="hidden md:flex gap-1 px-6 overflow-x-auto">
           {tabs.map((tab) => {
             const isActive =
               tab.href === "/admin"
@@ -134,7 +144,7 @@ export default function AdminLayout({
               <Link
                 key={tab.name}
                 href={tab.href}
-                className={`px-4 py-3 text-sm font-medium transition-colors ${
+                className={`whitespace-nowrap px-4 py-3 text-sm font-medium transition-colors ${
                   isActive
                     ? "border-b-2 border-blue-500 text-blue-500"
                     : "text-muted-foreground hover:text-foreground"
@@ -145,10 +155,37 @@ export default function AdminLayout({
             );
           })}
         </nav>
+
+        {/* Mobile Navigation */}
+        {mobileMenuOpen && (
+          <nav className="md:hidden border-t border-border bg-card">
+            {tabs.map((tab) => {
+              const isActive =
+                tab.href === "/admin"
+                  ? pathname === "/admin"
+                  : pathname.startsWith(tab.href);
+
+              return (
+                <Link
+                  key={tab.name}
+                  href={tab.href}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`block px-4 py-3 text-sm font-medium transition-colors ${
+                    isActive
+                      ? "bg-blue-50 text-blue-500"
+                      : "text-muted-foreground hover:bg-accent"
+                  }`}
+                >
+                  {tab.name}
+                </Link>
+              );
+            })}
+          </nav>
+        )}
       </header>
 
       {/* Page Content */}
-      <main>{children}</main>
+      <main className="px-4 sm:px-6 py-4 sm:py-6">{children}</main>
     </div>
   );
 }

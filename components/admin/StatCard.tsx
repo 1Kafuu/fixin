@@ -23,9 +23,8 @@ export function StatCard({
 }: StatCardProps) {
 	return (
 		<div
-			className="animate-slideUp rounded-xl border border-border bg-card p-5 shadow-sm"
+			className="rounded-xl border border-border bg-card p-5 shadow-sm"
 			// eslint-disable-next-line react/no-unknown-property
-			style={{ animationDelay: `${delay}ms` }}
 		>
 			<div className="flex items-start justify-between">
 				<div>

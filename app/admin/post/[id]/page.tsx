@@ -351,7 +351,7 @@ export default function PostDetailPage() {
 	if (loading) {
 		return (
 			<div className="flex items-center justify-center min-h-[60vh]">
-				<div className="animate-pulse text-muted-foreground">Loading...</div>
+				<div className="text-muted-foreground">Loading...</div>
 			</div>
 		);
 	}
@@ -385,7 +385,7 @@ export default function PostDetailPage() {
 	return (
 		<div className="p-6">
 			{/* Breadcrumb */}
-			<div className="mb-4 animate-slideUp">
+			<div className="mb-4 ">
 				<div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
 					<button
 						onClick={() => router.push("/admin/post")}
@@ -399,7 +399,7 @@ export default function PostDetailPage() {
 			</div>
 
 			{/* Header */}
-			<div className="mb-6 animate-slideUp">
+			<div className="mb-6 ">
 				<h1 className="text-2xl font-semibold text-foreground mb-4">
 					Detail Postingan
 				</h1>
@@ -409,7 +409,7 @@ export default function PostDetailPage() {
 				{/* Main Content */}
 				<div className="lg:col-span-2 space-y-6">
 					{/* Post Header Card */}
-					<div className="animate-slideUp rounded-xl border border-border bg-card p-6 shadow-sm">
+					<div className=" rounded-xl border border-border bg-card p-6 shadow-sm">
 						<div className="flex items-start justify-between mb-4">
 							<div className="flex items-center gap-3">
 								<img
@@ -467,7 +467,7 @@ export default function PostDetailPage() {
 					</div>
 
 					{/* Stats Card */}
-					<div className="animate-slideUp rounded-xl border border-border bg-card p-6 shadow-sm" style={{ animationDelay: "100ms" }}>
+					<div className=" rounded-xl border border-border bg-card p-6 shadow-sm" style={{ animationDelay: "100ms" }}>
 						<h3 className="text-sm font-semibold text-foreground mb-4">
 							Statistik Postingan
 						</h3>
@@ -505,7 +505,7 @@ export default function PostDetailPage() {
 
 					{/* Flag Warning */}
 					{post.status === "Flagged" && post.flagReason && (
-						<div className="animate-slideUp rounded-xl border border-amber-200 bg-amber-50 p-6" style={{ animationDelay: "200ms" }}>
+						<div className=" rounded-xl border border-amber-200 bg-amber-50 p-6" style={{ animationDelay: "200ms" }}>
 							<div className="flex items-start gap-4">
 								<AlertTriangle className="h-6 w-6 text-amber-600 mt-0.5" />
 								<div>
@@ -524,7 +524,7 @@ export default function PostDetailPage() {
 				{/* Sidebar */}
 				<div className="space-y-6">
 					{/* Actions Card */}
-					<div className="animate-slideUp rounded-xl border border-border bg-card p-6 shadow-sm">
+					<div className=" rounded-xl border border-border bg-card p-6 shadow-sm">
 						<h3 className="text-sm font-semibold text-foreground mb-4">
 							Aksi
 						</h3>
@@ -582,7 +582,7 @@ export default function PostDetailPage() {
 					</div>
 
 					{/* Post Info Card */}
-					<div className="animate-slideUp rounded-xl border border-border bg-card p-6 shadow-sm" style={{ animationDelay: "100ms" }}>
+					<div className=" rounded-xl border border-border bg-card p-6 shadow-sm" style={{ animationDelay: "100ms" }}>
 						<h3 className="text-sm font-semibold text-foreground mb-4">
 							Informasi Postingan
 						</h3>

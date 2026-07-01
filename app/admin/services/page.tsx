@@ -192,7 +192,7 @@ export default function ServicesPage() {
 				<StatCard title="Popular Category" value={popularCategory} icon={Layers} color="bg-amber-50" delay={300} />
 			</div>
 
-			<div className="mb-6 animate-slideUp" style={{ animationDelay: "400ms" }}>
+			<div className="mb-6 " style={{ animationDelay: "400ms" }}>
 				<div className="flex items-center justify-between mb-3">
 					<h2 className="text-lg font-semibold">Categories</h2>
 					<button onClick={() => setServiceModal({ open: true, service: null })} className="flex items-center gap-1.5 rounded-lg bg-blue-500 px-3 py-1.5 text-sm font-medium text-white hover:bg-blue-600">
@@ -213,7 +213,7 @@ export default function ServicesPage() {
 				</div>
 			</div>
 
-			<div className="animate-slideUp rounded-xl border border-border bg-card shadow-sm" style={{ animationDelay: "500ms" }}>
+			<div className=" rounded-xl border border-border bg-card shadow-sm" style={{ animationDelay: "500ms" }}>
 				<div className="flex flex-col gap-4 border-b border-border p-4 sm:flex-row">
 					<SearchInput value={search} onChange={(v) => { setSearch(v); setCurrentPage(1); }} placeholder="Search services..." className="flex-1" />
 					<select value={categoryFilter} onChange={(e) => { setCategoryFilter(e.target.value); setCurrentPage(1); }} className="h-10 rounded-lg border border-input bg-background px-3 text-sm">

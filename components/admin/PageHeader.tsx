@@ -10,7 +10,7 @@ interface PageHeaderProps {
 
 export function PageHeader({ title, description, actions, className, children }: PageHeaderProps) {
 	return (
-		<div className={`mb-6 flex items-start justify-between animate-slideUp ${className || ""}`}>
+		<div className={`mb-6 flex items-start justify-between ${className || ""}`}>
 			<div>
 				<h1 className="text-2xl font-semibold text-foreground">{title}</h1>
 				{description && <p className="mt-1 text-sm text-muted-foreground">{description}</p>}

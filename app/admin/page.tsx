@@ -190,11 +190,11 @@ function KPICard({
   };
 
   return (
-    <div className="rounded-xl border border-border bg-card p-5 shadow-sm transition-shadow hover:shadow-md">
+    <div className="rounded-xl border border-border bg-card p-4 sm:p-5 shadow-sm transition-shadow hover:shadow-md">
       <div className="flex items-start justify-between">
         <div>
           <p className="text-sm text-muted-foreground">{title}</p>
-          <p className="mt-1 text-2xl font-semibold text-foreground">{value}</p>
+          <p className="mt-1 text-xl sm:text-2xl font-semibold text-foreground">{value}</p>
         </div>
         <div className={`rounded-lg p-2 ${colorClasses[color as keyof typeof colorClasses]}`}>
           <Icon className="h-5 w-5" />
@@ -229,10 +229,10 @@ function ProgressBar({ percentage }: { percentage: number }) {
 
 export default function AdminDashboard() {
   return (
-    <div className="p-6">
+    <div className="p-4 sm:p-6">
       {/* Page Header */}
       <div className="mb-6">
-        <h1 className="text-2xl font-semibold text-foreground">Dashboard Overview</h1>
+        <h1 className="text-xl sm:text-2xl font-semibold text-foreground">Dashboard Overview</h1>
         <p className="mt-1 text-sm text-muted-foreground">
           Monitor your platform performance and key metrics
         </p>
@@ -241,7 +241,7 @@ export default function AdminDashboard() {
       {/* KPI Cards */}
       <div className="mb-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {kpiData.map((kpi, i) => (
-          <div key={kpi.title} className="animate-slideUp" style={{ animationDelay: `${i * 100}ms` }}>
+          <div key={kpi.title} className="" style={{ animationDelay: `${i * 100}ms` }}>
             <KPICard {...kpi} />
           </div>
         ))}
@@ -250,7 +250,7 @@ export default function AdminDashboard() {
       {/* Charts Row */}
       <div className="mb-6 grid gap-6 lg:grid-cols-2">
         {/* Revenue Overview - Bar Chart */}
-        <div className="animate-slideUp rounded-xl border border-border bg-card p-5 shadow-sm" style={{ animationDelay: "400ms" }}>
+        <div className=" rounded-xl border border-border bg-card p-4 sm:p-5 shadow-sm" style={{ animationDelay: "400ms" }}>
           <div className="mb-4 flex items-center justify-between">
             <h3 className="font-semibold text-foreground">Revenue Overview</h3>
             <select className="rounded-md border border-input bg-background px-3 py-1 text-sm text-muted-foreground">
@@ -258,7 +258,7 @@ export default function AdminDashboard() {
               <option>Last Year</option>
             </select>
           </div>
-          <ResponsiveContainer width="100%" height={200}>
+          <ResponsiveContainer width="100%" height={180} className="sm:!height-[200px]">
             <BarChart data={revenueData} margin={{ top: 5, right: 5, left: -20, bottom: 5 }}>
               <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: "oklch(0.556 0 0)" }} />
               <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: "oklch(0.556 0 0)" }} tickFormatter={(v) => `${v}M`} />
@@ -268,8 +268,8 @@ export default function AdminDashboard() {
           </ResponsiveContainer>
           <div className="mt-4 flex items-center justify-between border-t border-border pt-4">
             <div>
-              <p className="text-sm text-muted-foreground">Total Revenue</p>
-              <p className="text-xl font-semibold text-foreground">Rp 564.5M</p>
+              <p className="text-xs sm:text-sm text-muted-foreground">Total Revenue</p>
+              <p className="text-lg sm:text-xl font-semibold text-foreground">Rp 564.5M</p>
             </div>
             <div className="flex items-center gap-1 text-emerald-500">
               <TrendingUp className="h-4 w-4" />
@@ -279,7 +279,7 @@ export default function AdminDashboard() {
         </div>
 
         {/* System Health - Area Chart */}
-        <div className="animate-slideUp rounded-xl border border-border bg-card p-5 shadow-sm" style={{ animationDelay: "500ms" }}>
+        <div className=" rounded-xl border border-border bg-card p-4 sm:p-5 shadow-sm" style={{ animationDelay: "500ms" }}>
           <div className="mb-4 flex items-center justify-between">
             <h3 className="font-semibold text-foreground">System Health</h3>
             <div className="flex items-center gap-2">
@@ -287,7 +287,7 @@ export default function AdminDashboard() {
               <span className="text-sm text-emerald-500">Live</span>
             </div>
           </div>
-          <ResponsiveContainer width="100%" height={200}>
+          <ResponsiveContainer width="100%" height={180} className="sm:!height-[200px]">
             <AreaChart data={healthData} margin={{ top: 5, right: 5, left: -20, bottom: 5 }}>
               <defs>
                 <linearGradient id="healthGradient" x1="0" y1="0" x2="0" y2="1">
@@ -322,7 +322,7 @@ export default function AdminDashboard() {
       {/* Info Panels Row */}
       <div className="grid gap-6 lg:grid-cols-3">
         {/* Recent Activity */}
-        <div className="animate-slideUp rounded-xl border border-border bg-card p-5 shadow-sm" style={{ animationDelay: "600ms" }}>
+        <div className=" rounded-xl border border-border bg-card p-4 sm:p-5 shadow-sm" style={{ animationDelay: "600ms" }}>
           <div className="mb-4 flex items-center justify-between">
             <h3 className="font-semibold text-foreground">Recent Activity</h3>
             <button className="text-sm text-blue-500 hover:underline">View All</button>
@@ -359,7 +359,7 @@ export default function AdminDashboard() {
         </div>
 
         {/* Top Services */}
-        <div className="animate-slideUp rounded-xl border border-border bg-card p-5 shadow-sm" style={{ animationDelay: "700ms" }}>
+        <div className=" rounded-xl border border-border bg-card p-4 sm:p-5 shadow-sm" style={{ animationDelay: "700ms" }}>
           <div className="mb-4 flex items-center justify-between">
             <h3 className="font-semibold text-foreground">Top Services</h3>
             <Wrench className="h-5 w-5 text-muted-foreground" />
@@ -378,7 +378,7 @@ export default function AdminDashboard() {
         </div>
 
         {/* Performance Metrics */}
-        <div className="animate-slideUp rounded-xl border border-border bg-card p-5 shadow-sm" style={{ animationDelay: "800ms" }}>
+        <div className=" rounded-xl border border-border bg-card p-4 sm:p-5 shadow-sm" style={{ animationDelay: "800ms" }}>
           <div className="mb-4 flex items-center justify-between">
             <h3 className="font-semibold text-foreground">Performance Metrics</h3>
             <Activity className="h-5 w-5 text-muted-foreground" />

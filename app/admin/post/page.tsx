@@ -260,7 +260,7 @@ function BrandBadge({ brand }: { brand: string }) {
 function StatCard({ title, value, icon: Icon, color, delay }: { title: string; value: number | string; icon: React.ElementType; color: string; delay: number }) {
 	return (
 		<div
-			className="animate-slideUp rounded-xl border border-border bg-card p-5 shadow-sm"
+			className=" rounded-xl border border-border bg-card p-5 shadow-sm"
 			// eslint-disable-next-line react/no-unknown-property
 			style={{ animationDelay: `${delay}ms` }}
 		>
@@ -380,7 +380,7 @@ export default function PostModerationPage() {
 	return (
 		<div className="p-6">
 			{/* Header */}
-			<div className="mb-6 animate-slideUp">
+			<div className="mb-6 ">
 				<h1 className="text-2xl font-semibold text-foreground">Post Moderation</h1>
 				<p className="mt-1 text-sm text-muted-foreground">Manage and moderate community posts by laptop brand</p>
 			</div>
@@ -394,7 +394,7 @@ export default function PostModerationPage() {
 			</div>
 
 			{/* Brand Filter Tabs */}
-			<div className="mb-6 animate-slideUp overflow-x-auto" style={{ animationDelay: "400ms" }}>
+			<div className="mb-6  overflow-x-auto" style={{ animationDelay: "400ms" }}>
 				<div className="flex gap-2 pb-2">
 					{brandCounts.map((brand) => {
 						const Icon = brand.icon;
@@ -414,7 +414,7 @@ export default function PostModerationPage() {
 			</div>
 
 			{/* Main Content */}
-			<div className="animate-slideUp rounded-xl border border-border bg-card shadow-sm" style={{ animationDelay: "500ms" }}>
+			<div className=" rounded-xl border border-border bg-card shadow-sm" style={{ animationDelay: "500ms" }}>
 				{/* Toolbar */}
 				<div className="flex flex-col gap-4 border-b border-border p-4 sm:flex-row">
 					<div className="relative flex-1">
