@@ -41,3 +41,5 @@ export { ContentFilterDisplay, filterContent } from "./ContentFilter";
 export type { ContentFilterResult } from "./ContentFilter";
 export { PostEditor } from "./PostEditor";
 export type { PostData } from "./PostEditor";
+export { BrandSidebar } from "./BrandSidebar";
+export { PostCard } from "./PostCard";

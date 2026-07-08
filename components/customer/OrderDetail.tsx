@@ -2,6 +2,7 @@
 "use client";
 
 import * as React from "react";
+import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { StatusBadge, type StatusType } from "@/components/customer";
@@ -115,7 +116,7 @@ export function OrderDetail({
       {techName && (
         <div className="flex items-center gap-3 p-3 rounded-lg border bg-card">
           {techPhoto ? (
-            <img src={techPhoto} alt={techName} className="h-10 w-10 rounded-full object-cover" />
+            <Image src={techPhoto} alt={techName} width={40} height={40} className="h-10 w-10 rounded-full object-cover" />
           ) : (
             <div className="h-10 w-10 rounded-full bg-indigo-100 flex items-center justify-center">
               <Wrench className="h-5 w-5 text-indigo-500" />

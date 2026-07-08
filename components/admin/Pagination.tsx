@@ -6,8 +6,8 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 interface PaginationProps {
 	currentPage: number;
 	totalPages: number;
-	totalItems: number;
-	itemsPerPage: number;
+	totalItems?: number;
+	itemsPerPage?: number;
 	onPageChange: (page: number) => void;
 	className?: string;
 }
@@ -16,12 +16,12 @@ export function Pagination({
 	currentPage,
 	totalPages,
 	totalItems,
-	itemsPerPage,
+	itemsPerPage = 10,
 	onPageChange,
 	className,
 }: PaginationProps) {
-	const startItem = (currentPage - 1) * itemsPerPage + 1;
-	const endItem = Math.min(currentPage * itemsPerPage, totalItems);
+	const startItem = totalItems ? (currentPage - 1) * itemsPerPage + 1 : 1;
+	const endItem = totalItems ? Math.min(currentPage * itemsPerPage, totalItems) : currentPage;
 
 	const getPageNumbers = () => {
 		const pages: (number | "...")[] = [];
@@ -42,9 +42,15 @@ export function Pagination({
 	return (
 		<div className={cn("flex items-center justify-between border-t border-border px-4 py-3", className)}>
 			<p className="text-sm text-muted-foreground">
-				Showing <span className="font-medium text-foreground">{startItem}</span> to{" "}
-				<span className="font-medium text-foreground">{endItem}</span> of{" "}
-				<span className="font-medium text-foreground">{totalItems}</span> results
+				{totalItems ? (
+					<>
+						Showing <span className="font-medium text-foreground">{startItem}</span> to{" "}
+						<span className="font-medium text-foreground">{endItem}</span> of{" "}
+						<span className="font-medium text-foreground">{totalItems}</span> results
+					</>
+				) : (
+					<span>Page <span className="font-medium text-foreground">{currentPage}</span> of <span className="font-medium text-foreground">{totalPages}</span></span>
+				)}
 			</p>
 			<div className="flex items-center gap-1">
 				<button

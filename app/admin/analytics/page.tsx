@@ -106,10 +106,10 @@ export default function AnalyticsPage() {
 			<PageHeader title="Analytics Dashboard" description="Comprehensive insights and performance metrics" />
 
 			<div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-				<StatCard title="Total Users" value={totalUsers.toLocaleString()} change="12.5%" changeType="up" icon={Users} color="bg-blue-50" delay={0} />
-				<StatCard title="Active Technicians" value={totalTechnicians} change="8.2%" changeType="up" icon={Wrench} color="bg-violet-50" delay={100} />
-				<StatCard title="Total Bookings" value={totalBookings.toLocaleString()} change="15.3%" changeType="up" icon={Calendar} color="bg-emerald-50" delay={200} />
-				<StatCard title="Total Revenue" value={`Rp ${formatCurrency(totalRevenue)}`} change="18.7%" changeType="up" icon={DollarSign} color="bg-amber-50" delay={300} />
+				<StatCard title="Total Users" value={totalUsers.toLocaleString()} change="12.5%" changeType="up" icon={Users} color="bg-blue-50 dark:bg-blue-900/30" delay={0} />
+				<StatCard title="Active Technicians" value={totalTechnicians} change="8.2%" changeType="up" icon={Wrench} color="bg-violet-50 dark:bg-violet-900/30" delay={100} />
+				<StatCard title="Total Bookings" value={totalBookings.toLocaleString()} change="15.3%" changeType="up" icon={Calendar} color="bg-emerald-50 dark:bg-emerald-900/30" delay={200} />
+				<StatCard title="Total Revenue" value={`Rp ${formatCurrency(totalRevenue)}`} change="18.7%" changeType="up" icon={DollarSign} color="bg-amber-50 dark:bg-amber-900/30" delay={300} />
 			</div>
 
 			<div className="grid gap-6 lg:grid-cols-2">

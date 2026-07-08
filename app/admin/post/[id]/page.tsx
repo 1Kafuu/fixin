@@ -1,11 +1,11 @@
 "use client";
 
-import { cn } from "../../.././../lib/utils";
+import Image from "next/image";
+import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { cn } from "@/lib/utils";
 import {
-	X,
 	CheckCircle,
-	Edit,
 	Trash2,
 	Flag,
 	EyeOff,
@@ -16,15 +16,20 @@ import {
 	Bookmark,
 	AlertTriangle,
 	Tag,
-	Calendar,
-	User,
-	ChevronRight,
 } from "lucide-react";
-import { useState, useEffect } from "react";
 
 // Types
 type PostStatus = "Published" | "Draft" | "Flagged" | "Archived";
-type LaptopBrand = "Asus" | "Acer" | "Lenovo" | "HP" | "Dell" | "Apple" | "MSI" | "Samsung" | "Other";
+type LaptopBrand =
+	| "Asus"
+	| "Acer"
+	| "Lenovo"
+	| "HP"
+	| "Dell"
+	| "Apple"
+	| "MSI"
+	| "Samsung"
+	| "Other";
 
 interface Post {
 	id: string;
@@ -71,7 +76,11 @@ Charger KW atau tidak original dapat merusak baterai dan berbahaya.
 Panas berlebih adalah musuh utama baterai laptop.
 
 Dengan merawat baterai dengan baik, laptop Asus Anda akan lebih tahan lama dan performanya tetap optimal.`,
-		author: { id: "U1", name: "Rizky Pratama", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Rizky" },
+		author: {
+			id: "U1",
+			name: "Rizky Pratama",
+			avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Rizky",
+		},
 		brand: "Asus",
 		status: "Published",
 		createdAt: "2024-01-20",
@@ -85,8 +94,13 @@ Dengan merawat baterai dengan baik, laptop Asus Anda akan lebih tahan lama dan p
 	{
 		id: "POST-002",
 		title: "Solusi Layar Laptop Acer Berkedip? Ini Penyebabnya!",
-		content: "Layar laptop Acer berkedip bisa disebabkan oleh beberapa faktor. Berikut penjelasannya...",
-		author: { id: "U2", name: "Siti Nurhaliza", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Siti" },
+		content:
+			"Layar laptop Acer berkedip bisa disebabkan oleh beberapa faktor. Berikut penjelasannya...",
+		author: {
+			id: "U2",
+			name: "Siti Nurhaliza",
+			avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Siti",
+		},
 		brand: "Acer",
 		status: "Published",
 		createdAt: "2024-01-19",
@@ -100,8 +114,13 @@ Dengan merawat baterai dengan baik, laptop Asus Anda akan lebih tahan lama dan p
 	{
 		id: "POST-003",
 		title: "Review Lenovo ThinkPad X1 Carbon - Laptop Bisnis Premium",
-		content: "Lenovo ThinkPad X1 Carbon adalah laptop bisnis premium dengan desain elegan dan performa tinggi...",
-		author: { id: "U3", name: "Budi Santoso", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Budi" },
+		content:
+			"Lenovo ThinkPad X1 Carbon adalah laptop bisnis premium dengan desain elegan dan performa tinggi...",
+		author: {
+			id: "U3",
+			name: "Budi Santoso",
+			avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Budi",
+		},
 		brand: "Lenovo",
 		status: "Flagged",
 		createdAt: "2024-01-18",
@@ -116,8 +135,13 @@ Dengan merawat baterai dengan baik, laptop Asus Anda akan lebih tahan lama dan p
 	{
 		id: "POST-004",
 		title: "Cara Install Windows 10 di HP Pavilion dengan Mudah",
-		content: "Panduan lengkap cara install Windows 10 di laptop HP Pavilion tanpa ribet...",
-		author: { id: "U4", name: "Dewi Kartika", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Dewi" },
+		content:
+			"Panduan lengkap cara install Windows 10 di laptop HP Pavilion tanpa ribet...",
+		author: {
+			id: "U4",
+			name: "Dewi Kartika",
+			avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Dewi",
+		},
 		brand: "HP",
 		status: "Draft",
 		createdAt: "2024-01-17",
@@ -130,8 +154,13 @@ Dengan merawat baterai dengan baik, laptop Asus Anda akan lebih tahan lama dan p
 	{
 		id: "POST-005",
 		title: "Dell XPS 13 vs MacBook Air M2 - Mana yang Lebih Baik?",
-		content: "Perbandingan lengkap antara Dell XPS 13 dan MacBook Air M2 untuk produktivitas...",
-		author: { id: "U5", name: "Eko Prasetyo", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Eko" },
+		content:
+			"Perbandingan lengkap antara Dell XPS 13 dan MacBook Air M2 untuk produktivitas...",
+		author: {
+			id: "U5",
+			name: "Eko Prasetyo",
+			avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Eko",
+		},
 		brand: "Dell",
 		status: "Published",
 		createdAt: "2024-01-16",
@@ -145,8 +174,13 @@ Dengan merawat baterai dengan baik, laptop Asus Anda akan lebih tahan lama dan p
 	{
 		id: "POST-006",
 		title: "Masalah Umum MacBook Pro M1 dan Solusinya",
-		content: "Beberapa masalah umum yang sering dialami pengguna MacBook Pro M1 beserta solusinya...",
-		author: { id: "U6", name: "Farhan Ramadhan", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Farhan" },
+		content:
+			"Beberapa masalah umum yang sering dialami pengguna MacBook Pro M1 beserta solusinya...",
+		author: {
+			id: "U6",
+			name: "Farhan Ramadhan",
+			avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Farhan",
+		},
 		brand: "Apple",
 		status: "Flagged",
 		createdAt: "2024-01-15",
@@ -161,8 +195,13 @@ Dengan merawat baterai dengan baik, laptop Asus Anda akan lebih tahan lama dan p
 	{
 		id: "POST-007",
 		title: "Panduan Upgrade RAM Laptop MSI GE66 Raider",
-		content: "Tutorial lengkap cara upgrade RAM di laptop gaming MSI GE66 Raider...",
-		author: { id: "U7", name: "Ahmad Fauzi", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Fauzi" },
+		content:
+			"Tutorial lengkap cara upgrade RAM di laptop gaming MSI GE66 Raider...",
+		author: {
+			id: "U7",
+			name: "Ahmad Fauzi",
+			avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Fauzi",
+		},
 		brand: "MSI",
 		status: "Published",
 		createdAt: "2024-01-14",
@@ -176,8 +215,13 @@ Dengan merawat baterai dengan baik, laptop Asus Anda akan lebih tahan lama dan p
 	{
 		id: "POST-008",
 		title: "Samsung Galaxy Book Flex - Laptop Hybrid dengan S Pen",
-		content: "Review lengkap Samsung Galaxy Book Flex yang hadir dengan fitur hybrid dan S Pen...",
-		author: { id: "U8", name: "Lisa Permata", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Lisa" },
+		content:
+			"Review lengkap Samsung Galaxy Book Flex yang hadir dengan fitur hybrid dan S Pen...",
+		author: {
+			id: "U8",
+			name: "Lisa Permata",
+			avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Lisa",
+		},
 		brand: "Samsung",
 		status: "Archived",
 		createdAt: "2024-01-13",
@@ -190,8 +234,13 @@ Dengan merawat baterai dengan baik, laptop Asus Anda akan lebih tahan lama dan p
 	{
 		id: "POST-009",
 		title: "Tips Memilih Laptop Gaming Budget Rp 10 Jutaan",
-		content: "Rekomendasi laptop gaming dengan budget terbatas namun tetap berkualitas...",
-		author: { id: "U9", name: "Rudi Hermawan", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Rudi" },
+		content:
+			"Rekomendasi laptop gaming dengan budget terbatas namun tetap berkualitas...",
+		author: {
+			id: "U9",
+			name: "Rudi Hermawan",
+			avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Rudi",
+		},
 		brand: "Asus",
 		status: "Published",
 		createdAt: "2024-01-12",
@@ -205,8 +254,13 @@ Dengan merawat baterai dengan baik, laptop Asus Anda akan lebih tahan lama dan p
 	{
 		id: "POST-010",
 		title: "Cara Mengatasi Keyboard Laptop Acer Tidak Berfungsi Sebagian",
-		content: "Langkah-langkah troubleshooting ketika keyboard laptop Acer tidak berfungsi sebagian...",
-		author: { id: "U10", name: "Maya Sari", avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Maya" },
+		content:
+			"Langkah-langkah troubleshooting ketika keyboard laptop Acer tidak berfungsi sebagian...",
+		author: {
+			id: "U10",
+			name: "Maya Sari",
+			avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Maya",
+		},
 		brand: "Acer",
 		status: "Draft",
 		createdAt: "2024-01-11",
@@ -361,6 +415,7 @@ export default function PostDetailPage() {
 			<div className="p-6">
 				<div className="mb-6">
 					<button
+						type="button"
 						onClick={() => router.push("/admin/post")}
 						className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground mb-4"
 					>
@@ -371,6 +426,7 @@ export default function PostDetailPage() {
 				<div className="rounded-xl border border-border bg-card p-12 text-center">
 					<p className="text-muted-foreground">Postingan tidak ditemukan</p>
 					<button
+						type="button"
 						onClick={() => router.push("/admin/post")}
 						className="mt-4 inline-flex items-center gap-2 rounded-lg bg-blue-500 px-4 py-2 text-sm font-medium text-white hover:bg-blue-600"
 					>
@@ -383,48 +439,48 @@ export default function PostDetailPage() {
 	}
 
 	return (
-		<div className="p-6">
-			{/* Breadcrumb */}
-			<div className="mb-4 ">
-				<div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
-					<button
-						onClick={() => router.push("/admin/post")}
-						className="flex items-center gap-1 hover:text-foreground transition-colors"
-					>
-						Postingan
-					</button>
-					<ChevronRight className="h-4 w-4" />
-					<span className="text-foreground">{post.id}</span>
-				</div>
-			</div>
+		<div className="p-4 sm:p-6">
+			{/* Back Button */}
+			<button
+				type="button"
+				onClick={() => router.push("/admin/post")}
+				className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground mb-4 transition-colors"
+			>
+				<ArrowLeft className="h-4 w-4" />
+				Kembali ke Daftar
+			</button>
 
 			{/* Header */}
-			<div className="mb-6 ">
-				<h1 className="text-2xl font-semibold text-foreground mb-4">
+			<div className="mb-4 sm:mb-6">
+				<h1 className="text-xl sm:text-2xl font-semibold text-foreground mb-4">
 					Detail Postingan
 				</h1>
 			</div>
 
-			<div className="grid gap-6 lg:grid-cols-3">
+			<div className="grid gap-4 lg:grid-cols-3">
 				{/* Main Content */}
 				<div className="lg:col-span-2 space-y-6">
 					{/* Post Header Card */}
-					<div className=" rounded-xl border border-border bg-card p-6 shadow-sm">
-						<div className="flex items-start justify-between mb-4">
+					<div className=" rounded-xl border border-border bg-card p-4 sm:p-6 shadow-sm">
+						<div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 mb-4">
 							<div className="flex items-center gap-3">
-								<img
+								<Image
 									src={post.author.avatar}
 									alt={post.author.name}
+									width={48}
+									height={48}
 									className="h-12 w-12 rounded-full bg-muted object-cover"
 								/>
 								<div>
-									<p className="font-medium text-foreground">{post.author.name}</p>
+									<p className="font-medium text-foreground">
+										{post.author.name}
+									</p>
 									<p className="text-sm text-muted-foreground">
 										{formatDate(post.createdAt)}
 									</p>
 								</div>
 							</div>
-							<div className="flex items-center gap-2">
+							<div className="flex flex-wrap items-center gap-2">
 								<StatusBadge status={post.status} />
 								<BrandBadge brand={post.brand} />
 							</div>
@@ -436,17 +492,19 @@ export default function PostDetailPage() {
 
 						{/* Featured Image */}
 						{post.image && (
-							<div className="mb-6 overflow-hidden rounded-xl">
-								<img
+							<div className="mb-4 sm:mb-6 overflow-hidden rounded-xl">
+								<Image
 									src={post.image}
 									alt={post.title}
-									className="h-72 w-full object-cover"
+									width={800}
+									height={288}
+									className="h-48 sm:h-72 w-full object-cover"
 								/>
 							</div>
 						)}
 
 						{/* Content */}
-						<div className="rounded-xl border border-border bg-muted/30 p-6">
+						<div className="rounded-xl border border-border bg-muted/30 p-4 sm:p-6">
 							<p className="text-sm leading-relaxed text-foreground whitespace-pre-wrap">
 								{post.content}
 							</p>
@@ -467,35 +525,38 @@ export default function PostDetailPage() {
 					</div>
 
 					{/* Stats Card */}
-					<div className=" rounded-xl border border-border bg-card p-6 shadow-sm" style={{ animationDelay: "100ms" }}>
+					<div
+						className=" rounded-xl border border-border bg-card p-4 sm:p-6 shadow-sm"
+						style={{ animationDelay: "100ms" }}
+					>
 						<h3 className="text-sm font-semibold text-foreground mb-4">
 							Statistik Postingan
 						</h3>
-						<div className="grid grid-cols-4 gap-4">
-							<div className="rounded-lg border border-border bg-muted/30 p-4 text-center">
-								<Eye className="mx-auto h-6 w-6 text-muted-foreground mb-2" />
-								<p className="text-2xl font-bold text-foreground">
+						<div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
+							<div className="rounded-lg border border-border bg-muted/30 p-3 sm:p-4 text-center">
+								<Eye className="mx-auto h-5 w-5 sm:h-6 sm:w-6 text-muted-foreground mb-1 sm:mb-2" />
+								<p className="text-xl sm:text-2xl font-bold text-foreground">
 									{formatNumber(post.views)}
 								</p>
 								<p className="text-xs text-muted-foreground">Views</p>
 							</div>
-							<div className="rounded-lg border border-border bg-muted/30 p-4 text-center">
-								<MessageSquare className="mx-auto h-6 w-6 text-muted-foreground mb-2" />
-								<p className="text-2xl font-bold text-foreground">
+							<div className="rounded-lg border border-border bg-muted/30 p-3 sm:p-4 text-center">
+								<MessageSquare className="mx-auto h-5 w-5 sm:h-6 sm:w-6 text-muted-foreground mb-1 sm:mb-2" />
+								<p className="text-xl sm:text-2xl font-bold text-foreground">
 									{formatNumber(post.comments)}
 								</p>
 								<p className="text-xs text-muted-foreground">Comments</p>
 							</div>
-							<div className="rounded-lg border border-border bg-muted/30 p-4 text-center">
-								<Bookmark className="mx-auto h-6 w-6 text-muted-foreground mb-2" />
-								<p className="text-2xl font-bold text-foreground">
+							<div className="rounded-lg border border-border bg-muted/30 p-3 sm:p-4 text-center">
+								<Bookmark className="mx-auto h-5 w-5 sm:h-6 sm:w-6 text-muted-foreground mb-1 sm:mb-2" />
+								<p className="text-xl sm:text-2xl font-bold text-foreground">
 									{formatNumber(post.likes)}
 								</p>
 								<p className="text-xs text-muted-foreground">Likes</p>
 							</div>
-							<div className="rounded-lg border border-border bg-muted/30 p-4 text-center">
-								<AlertTriangle className="mx-auto h-6 w-6 text-muted-foreground mb-2" />
-								<p className="text-2xl font-bold text-foreground">
+							<div className="rounded-lg border border-border bg-muted/30 p-3 sm:p-4 text-center">
+								<AlertTriangle className="mx-auto h-5 w-5 sm:h-6 sm:w-6 text-muted-foreground mb-1 sm:mb-2" />
+								<p className="text-xl sm:text-2xl font-bold text-foreground">
 									{post.flags || 0}
 								</p>
 								<p className="text-xs text-muted-foreground">Flags</p>
@@ -505,9 +566,12 @@ export default function PostDetailPage() {
 
 					{/* Flag Warning */}
 					{post.status === "Flagged" && post.flagReason && (
-						<div className=" rounded-xl border border-amber-200 bg-amber-50 p-6" style={{ animationDelay: "200ms" }}>
-							<div className="flex items-start gap-4">
-								<AlertTriangle className="h-6 w-6 text-amber-600 mt-0.5" />
+						<div
+							className=" rounded-xl border border-amber-200 bg-amber-50 p-4 sm:p-6"
+							style={{ animationDelay: "200ms" }}
+						>
+							<div className="flex items-start gap-3 sm:gap-4">
+								<AlertTriangle className="h-5 w-5 sm:h-6 sm:w-6 text-amber-600 mt-0.5" />
 								<div>
 									<p className="font-semibold text-amber-800">
 										Postingan Ditandai
@@ -524,13 +588,12 @@ export default function PostDetailPage() {
 				{/* Sidebar */}
 				<div className="space-y-6">
 					{/* Actions Card */}
-					<div className=" rounded-xl border border-border bg-card p-6 shadow-sm">
-						<h3 className="text-sm font-semibold text-foreground mb-4">
-							Aksi
-						</h3>
+					<div className=" rounded-xl border border-border bg-card p-4 sm:p-6 shadow-sm">
+						<h3 className="text-sm font-semibold text-foreground mb-4">Aksi</h3>
 						<div className="space-y-3">
 							{post.status === "Flagged" && (
 								<button
+									type="button"
 									onClick={handleApprove}
 									className="flex w-full items-center justify-center gap-2 rounded-lg bg-emerald-500 px-4 py-2.5 text-sm font-medium text-white hover:bg-emerald-600"
 								>
@@ -541,6 +604,7 @@ export default function PostDetailPage() {
 
 							{post.status === "Published" && (
 								<button
+									type="button"
 									onClick={handleFlag}
 									className="flex w-full items-center justify-center gap-2 rounded-lg border border-amber-200 bg-amber-50 px-4 py-2.5 text-sm font-medium text-amber-700 hover:bg-amber-100"
 								>
@@ -551,6 +615,7 @@ export default function PostDetailPage() {
 
 							{post.status !== "Archived" && (
 								<button
+									type="button"
 									onClick={handleArchive}
 									className="flex w-full items-center justify-center gap-2 rounded-lg border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-100"
 								>
@@ -561,6 +626,7 @@ export default function PostDetailPage() {
 
 							{post.status === "Archived" && (
 								<button
+									type="button"
 									onClick={handleRestore}
 									className="flex w-full items-center justify-center gap-2 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-2.5 text-sm font-medium text-emerald-700 hover:bg-emerald-100"
 								>
@@ -571,6 +637,7 @@ export default function PostDetailPage() {
 
 							<div className="border-t border-border pt-3">
 								<button
+									type="button"
 									onClick={handleDelete}
 									className="flex w-full items-center justify-center gap-2 rounded-lg border border-red-200 bg-red-50 px-4 py-2.5 text-sm font-medium text-red-700 hover:bg-red-100"
 								>
@@ -582,7 +649,10 @@ export default function PostDetailPage() {
 					</div>
 
 					{/* Post Info Card */}
-					<div className=" rounded-xl border border-border bg-card p-6 shadow-sm" style={{ animationDelay: "100ms" }}>
+					<div
+						className=" rounded-xl border border-border bg-card p-4 sm:p-6 shadow-sm"
+						style={{ animationDelay: "100ms" }}
+					>
 						<h3 className="text-sm font-semibold text-foreground mb-4">
 							Informasi Postingan
 						</h3>
@@ -594,9 +664,11 @@ export default function PostDetailPage() {
 							<div>
 								<p className="text-xs text-muted-foreground mb-1">Author</p>
 								<div className="flex items-center gap-2">
-									<img
+									<Image
 										src={post.author.avatar}
 										alt={post.author.name}
+										width={24}
+										height={24}
 										className="h-6 w-6 rounded-full bg-muted"
 									/>
 									<p className="text-sm font-medium text-foreground">
@@ -605,32 +677,29 @@ export default function PostDetailPage() {
 								</div>
 							</div>
 							<div>
-								<p className="text-xs text-muted-foreground mb-1">Merk Laptop</p>
+								<p className="text-xs text-muted-foreground mb-1">
+									Merk Laptop
+								</p>
 								<BrandBadge brand={post.brand} />
 							</div>
 							<div>
-								<p className="text-xs text-muted-foreground mb-1">Tanggal Dibuat</p>
+								<p className="text-xs text-muted-foreground mb-1">
+									Tanggal Dibuat
+								</p>
 								<p className="text-sm text-foreground">
 									{formatDate(post.createdAt)}
 								</p>
 							</div>
 							<div>
-								<p className="text-xs text-muted-foreground mb-1">Terakhir Diubah</p>
+								<p className="text-xs text-muted-foreground mb-1">
+									Terakhir Diubah
+								</p>
 								<p className="text-sm text-foreground">
 									{formatDate(post.updatedAt)}
 								</p>
 							</div>
 						</div>
 					</div>
-
-					{/* Back Button */}
-					<button
-						onClick={() => router.push("/admin/post")}
-						className="flex w-full items-center justify-center gap-2 rounded-lg border border-border bg-background px-4 py-2.5 text-sm font-medium text-foreground hover:bg-muted"
-					>
-						<ArrowLeft className="h-4 w-4" />
-						Kembali ke Daftar
-					</button>
 				</div>
 			</div>
 		</div>

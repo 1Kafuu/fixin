@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import {
@@ -219,7 +220,7 @@ export default function CheckoutPage() {
                   <button className="w-full rounded-xl border border-slate-200 dark:border-slate-700 p-4 text-left hover:border-indigo-300 hover:bg-indigo-50/50 dark:hover:bg-indigo-900/20 transition-colors">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
-                        <img src="/bca.png" alt="BCA" className="h-8 w-auto object-contain" />
+                        <Image src="/bca.png" alt="BCA" width={60} height={32} className="h-8 w-auto object-contain" />
                         <div>
                           <p className="font-medium text-slate-800 dark:text-slate-200">Bank BCA</p>
                           <p className="text-sm text-slate-500">1234567890</p>
@@ -246,7 +247,7 @@ export default function CheckoutPage() {
                       key={wallet.id}
                       className="rounded-xl border border-slate-200 dark:border-slate-700 p-3 text-center hover:border-indigo-300 hover:bg-indigo-50/50 dark:hover:bg-indigo-900/20 transition-colors"
                     >
-                      <img src={wallet.src} alt={wallet.name} className="mx-auto h-8 w-auto object-contain" />
+                      <Image src={wallet.src} alt={wallet.name} width={60} height={32} className="mx-auto h-8 w-auto object-contain" />
                       <p className="mt-2 text-sm font-medium text-slate-700 dark:text-slate-200">{wallet.name}</p>
                     </button>
                   ))}
@@ -462,7 +463,7 @@ export default function CheckoutPage() {
                 <p className="text-sm font-medium text-slate-700 dark:text-slate-300">Teknisi:</p>
                 {cart.technicianBookings.map((booking) => (
                   <div key={booking.id} className="flex items-start gap-3">
-                    <img src={booking.techPhoto} alt={booking.techName} className="h-10 w-10 rounded-lg object-cover" />
+                    <Image src={booking.techPhoto} alt={booking.techName} width={40} height={40} className="h-10 w-10 rounded-lg object-cover" />
                     <div className="flex-1">
                       <p className="text-sm font-medium text-slate-800 dark:text-white">{booking.techName}</p>
                       <p className="text-xs text-slate-500">

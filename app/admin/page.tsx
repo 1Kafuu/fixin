@@ -183,10 +183,10 @@ function KPICard({
   color,
 }: (typeof kpiData)[0]) {
   const colorClasses = {
-    blue: "bg-blue-50 text-blue-500",
-    emerald: "bg-emerald-50 text-emerald-500",
-    violet: "bg-violet-50 text-violet-500",
-    amber: "bg-amber-50 text-amber-500",
+    blue: "bg-blue-50 dark:bg-blue-900/30 text-blue-500",
+    emerald: "bg-emerald-50 dark:bg-emerald-900/30 text-emerald-500",
+    violet: "bg-violet-50 dark:bg-violet-900/30 text-violet-500",
+    amber: "bg-amber-50 dark:bg-amber-900/30 text-amber-500",
   };
 
   return (

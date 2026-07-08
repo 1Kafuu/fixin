@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   Settings,
   Bell,
@@ -32,6 +32,7 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
+  const router = useRouter();
   const [showProfile, setShowProfile] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -97,14 +98,6 @@ export default function AdminLayout({
                       <p className="text-xs text-muted-foreground">admin@fixin.id</p>
                     </div>
                     <Link
-                      href="/admin/profile"
-                      className="flex items-center gap-2 px-4 py-2 text-sm text-foreground hover:bg-accent"
-                      onClick={() => setShowProfile(false)}
-                    >
-                      <User className="h-4 w-4" />
-                      Profile Settings
-                    </Link>
-                    <Link
                       href="/admin/help"
                       className="flex items-center gap-2 px-4 py-2 text-sm text-foreground hover:bg-accent"
                       onClick={() => setShowProfile(false)}
@@ -113,9 +106,12 @@ export default function AdminLayout({
                       Help & Support
                     </Link>
                     <hr className="my-1 border-border" />
-                    <button className="flex w-full items-center gap-2 px-4 py-2 text-sm text-red-500 hover:bg-accent">
+                    <button 
+                      onClick={() => router.push("/login")}
+                      className="flex w-full items-center gap-2 px-4 py-2 text-sm text-red-500 hover:bg-accent"
+                    >
                       <LogOut className="h-4 w-4" />
-                      Sign Out
+                      Keluar
                     </button>
                   </div>
                 </>
@@ -158,28 +154,47 @@ export default function AdminLayout({
 
         {/* Mobile Navigation */}
         {mobileMenuOpen && (
-          <nav className="md:hidden border-t border-border bg-card">
-            {tabs.map((tab) => {
-              const isActive =
-                tab.href === "/admin"
-                  ? pathname === "/admin"
-                  : pathname.startsWith(tab.href);
+          <nav className="md:hidden border-t border-border bg-card overflow-x-auto">
+            <div className="min-w-max">
+              {tabs.map((tab) => {
+                const isActive =
+                  tab.href === "/admin"
+                    ? pathname === "/admin"
+                    : pathname.startsWith(tab.href);
 
-              return (
+                return (
+                  <Link
+                    key={tab.name}
+                    href={tab.href}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={`block px-4 py-3 text-sm font-medium transition-colors ${
+                      isActive
+                        ? "bg-blue-50 text-blue-500 dark:bg-blue-900/30 dark:text-blue-400"
+                        : "text-muted-foreground hover:bg-accent"
+                    }`}
+                  >
+                    {tab.name}
+                  </Link>
+                );
+              })}
+              <div className="border-t border-border mt-2 pt-2">
                 <Link
-                  key={tab.name}
-                  href={tab.href}
+                  href="/admin/settings"
                   onClick={() => setMobileMenuOpen(false)}
-                  className={`block px-4 py-3 text-sm font-medium transition-colors ${
-                    isActive
-                      ? "bg-blue-50 text-blue-500"
-                      : "text-muted-foreground hover:bg-accent"
-                  }`}
+                  className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-muted-foreground hover:bg-accent transition-colors"
                 >
-                  {tab.name}
+                  <Settings className="h-4 w-4" />
+                  Settings
                 </Link>
-              );
-            })}
+                <button
+                  onClick={() => { router.push("/login"); setMobileMenuOpen(false); }}
+                  className="flex w-full items-center gap-3 px-4 py-3 text-sm font-medium text-red-500 hover:bg-red-50 transition-colors"
+                >
+                  <LogOut className="h-4 w-4" />
+                  Keluar
+                </button>
+              </div>
+            </div>
           </nav>
         )}
       </header>

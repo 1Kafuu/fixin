@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import {
@@ -284,7 +285,7 @@ export default function CreatePostPage() {
 
               {imagePreview ? (
                 <div className="relative rounded-lg border border-border overflow-hidden">
-                  <img src={imagePreview} alt="Preview" className="h-48 w-full object-cover" />
+                  <Image src={imagePreview} alt="Preview" width={800} height={192} className="h-48 w-full object-cover" />
                   <button
                     type="button"
                     onClick={() => handleImageChange(null)}

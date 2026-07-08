@@ -1,6 +1,7 @@
 import { Play, MessageCircle, Phone, Mail, Check } from "lucide-react";
 import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import { IoIosAppstore } from "react-icons/io";
 import { FaGooglePlay, FaFacebook, FaInstagram } from "react-icons/fa";
 
@@ -37,9 +38,11 @@ function Header() {
         <a href="#service" className="hover:text-blue-500">Service</a>
         <a href="#contact" className="hover:text-blue-500">Contact</a>
       </nav>
-      <button className="rounded-lg border-2 border-blue-500 px-6 py-2 text-sm font-semibold text-blue-500 hover:bg-blue-500 hover:text-white transition-colors">
-        Login
-      </button>
+      <Link href="/login">
+        <button className="rounded-lg border-2 border-blue-500 px-6 py-2 text-sm font-semibold text-blue-500 hover:bg-blue-500 hover:text-white transition-colors">
+          Login
+        </button>
+      </Link>
     </header>
   );
 }

@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { cn } from "../../../lib/utils";
 import { useRouter } from "next/navigation";
 import {
@@ -18,6 +19,7 @@ import {
 	EyeOff,
 	Clock,
 	MessageSquare,
+	Image as ImageIcon,
 	Bookmark,
 	Laptop,
 	Smartphone,
@@ -222,21 +224,21 @@ const mockPosts: Post[] = [
 ];
 
 // Components
-function StatusBadge({ status }: { status: PostStatus }) {
-	const config: Record<PostStatus, { className: string; dotClass: string }> = {
-		Published: { className: "border-emerald-200 bg-emerald-50 text-emerald-700", dotClass: "bg-emerald-500" },
-		Draft: { className: "border-gray-200 bg-gray-50 text-gray-600", dotClass: "bg-gray-400" },
-		Flagged: { className: "border-amber-200 bg-amber-50 text-amber-700", dotClass: "bg-amber-500" },
-		Archived: { className: "border-slate-200 bg-slate-50 text-slate-600", dotClass: "bg-slate-400" },
-	};
-	const { className, dotClass } = config[status];
-	return (
-		<span className={cn("inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-xs font-medium", className)}>
-			<span className={cn("h-1.5 w-1.5 rounded-full", dotClass)} />
-			{status}
-		</span>
-	);
-}
+	function StatusBadge({ status }: { status: PostStatus }) {
+		const config: Record<PostStatus, { className: string; dotClass: string }> = {
+			Published: { className: "border-emerald-200 bg-emerald-50 text-emerald-700", dotClass: "bg-emerald-500" },
+			Draft: { className: "border-gray-200 bg-gray-50 text-gray-600", dotClass: "bg-gray-400" },
+			Flagged: { className: "border-amber-200 bg-amber-50 text-amber-700", dotClass: "bg-amber-500" },
+			Archived: { className: "border-slate-200 bg-slate-50 text-slate-600", dotClass: "bg-slate-400" },
+		};
+		const { className, dotClass } = config[status];
+		return (
+			<span className={cn("inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-xs font-medium truncate max-w-[80px] sm:max-w-none", className)}>
+				<span className={cn("h-1.5 w-1.5 rounded-full flex-shrink-0", dotClass)} />
+				{status}
+			</span>
+		);
+	}
 
 function BrandBadge({ brand }: { brand: string }) {
 	const brandColors: Record<string, string> = {
@@ -251,7 +253,7 @@ function BrandBadge({ brand }: { brand: string }) {
 		Other: "bg-gray-100 text-gray-600",
 	};
 	return (
-		<span className={cn("inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium", brandColors[brand] || "bg-gray-100 text-gray-600")}>
+		<span className={cn("inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium truncate max-w-[80px] sm:max-w-none", brandColors[brand] || "bg-gray-100 text-gray-600")}>
 			{brand}
 		</span>
 	);
@@ -261,7 +263,6 @@ function StatCard({ title, value, icon: Icon, color, delay }: { title: string; v
 	return (
 		<div
 			className=" rounded-xl border border-border bg-card p-5 shadow-sm"
-			// eslint-disable-next-line react/no-unknown-property
 			style={{ animationDelay: `${delay}ms` }}
 		>
 			<div className="flex items-start justify-between">
@@ -387,10 +388,10 @@ export default function PostModerationPage() {
 
 			{/* Stats Grid */}
 			<div className="mb-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-				<StatCard title="Total Post" value={totalPosts} icon={FileText} color="bg-blue-50" delay={0} />
-				<StatCard title="Published" value={publishedPosts} icon={CheckCircle} color="bg-emerald-50" delay={100} />
-				<StatCard title="Draft" value={draftPosts} icon={Clock} color="bg-gray-50" delay={200} />
-				<StatCard title="Flagged" value={flaggedPosts} icon={AlertTriangle} color="bg-amber-50" delay={300} />
+				<StatCard title="Total Post" value={totalPosts} icon={FileText} color="bg-blue-50 dark:bg-blue-900/30" delay={0} />
+				<StatCard title="Published" value={publishedPosts} icon={CheckCircle} color="bg-emerald-50 dark:bg-emerald-900/30" delay={100} />
+				<StatCard title="Draft" value={draftPosts} icon={Clock} color="bg-gray-50 dark:bg-gray-900/30" delay={200} />
+				<StatCard title="Flagged" value={flaggedPosts} icon={AlertTriangle} color="bg-amber-50 dark:bg-amber-900/30" delay={300} />
 			</div>
 
 			{/* Brand Filter Tabs */}
@@ -427,12 +428,12 @@ export default function PostModerationPage() {
 							className="h-10 w-full rounded-lg border border-input bg-background pl-10 pr-3 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
 						/>
 					</div>
-					<div className="flex gap-2">
+					<div className="flex gap-2 overflow-x-auto pb-2 -mb-2">
 						{(["All", "Published", "Draft", "Flagged", "Archived"] as const).map((status) => (
 							<button
 								key={status}
 								onClick={() => { setStatusFilter(status as PostStatus | "All"); setCurrentPage(1); }}
-								className={cn("rounded-lg border px-3 py-2 text-sm font-medium transition-colors", statusFilter === status ? "border-blue-500 bg-blue-50 text-blue-700" : "border-border bg-background text-muted-foreground hover:bg-muted")}
+								className={cn("rounded-lg border px-3 py-2 text-sm font-medium transition-colors whitespace-nowrap flex-shrink-0", statusFilter === status ? "border-blue-500 bg-blue-50 text-blue-700" : "border-border bg-background text-muted-foreground hover:bg-muted")}
 							>
 								{status === "All" ? "Semua" : status}
 							</button>
@@ -447,7 +448,7 @@ export default function PostModerationPage() {
 							{/* Image */}
 							{post.image ? (
 								<div className="relative h-40 overflow-hidden">
-									<img src={post.image} alt={post.title} className="h-full w-full object-cover transition-transform group-hover:scale-105" />
+									<Image src={post.image} alt={post.title} width={400} height={160} className="h-full w-full object-cover transition-transform group-hover:scale-105" />
 									<div className="absolute top-2 right-2"><StatusBadge status={post.status} /></div>
 									<div className="absolute top-2 left-2"><BrandBadge brand={post.brand} /></div>
 								</div>
@@ -465,7 +466,7 @@ export default function PostModerationPage() {
 
 								{/* Author */}
 								<div className="mb-3 flex items-center gap-2">
-									<img src={post.author.avatar} alt={post.author.name} className="h-6 w-6 rounded-full bg-muted" />
+									<Image src={post.author.avatar} alt={post.author.name} width={24} height={24} className="h-6 w-6 rounded-full bg-muted" />
 									<span className="text-xs text-muted-foreground">{post.author.name}</span>
 									<span className="text-xs text-muted-foreground">•</span>
 									<span className="text-xs text-muted-foreground">{formatDate(post.createdAt)}</span>
@@ -480,9 +481,9 @@ export default function PostModerationPage() {
 								</div>
 
 								{/* Tags */}
-								<div className="mb-3 flex flex-wrap gap-1">
+								<div className="mb-3 flex flex-wrap gap-1 overflow-hidden">
 									{post.tags.slice(0, 3).map((tag) => (
-										<span key={tag} className="rounded bg-muted px-1.5 py-0.5 text-xs text-muted-foreground">#{tag}</span>
+										<span key={tag} className="rounded bg-muted px-1.5 py-0.5 text-xs text-muted-foreground truncate max-w-[120px] sm:max-w-none">#{tag}</span>
 									))}
 								</div>
 

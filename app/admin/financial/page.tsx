@@ -109,10 +109,10 @@ export default function FinancialPage() {
       <PageHeader title="Financial Overview" description="Track revenue, transactions, and financial performance" />
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <StatCard title="Total Revenue" value={formatShortCurrency(financialSummary.totalRevenue)} change="18.7%" changeType="up" icon={DollarSign} color="bg-emerald-50" delay={0} />
-        <StatCard title="Monthly Revenue" value={formatShortCurrency(financialSummary.monthlyRevenue)} change="7.5%" changeType="up" icon={TrendingUp} color="bg-blue-50" delay={100} />
-        <StatCard title="Pending Payments" value={formatShortCurrency(financialSummary.pendingPayments)} icon={Clock} color="bg-amber-50" delay={200} />
-        <StatCard title="Success Rate" value={`${financialSummary.successRate}%`} change="2.1%" changeType="up" icon={CheckCircle} color="bg-violet-50" delay={300} />
+        <StatCard title="Total Revenue" value={formatShortCurrency(financialSummary.totalRevenue)} change="18.7%" changeType="up" icon={DollarSign} color="bg-emerald-50 dark:bg-emerald-900/30" delay={0} />
+        <StatCard title="Monthly Revenue" value={formatShortCurrency(financialSummary.monthlyRevenue)} change="7.5%" changeType="up" icon={TrendingUp} color="bg-blue-50 dark:bg-blue-900/30" delay={100} />
+        <StatCard title="Pending Payments" value={formatShortCurrency(financialSummary.pendingPayments)} icon={Clock} color="bg-amber-50 dark:bg-amber-900/30" delay={200} />
+        <StatCard title="Success Rate" value={`${financialSummary.successRate}%`} change="2.1%" changeType="up" icon={CheckCircle} color="bg-violet-50 dark:bg-violet-900/30" delay={300} />
       </div>
 
       <div className="grid gap-6 lg:grid-cols-3">

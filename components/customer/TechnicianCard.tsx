@@ -3,6 +3,7 @@
 
 import * as React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { Star } from "lucide-react";
 
@@ -36,7 +37,7 @@ export function TechnicianCard({ technician, className }: TechnicianCardProps) {
       )}>
         <div className="relative">
           <div className="aspect-square rounded-xl overflow-hidden bg-slate-100 dark:bg-slate-800">
-            <img src={photo} alt={name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+            <Image src={photo} alt={name} fill className="object-cover group-hover:scale-105 transition-transform duration-300" />
           </div>
           <span className={cn(
             "absolute top-2 right-2 h-3 w-3 rounded-full border-2 border-white dark:border-slate-900",

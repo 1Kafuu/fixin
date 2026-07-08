@@ -186,10 +186,10 @@ export default function ServicesPage() {
 			<PageHeader title="Services Management" description="Manage your service offerings and categories" />
 
 			<div className="mb-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-				<StatCard title="Total Services" value={totalServices} icon={Wrench} color="bg-blue-50" delay={0} />
-				<StatCard title="Active Services" value={activeServices} icon={CheckCircle} color="bg-emerald-50" delay={100} />
-				<StatCard title="Avg. Price" value={formatPrice(avgPrice)} icon={DollarSign} color="bg-violet-50" delay={200} />
-				<StatCard title="Popular Category" value={popularCategory} icon={Layers} color="bg-amber-50" delay={300} />
+				<StatCard title="Total Services" value={totalServices} icon={Wrench} color="bg-blue-50 dark:bg-blue-900/30" delay={0} />
+				<StatCard title="Active Services" value={activeServices} icon={CheckCircle} color="bg-emerald-50 dark:bg-emerald-900/30" delay={100} />
+				<StatCard title="Avg. Price" value={formatPrice(avgPrice)} icon={DollarSign} color="bg-violet-50 dark:bg-violet-900/30" delay={200} />
+				<StatCard title="Popular Category" value={popularCategory} icon={Layers} color="bg-amber-50 dark:bg-amber-900/30" delay={300} />
 			</div>
 
 			<div className="mb-6 " style={{ animationDelay: "400ms" }}>

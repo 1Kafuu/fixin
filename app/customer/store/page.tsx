@@ -21,6 +21,10 @@ import {
   UserPlus,
   AlertTriangle,
   Package,
+  Settings,
+  LogOut,
+  User,
+  ChevronDown,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCart, TechnicianBooking } from "@/app/context/CartContext";
@@ -314,7 +318,9 @@ function TechnicianDrawer({ tech, onClose }: { tech: Technician; onClose: () => 
             {/* Profile Header */}
             <div className="flex flex-col items-center text-center">
               <div className="relative">
-                <img src={tech.photo} alt={tech.name} className="h-24 w-24 rounded-2xl object-cover ring-4 ring-indigo-100 dark:ring-indigo-900/50" />
+                <div className="relative h-24 w-24 rounded-2xl overflow-hidden ring-4 ring-indigo-100 dark:ring-indigo-900/50">
+                  <Image src={tech.photo} alt={tech.name} fill className="object-cover" />
+                </div>
                 <span className={`absolute bottom-1 right-1 h-5 w-5 rounded-full border-2 border-white dark:border-slate-900 ${tech.status === "online" ? "bg-emerald-500" : tech.status === "busy" ? "bg-amber-500" : "bg-slate-400"}`} />
               </div>
               <h3 className="mt-3 text-xl font-bold text-slate-800 dark:text-white">{tech.name}</h3>
@@ -416,7 +422,9 @@ function TechnicianDrawer({ tech, onClose }: { tech: Technician; onClose: () => 
               <button onClick={() => setIsChatting(false)} className="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
                 <ArrowLeft className="h-5 w-5 text-slate-500" />
               </button>
-              <img src={tech.photo} alt={tech.name} className="h-10 w-10 rounded-full object-cover ring-2 ring-indigo-100 dark:ring-indigo-900/50" />
+              <div className="relative h-10 w-10 rounded-full overflow-hidden ring-2 ring-indigo-100 dark:ring-indigo-900/50">
+                  <Image src={tech.photo} alt={tech.name} fill className="object-cover" />
+                </div>
               <div className="flex-1">
                 <p className="font-semibold text-slate-800 dark:text-white">{tech.name}</p>
                 <p className="text-xs text-emerald-500">Online</p>
@@ -480,6 +488,7 @@ export default function StorePage() {
   const [hiredTech, setHiredTech] = useState<Technician | null>(null);
   const [showHireDrawer, setShowHireDrawer] = useState(false);
   const [showTechWarning, setShowTechWarning] = useState(false);
+  const [showProfileDropdown, setShowProfileDropdown] = useState(false);
   const { cart } = useCart();
 
   const handleHire = (tech: Technician) => {
@@ -503,7 +512,7 @@ export default function StorePage() {
       <header className="sticky top-0 z-40 border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
         <div className="flex h-14 sm:h-16 items-center justify-between px-4 sm:px-6">
           <Link href="/customer" className="flex items-center gap-2 sm:gap-3">
-            <Image src="/logo.svg" alt="FixIn Logo" width={100} height={100} className="w-25 h-40" />
+            <Image src="/logo.svg" alt="FixIn Logo" width={100} height={100} className="w-25 h-10" />
           </Link>
 
           <div className="flex-1 max-w-md mx-4">
@@ -536,11 +545,53 @@ export default function StorePage() {
               <Bell className="h-5 w-5" />
               <span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-red-500" />
             </button>
-            <img
-              src="https://i.pravatar.cc/150?img=33"
-              alt="User"
-              className="h-8 w-8 rounded-full object-cover ring-2 ring-indigo-100 dark:ring-indigo-900/50 cursor-pointer"
-            />
+            <div className="relative">
+              <button
+                onClick={() => setShowProfileDropdown(!showProfileDropdown)}
+                className="flex items-center gap-2 rounded-lg p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+              >
+                <img
+                  src="https://i.pravatar.cc/150?img=33"
+                  alt="User"
+                  className="h-8 w-8 rounded-full object-cover ring-2 ring-indigo-100 dark:ring-indigo-900/50"
+                />
+                <ChevronDown className="h-4 w-4 text-slate-500" />
+              </button>
+              
+              {showProfileDropdown && (
+                <>
+                  <div 
+                    className="fixed inset-0 z-40" 
+                    onClick={() => setShowProfileDropdown(false)} 
+                  />
+                  <div className="absolute right-0 top-full mt-2 w-56 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-xl shadow-slate-200/50 dark:shadow-slate-950/50 z-50 overflow-hidden">
+                    <div className="px-4 py-3 border-b border-slate-200 dark:border-slate-700">
+                      <p className="text-sm font-medium text-slate-800 dark:text-white">Customer FixIn</p>
+                      <p className="text-xs text-slate-500">customer@fixin.id</p>
+                    </div>
+                    <div className="py-2">
+                      <Link
+                        href="/customer/settings"
+                        onClick={() => setShowProfileDropdown(false)}
+                        className="flex items-center gap-3 px-4 py-2.5 text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
+                      >
+                        <Settings className="h-4 w-4" />
+                        Pengaturan
+                      </Link>
+                      </div>
+                    <div className="py-2 border-t border-slate-200 dark:border-slate-700">
+                      <button
+                        onClick={() => router.push("/login")}
+                        className="flex w-full items-center gap-3 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors"
+                      >
+                        <LogOut className="h-4 w-4" />
+                        Keluar
+                      </button>
+                    </div>
+                  </div>
+                </>
+              )}
+            </div>
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="sm:hidden rounded-lg p-2 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800"
@@ -716,7 +767,9 @@ function HireDrawer({ tech, onClose }: { tech: Technician; onClose: () => void }
           <div className="flex-1 overflow-y-auto overscroll-contain p-4 space-y-6 pb-8">
             {/* Technician Info */}
             <div className="flex items-center gap-3 p-3 rounded-xl bg-slate-50 dark:bg-slate-800">
-              <img src={tech.photo} alt={tech.name} className="h-14 w-14 rounded-xl object-cover" />
+              <div className="relative h-14 w-14 rounded-xl overflow-hidden">
+                  <Image src={tech.photo} alt={tech.name} fill className="object-cover" />
+                </div>
               <div className="flex-1">
                 <div className="flex items-center gap-2">
                   <p className="font-semibold text-slate-800 dark:text-white">{tech.name}</p>
@@ -816,7 +869,9 @@ function HireDrawer({ tech, onClose }: { tech: Technician; onClose: () => void }
             {/* Summary */}
             <div className="rounded-xl border border-slate-200 dark:border-slate-700 p-4 space-y-3">
               <div className="flex items-center gap-3">
-                <img src={tech.photo} alt={tech.name} className="h-14 w-14 rounded-xl object-cover" />
+<div className="relative h-14 w-14 rounded-xl overflow-hidden">
+                  <Image src={tech.photo} alt={tech.name} fill className="object-cover" />
+                </div>
                 <div>
                   <p className="font-semibold text-slate-800 dark:text-white">{tech.name}</p>
                   <p className="text-xs text-slate-500">{tech.specialty}</p>

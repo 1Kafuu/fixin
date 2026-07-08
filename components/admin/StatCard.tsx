@@ -24,7 +24,6 @@ export function StatCard({
 	return (
 		<div
 			className="rounded-xl border border-border bg-card p-5 shadow-sm"
-			// eslint-disable-next-line react/no-unknown-property
 		>
 			<div className="flex items-start justify-between">
 				<div>

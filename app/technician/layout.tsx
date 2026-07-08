@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   Settings,
   Bell,
@@ -28,6 +28,7 @@ export default function TechnicianLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
+  const router = useRouter();
   const [showProfile, setShowProfile] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -96,14 +97,6 @@ export default function TechnicianLayout({
                       <p className="text-xs text-muted-foreground">teknisi@fixin.id</p>
                     </div>
                     <Link
-                      href="/technician/profile"
-                      className="flex items-center gap-2 px-4 py-2 text-sm text-foreground hover:bg-accent"
-                      onClick={() => setShowProfile(false)}
-                    >
-                      <User className="h-4 w-4" />
-                      Pengaturan Profil
-                    </Link>
-                    <Link
                       href="/technician/help"
                       className="flex items-center gap-2 px-4 py-2 text-sm text-foreground hover:bg-accent"
                       onClick={() => setShowProfile(false)}
@@ -112,7 +105,10 @@ export default function TechnicianLayout({
                       Bantuan & Support
                     </Link>
                     <hr className="my-1 border-border" />
-                    <button className="flex w-full items-center gap-2 px-4 py-2 text-sm text-red-500 hover:bg-accent">
+                    <button 
+                      onClick={() => router.push("/login")}
+                      className="flex w-full items-center gap-2 px-4 py-2 text-sm text-red-500 hover:bg-accent"
+                    >
                       <LogOut className="h-4 w-4" />
                       Keluar
                     </button>

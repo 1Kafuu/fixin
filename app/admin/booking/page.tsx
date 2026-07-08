@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import {
 	Eye,
@@ -16,6 +17,7 @@ import {
 	MapPin,
 	Phone,
 	ExternalLink,
+	Image as ImageIcon,
 } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
@@ -71,7 +73,7 @@ function BookingDetailModal({ booking, onClose }: { booking: Booking; onClose: (
 				<div className="rounded-xl border border-border bg-muted/30 p-4">
 					<h3 className="mb-3 flex items-center gap-2 text-sm font-semibold"><User className="h-4 w-4" /> Customer</h3>
 					<div className="flex items-center gap-3 mb-3">
-						<img src={booking.customer.avatar} alt={booking.customer.name} className="h-10 w-10 rounded-full bg-muted" />
+						<Image src={booking.customer.avatar} alt={booking.customer.name} width={40} height={40} className="h-10 w-10 rounded-full bg-muted" />
 						<div>
 							<p className="font-medium">{booking.customer.name}</p>
 							<p className="text-sm text-muted-foreground">{booking.customer.email}</p>
@@ -98,7 +100,7 @@ function BookingDetailModal({ booking, onClose }: { booking: Booking; onClose: (
 					<h3 className="mb-3 text-sm font-semibold">Technician</h3>
 					{booking.technician ? (
 						<div className="flex items-center gap-3">
-							<img src={booking.technician.avatar} alt={booking.technician.name} className="h-10 w-10 rounded-full bg-muted" />
+							<Image src={booking.technician.avatar} alt={booking.technician.name} width={40} height={40} className="h-10 w-10 rounded-full bg-muted" />
 							<p className="font-medium">{booking.technician.name}</p>
 						</div>
 					) : (
@@ -152,11 +154,11 @@ export default function BookingPage() {
 			</PageHeader>
 
 			<div className="mb-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-				<StatCard title="Total" value={bookings.length} icon={ClipboardList} color="bg-blue-50" delay={0} />
-				<StatCard title="Pending" value={pendingCount} icon={Clock} color="bg-amber-50" delay={100} />
-				<StatCard title="In Progress" value={inProgressCount} icon={AlertTriangle} color="bg-violet-50" delay={200} />
-				<StatCard title="Completed" value={completedCount} icon={CheckCircle} color="bg-emerald-50" delay={300} />
-				<StatCard title="Cancelled" value={cancelledCount} icon={XCircle} color="bg-red-50" delay={400} />
+				<StatCard title="Total" value={bookings.length} icon={ClipboardList} color="bg-blue-50 dark:bg-blue-900/30" delay={0} />
+				<StatCard title="Pending" value={pendingCount} icon={Clock} color="bg-amber-50 dark:bg-amber-900/30" delay={100} />
+				<StatCard title="In Progress" value={inProgressCount} icon={AlertTriangle} color="bg-violet-50 dark:bg-violet-900/30" delay={200} />
+				<StatCard title="Completed" value={completedCount} icon={CheckCircle} color="bg-emerald-50 dark:bg-emerald-900/30" delay={300} />
+				<StatCard title="Cancelled" value={cancelledCount} icon={XCircle} color="bg-red-50 dark:bg-red-900/30" delay={400} />
 			</div>
 
 			<div className="rounded-xl border border-border bg-card shadow-sm">
@@ -195,7 +197,7 @@ export default function BookingPage() {
 									<td className="px-4 py-3 text-sm font-medium">{booking.id}</td>
 									<td className="px-4 py-3">
 										<div className="flex items-center gap-2">
-											<img src={booking.customer.avatar} alt={booking.customer.name} className="h-8 w-8 rounded-full bg-muted" />
+											<Image src={booking.customer.avatar} alt={booking.customer.name} width={32} height={32} className="h-8 w-8 rounded-full bg-muted" />
 											<span className="text-sm">{booking.customer.name}</span>
 										</div>
 									</td>

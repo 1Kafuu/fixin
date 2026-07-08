@@ -2,6 +2,7 @@
 "use client";
 
 import * as React from "react";
+import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { Upload, X, AlertCircle } from "lucide-react";
 
@@ -85,7 +86,7 @@ export function ImageUpload({
       )}
       {preview ? (
         <div className="relative rounded-md border overflow-hidden">
-          <img src={preview} alt="Preview" className="w-full h-48 object-cover" />
+          <Image src={preview} alt="Preview" width={800} height={192} className="w-full h-48 object-cover" />
           <button type="button" onClick={handleRemove} disabled={disabled} className="absolute top-2 right-2 p-1.5 rounded-full bg-background/80 hover:bg-background disabled:opacity-50">
             <X className="h-4 w-4" />
           </button>

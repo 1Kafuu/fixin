@@ -47,8 +47,8 @@ export default function SettingsPage() {
 
   return (
     <div className="flex min-h-[calc(100vh-8rem)]">
-      {/* Sidebar */}
-      <aside className="w-64 flex-shrink-0 border-r border-border bg-card p-4">
+      {/* Desktop Sidebar - hidden on mobile, shown on tablet+ */}
+      <aside className="hidden md:block w-64 flex-shrink-0 border-r border-border bg-card p-4">
         <h2 className="mb-4 px-2 text-lg font-semibold text-foreground">Settings</h2>
         <nav className="space-y-1">
           {settingsSections.map((section) => (
@@ -67,9 +67,32 @@ export default function SettingsPage() {
           ))}
         </nav>
       </aside>
+    
 
-      {/* Content */}
-      <div className="flex-1 p-6">
+      {/* Main Content Area */}
+      <div className="flex-1 flex flex-col overflow-y-auto">
+        {/* Mobile Tab Navigation - shown only on mobile */}
+        <div className="flex md:hidden border-b border-border bg-card px-4 overflow-x-auto flex-shrink-0">
+          <div className="flex gap-2 py-3">
+            {settingsSections.map((section) => (
+              <button
+                key={section.id}
+                onClick={() => setActiveSection(section.id)}
+                className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${
+                  activeSection === section.id
+                    ? "bg-blue-500 text-white"
+                    : "bg-muted dark:bg-muted/80 text-muted-foreground hover:bg-blue-100 dark:hover:bg-blue-900/30"
+                }`}
+              >
+                <section.icon className={`h-4 w-4 ${activeSection === section.id ? "" : "text-muted-foreground dark:text-muted-foreground"}`} />
+                {section.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Content */}
+        <div className="flex-1 p-4 sm:p-6">
         {activeSection === "profile" && (
           <div className="mx-auto max-w-2xl">
             <h3 className="mb-6 text-xl font-semibold text-foreground">Profile Settings</h3>
@@ -461,23 +484,23 @@ export default function SettingsPage() {
             <div className="mb-6 rounded-xl border border-border bg-card p-6">
               <h4 className="mb-4 text-sm font-medium text-foreground">Backup & Restore</h4>
               <div className="space-y-4">
-                <div className="flex items-center justify-between rounded-lg border border-border p-4">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 rounded-lg border border-border p-4">
                   <div>
                     <p className="text-sm font-medium text-foreground">Latest Backup</p>
                     <p className="text-xs text-muted-foreground">June 15, 2024 at 02:30 AM</p>
                   </div>
-                  <div className="flex gap-2">
-                    <button className="rounded-lg border border-border bg-background px-3 py-1.5 text-xs font-medium text-foreground hover:bg-accent">
+                  <div className="flex gap-2 w-full sm:w-auto">
+                    <button className="flex-1 sm:flex-none rounded-lg border border-border bg-background px-3 py-1.5 text-xs font-medium text-foreground hover:bg-accent">
                       Download
                     </button>
-                    <button className="rounded-lg bg-blue-500 px-3 py-1.5 text-xs font-medium text-white hover:bg-blue-600">
+                    <button className="flex-1 sm:flex-none rounded-lg bg-blue-500 px-3 py-1.5 text-xs font-medium text-white hover:bg-blue-600">
                       Backup Now
                     </button>
                   </div>
                 </div>
                 <div>
                   <label className="mb-2 block text-sm text-muted-foreground">Restore from Backup</label>
-                  <input type="file" className="w-full text-sm" />
+                  <input type="file" className="w-full text-sm file:mr-4 file:rounded-lg file:border file:border-border file:bg-muted file:px-3 file:py-1.5 file:text-xs file:font-medium file:text-muted-foreground hover:file:bg-muted/80" />
                   <p className="mt-1 text-xs text-muted-foreground">Upload a .sql or .json backup file</p>
                 </div>
               </div>
@@ -486,12 +509,12 @@ export default function SettingsPage() {
             {/* Cache */}
             <div className="mb-6 rounded-xl border border-border bg-card p-6">
               <h4 className="mb-4 text-sm font-medium text-foreground">Cache Management</h4>
-              <div className="flex items-center justify-between">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
                 <div>
                   <p className="text-sm font-medium text-foreground">Clear Application Cache</p>
                   <p className="text-xs text-muted-foreground">Remove temporary files and cached data</p>
                 </div>
-                <button className="rounded-lg border border-border bg-background px-4 py-2 text-sm font-medium text-foreground hover:bg-accent">
+                <button className="w-full sm:w-auto rounded-lg border border-border bg-background px-4 py-2 text-sm font-medium text-foreground hover:bg-accent">
                   Clear Cache
                 </button>
               </div>
@@ -500,7 +523,7 @@ export default function SettingsPage() {
             {/* Maintenance */}
             <div className="rounded-xl border border-border bg-card p-6">
               <h4 className="mb-4 text-sm font-medium text-foreground">Maintenance Mode</h4>
-              <div className="flex items-center justify-between">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
                 <div>
                   <p className="text-sm font-medium text-foreground">Enable Maintenance Mode</p>
                   <p className="text-xs text-muted-foreground">Temporarily disable the site for visitors</p>
@@ -515,5 +538,6 @@ export default function SettingsPage() {
         )}
       </div>
     </div>
+  </div>
   );
 }

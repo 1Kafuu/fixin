@@ -1,7 +1,7 @@
 "use client";
 
 import { X } from "lucide-react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 interface ModalProps {
 	open: boolean;
@@ -15,10 +15,10 @@ interface ModalProps {
 }
 
 const sizeClasses = {
-	sm: "max-w-md",
-	md: "max-w-lg",
-	lg: "max-w-2xl",
-	xl: "max-w-4xl",
+	sm: "max-w-sm",
+	md: "max-w-md sm:max-w-lg",
+	lg: "max-w-sm sm:max-w-2xl",
+	xl: "max-w-sm sm:max-w-4xl",
 	full: "max-w-[90vw]",
 };
 
@@ -32,13 +32,24 @@ export function Modal({
 	className,
 	showCloseButton = true,
 }: ModalProps) {
+	const [isVisible, setIsVisible] = useState(false);
+
+	useEffect(() => {
+		if (open) {
+			setIsVisible(true);
+			document.body.style.overflow = "hidden";
+		} else {
+			const timer = setTimeout(() => setIsVisible(false), 1000);
+			return () => clearTimeout(timer);
+		}
+	}, [open]);
+
 	useEffect(() => {
 		const handleEscape = (e: KeyboardEvent) => {
 			if (e.key === "Escape") onClose();
 		};
 		if (open) {
 			document.addEventListener("keydown", handleEscape);
-			document.body.style.overflow = "hidden";
 		}
 		return () => {
 			document.removeEventListener("keydown", handleEscape);
@@ -46,28 +57,22 @@ export function Modal({
 		};
 	}, [open, onClose]);
 
-	if (!open) return null;
+	if (!isVisible) return null;
 
 	return (
-		<div className="fixed inset-0 z-50 flex items-center justify-center">
+		<div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center">
 			<div
-				className="fixed inset-0 bg-black/50"
+				className={`fixed inset-0 bg-black/50 transition-opacity duration-300 ${open ? "opacity-100" : "opacity-0"}`}
 				onClick={onClose}
-				onKeyDown={(e) => {
-					if (e.key === "Escape") onClose();
-				}}
-				role="button"
-				tabIndex={-1}
-				aria-label="Close modal"
 			/>
 			<div
-				className={`relative z-10 w-full ${sizeClasses[size]} max-h-[90vh] overflow-hidden rounded-xl border border-border bg-card shadow-lg animate-popIn ${className || ""}`}
+				className={`relative z-10 w-full ${sizeClasses[size]} max-h-[90vh] sm:max-h-[90vh] overflow-hidden rounded-t-2xl sm:rounded-xl border border-border bg-card shadow-lg transition-all duration-300 ease-out ${open ? "translate-y-0 opacity-100" : "translate-y-full opacity-0 sm:translate-y-0 sm:opacity-0"} ${className || ""}`}
 			>
 				{(title || showCloseButton) && (
-					<div className="flex items-center justify-between border-b border-border p-4">
+					<div className="flex items-center justify-between border-b border-border p-3 sm:p-4">
 						<div>
-							{title && <h2 className="font-semibold text-foreground">{title}</h2>}
-							{subtitle && <p className="text-sm text-muted-foreground">{subtitle}</p>}
+							{title && <h2 className="font-semibold text-foreground text-sm sm:text-base">{title}</h2>}
+							{subtitle && <p className="text-xs sm:text-sm text-muted-foreground">{subtitle}</p>}
 						</div>
 						{showCloseButton && (
 							<button
@@ -79,7 +84,7 @@ export function Modal({
 						)}
 					</div>
 				)}
-				<div className="overflow-y-auto max-h-[calc(90vh-80px)] p-6">{children}</div>
+				<div className="overflow-y-auto max-h-[calc(100vh-120px)] sm:max-h-[calc(90vh-80px)] p-4 sm:p-6">{children}</div>
 			</div>
 		</div>
 	);

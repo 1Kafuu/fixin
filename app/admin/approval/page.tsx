@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import {
 	CheckCircle,
 	Clock,
@@ -17,7 +18,7 @@ import {
 	Briefcase,
 	Shield,
 	AlertCircle,
-	Image,
+	Image as ImageIcon,
 	Pencil,
 	Trash2,
 	Plus,
@@ -190,13 +191,13 @@ function DetailModal({ applicant, onClose, onApprove, onReject }: { applicant: A
 							<div>
 								<p className="mb-2 text-xs font-medium">Foto KTP</p>
 								<div className="relative cursor-pointer overflow-hidden rounded-lg border hover:border-blue-500" onClick={() => setPreviewDoc({ src: applicant.documents.ktp, title: "Foto KTP" })}>
-									<img src={applicant.documents.ktp} alt="KTP" className="h-24 w-full object-cover" />
+									<Image src={applicant.documents.ktp} alt="KTP" width={400} height={96} className="h-24 w-full object-cover" />
 								</div>
 							</div>
 							<div>
 								<p className="mb-2 text-xs font-medium">Selfie dengan KTP</p>
 								<div className="relative cursor-pointer overflow-hidden rounded-lg border hover:border-blue-500" onClick={() => setPreviewDoc({ src: applicant.documents.selfieKtp, title: "Selfie dengan KTP" })}>
-									<img src={applicant.documents.selfieKtp} alt="Selfie KTP" className="h-24 w-full object-cover" />
+									<Image src={applicant.documents.selfieKtp} alt="Selfie KTP" width={400} height={96} className="h-24 w-full object-cover" />
 								</div>
 							</div>
 							{applicant.documents.cv && (
@@ -211,7 +212,7 @@ function DetailModal({ applicant, onClose, onApprove, onReject }: { applicant: A
 								<div>
 									<p className="mb-2 text-xs font-medium">Sertifikat</p>
 									<div className="relative cursor-pointer overflow-hidden rounded-lg border hover:border-blue-500" onClick={() => setPreviewDoc({ src: applicant.documents.certificate!, title: "Sertifikat" })}>
-										<img src={applicant.documents.certificate} alt="Certificate" className="h-24 w-full object-cover" />
+										<Image src={applicant.documents.certificate} alt="Certificate" width={400} height={96} className="h-24 w-full object-cover" />
 									</div>
 								</div>
 							)}
@@ -266,7 +267,7 @@ function DetailModal({ applicant, onClose, onApprove, onReject }: { applicant: A
 
 			{previewDoc && (
 				<Modal open onClose={() => setPreviewDoc(null)} title={previewDoc.title} size="lg">
-					<img src={previewDoc.src} alt={previewDoc.title} className="max-h-[70vh] rounded-lg object-contain" />
+					<Image src={previewDoc.src} alt={previewDoc.title} width={800} height={600} className="max-h-[70vh] rounded-lg object-contain" />
 				</Modal>
 			)}
 		</Modal>
@@ -309,10 +310,10 @@ export default function ApprovalPage() {
 			<PageHeader title="Technician Registration Approval" description="Verify and approve new technician registrations" />
 
 			<div className="mb-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-				<StatCard title="Pending" value={pendingCount} icon={Clock} color="bg-amber-50" delay={0} />
-				<StatCard title="Approved" value={approvedCount} icon={CheckCircle} color="bg-emerald-50" delay={100} />
-				<StatCard title="Rejected" value={rejectedCount} icon={XCircle} color="bg-red-50" delay={200} />
-				<StatCard title="Total" value={applicants.length} icon={User} color="bg-blue-50" delay={300} />
+				<StatCard title="Pending" value={pendingCount} icon={Clock} color="bg-amber-50 dark:bg-amber-900/30" delay={0} />
+				<StatCard title="Approved" value={approvedCount} icon={CheckCircle} color="bg-emerald-50 dark:bg-emerald-900/30" delay={100} />
+				<StatCard title="Rejected" value={rejectedCount} icon={XCircle} color="bg-red-50 dark:bg-red-900/30" delay={200} />
+				<StatCard title="Total" value={applicants.length} icon={User} color="bg-blue-50 dark:bg-blue-900/30" delay={300} />
 			</div>
 
 			<div className="rounded-xl border border-border bg-card shadow-sm">
@@ -346,7 +347,7 @@ export default function ApprovalPage() {
 								<tr key={applicant.id} className="transition-colors hover:bg-muted/30">
 									<td className="px-4 py-3">
 										<div className="flex items-center gap-3">
-											<img src={applicant.photo} alt={applicant.name} className="h-10 w-10 rounded-full bg-muted" />
+											<Image src={applicant.photo} alt={applicant.name} width={40} height={40} className="h-10 w-10 rounded-full bg-muted" />
 											<div><p className="font-medium">{applicant.name}</p><p className="text-sm text-muted-foreground">{applicant.email}</p></div>
 										</div>
 									</td>
