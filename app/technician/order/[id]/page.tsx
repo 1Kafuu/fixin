@@ -81,10 +81,6 @@ export default function OrderDetailPage() {
     return STATUS_STEPS.findIndex((s) => s.key === order.status);
   };
 
-  if (isLoading) {
-    return <PageLoading />;
-  }
-
   return (
     <div className="p-4 sm:p-6">
       {/* Back Button & Header */}

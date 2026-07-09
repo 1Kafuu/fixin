@@ -12,7 +12,6 @@ import {
 	X,
 	Settings,
 	LogOut,
-	shoppingCart,
 	ShoppingCart,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";

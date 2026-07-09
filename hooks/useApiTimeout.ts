@@ -25,7 +25,7 @@ export function useApiTimeout<T>({
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
   const [isTimedOut, setIsTimedOut] = useState(false);
-  const timeoutRef = useRef<NodeJS.Timeout>();
+  const timeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
 
   const executeFetch = useCallback(async () => {
     setIsLoading(true);

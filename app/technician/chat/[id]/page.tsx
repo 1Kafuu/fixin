@@ -4,7 +4,6 @@ import { useState, useEffect, useRef } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, Send, Phone, AlertCircle } from "lucide-react";
-import { PageLoading } from "@/components/ui/loading";
 import { cn } from "@/lib/utils";
 
 const MOCK_CHAT_DATA: Record<string, { customerName: string; serviceType: string; avatar: string }> = {
@@ -68,10 +67,6 @@ export default function ChatRoomPage() {
       handleSend();
     }
   };
-
-  if (isLoading) {
-    return <PageLoading />;
-  }
 
   return (
     <div className="flex flex-col">

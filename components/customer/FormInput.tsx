@@ -5,7 +5,7 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 import { AlertCircle } from "lucide-react";
 
-export interface FormInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+export interface FormInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'> {
   label?: string;
   error?: string;
   hint?: string;

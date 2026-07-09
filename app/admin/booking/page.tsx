@@ -150,11 +150,11 @@ export default function BookingPage() {
 			</PageHeader>
 
 			<div className="mb-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-				<StatCard title="Total" value={bookings.length} icon={ClipboardList} color="bg-blue-50 dark:bg-blue-900/30" delay={0} />
-				<StatCard title="Pending" value={pendingCount} icon={Clock} color="bg-amber-50 dark:bg-amber-900/30" delay={100} />
-				<StatCard title="In Progress" value={inProgressCount} icon={AlertTriangle} color="bg-violet-50 dark:bg-violet-900/30" delay={200} />
-				<StatCard title="Completed" value={completedCount} icon={CheckCircle} color="bg-emerald-50 dark:bg-emerald-900/30" delay={300} />
-				<StatCard title="Cancelled" value={cancelledCount} icon={XCircle} color="bg-red-50 dark:bg-red-900/30" delay={400} />
+				<CardSlideUp index={0}><StatCard title="Total" value={bookings.length} icon={ClipboardList} color="bg-blue-50 dark:bg-blue-900/30" /></CardSlideUp>
+				<CardSlideUp index={1}><StatCard title="Pending" value={pendingCount} icon={Clock} color="bg-amber-50 dark:bg-amber-900/30" /></CardSlideUp>
+				<CardSlideUp index={2}><StatCard title="In Progress" value={inProgressCount} icon={AlertTriangle} color="bg-violet-50 dark:bg-violet-900/30" /></CardSlideUp>
+				<CardSlideUp index={3}><StatCard title="Completed" value={completedCount} icon={CheckCircle} color="bg-emerald-50 dark:bg-emerald-900/30" /></CardSlideUp>
+				<CardSlideUp index={4}><StatCard title="Cancelled" value={cancelledCount} icon={XCircle} color="bg-red-50 dark:bg-red-900/30" /></CardSlideUp>
 			</div>
 
 			<div className="rounded-xl border border-border bg-card shadow-sm">

@@ -92,7 +92,7 @@ export default function EarningsPage() {
             <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: "oklch(0.556 0 0)" }} />
             <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: "oklch(0.556 0 0)" }} tickFormatter={(v) => `${v / 1000000}M`} />
             <Tooltip
-              formatter={(value: number) => [formatCurrency(value), "Pendapatan"]}
+              formatter={(value) => [formatCurrency(value as number), "Pendapatan"]}
               contentStyle={{ borderRadius: "8px", border: "1px solid oklch(0.92 0 0)", backgroundColor: "oklch(0.15 0 0)" }}
               labelStyle={{ color: "oklch(0.98 0 0)" }}
             />

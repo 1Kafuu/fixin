@@ -45,8 +45,14 @@ export function useGeolocation(): UseGeolocationReturn {
   const getCurrentPosition = useCallback((): Promise<Coordinates> => {
     return new Promise((resolve, reject) => {
       if (!isSupported) {
-        const err = new Error("Geolocation not supported") as GeolocationPositionError;
-        err.code = 2;
+        const err = {
+          message: "Geolocation not supported",
+          code: 2,
+          PERMISSION_DENIED: 1,
+          POSITION_UNAVAILABLE: 2,
+          TIMEOUT: 3,
+          name: "GeolocationPositionError"
+        } as GeolocationPositionError;
         reject(err);
         return;
       }
