@@ -1,6 +1,7 @@
 "use client";
 
 import { Play, MessageCircle, Phone, Mail, Check } from "lucide-react";
+import Footer from "@/components/ui/Footer";
 import Image from "next/image";
 import Link from "next/link";
 import { FaFacebook, FaInstagram } from "react-icons/fa";
@@ -451,69 +452,6 @@ function Services({ isDark }: { isDark: boolean }) {
 					))}
 				</div>
 			</section>
-		</SlideUp>
-	);
-}
-
-function Footer() {
-	return (
-		<SlideUp>
-			<footer id="contact" className="mx-auto max-w-7xl px-6 py-12">
-				<div className="grid gap-8 md:grid-cols-4">
-					<div>
-						<h4 className="font-bold text-foreground">Suarakan Keluhanmu!</h4>
-						<ul className="mt-4 space-y-2 text-sm text-muted-foreground">
-							<li>Lapor Bug</li>
-							<li>Feedback</li>
-						</ul>
-					</div>
-					<div>
-						<h4 className="font-bold text-foreground">Terms of Service</h4>
-						<ul className="mt-4 space-y-2 text-sm text-muted-foreground">
-							<li>Terms and Conditions</li>
-							<li>Privacy Policy</li>
-							<li>Return Policy</li>
-						</ul>
-					</div>
-					<div>
-						<h4 className="font-bold text-foreground">Metode Pembayaran</h4>
-						<div className="mt-4 grid grid-cols-3 gap-2 text-xs font-semibold text-muted-foreground">
-							<div className="rounded border px-2 py-1 text-center">BCA</div>
-							<div className="rounded border px-2 py-1 text-center">
-								MANDIRI
-							</div>
-							<div className="rounded border px-2 py-1 text-center">BNI</div>
-							<div className="rounded border px-2 py-1 text-center">GOPAY</div>
-							<div className="rounded border px-2 py-1 text-center">OVO</div>
-							<div className="rounded border px-2 py-1 text-center">DANA</div>
-						</div>
-					</div>
-					<div>
-						<h4 className="font-bold text-foreground">Interact with FixIn</h4>
-						<div className="mt-4 flex gap-3">
-							{[FaFacebook, FaInstagram, MessageCircle, Phone].map(
-								(Icon, i) => (
-									<div
-										key={i}
-										className="flex h-9 w-9 items-center justify-center rounded-md bg-blue-500 text-white"
-									>
-										<Icon className="h-4 w-4" />
-									</div>
-								),
-							)}
-						</div>
-						<div className="mt-4 space-y-2 text-sm text-muted-foreground">
-							<div className="flex items-center gap-2">
-								<Phone className="h-4 w-4 text-blue-500" /> 0898 3567 8195
-							</div>
-							<div className="flex items-center gap-2">
-								<Mail className="h-4 w-4 text-blue-500" />
-								<span>cs.support@fix.in</span>
-							</div>
-						</div>
-					</div>
-				</div>
-			</footer>
 		</SlideUp>
 	);
 }

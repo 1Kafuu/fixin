@@ -236,7 +236,7 @@ export default function CheckoutPage() {
                 </div>
                 <div className="mt-3 grid grid-cols-3 gap-3">
                   {[
-                    { id: "gopay", name: "GoPay", src: "/gopay.png" },
+                    { id: "gopay", name: "GoPay", src: "/gopay-blue.jpg" },
                     { id: "ovo", name: "OVO", src: "/ovo.jpg" },
                     { id: "dana", name: "DANA", src: "/dana.png" },
                   ].map((wallet) => (
