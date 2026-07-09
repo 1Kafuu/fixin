@@ -156,25 +156,33 @@ export default function NotificationDropdown({ role }: NotificationDropdownProps
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 top-full z-50 mt-2 w-80 sm:w-96 rounded-xl border border-border bg-popover shadow-xl">
-          <div className="flex items-center justify-between border-b border-border px-4 py-3">
+        <div className="absolute left-1/2 -translate-x-[70%] sm:right-0 sm:left-auto sm:translate-x-0 top-full z-50 mt-2 w-[calc(100vw-1rem)] max-w-sm sm:max-w-md md:max-w-lg rounded-xl border border-border bg-popover shadow-xl">
+          <div className="flex items-center justify-between border-b border-border px-3 py-2.5 sm:px-4 sm:py-3">
             <h3 className="text-sm font-semibold text-foreground">Notifikasi</h3>
-            {unreadCount > 0 && (
+            <div className="flex items-center gap-1 sm:gap-2">
+              {unreadCount > 0 && (
+                <button
+                  onClick={handleMarkAllRead}
+                  className="text-xs text-blue-500 hover:underline whitespace-nowrap"
+                >
+                  Tandai semua dibaca
+                </button>
+              )}
               <button
-                onClick={handleMarkAllRead}
-                className="text-xs text-blue-500 hover:underline"
+                onClick={() => setIsOpen(false)}
+                className="md:hidden rounded p-1 text-muted-foreground hover:bg-accent"
               >
-                Tandai semua dibaca
+                <X className="h-4 w-4" />
               </button>
-            )}
+            </div>
           </div>
 
-          <div className="flex border-b border-border">
+          <div className="flex border-b border-border overflow-x-auto scrollbar-hide">
             {tabs.map((tab) => (
               <button
                 key={tab.key}
                 onClick={() => setActiveTab(tab.key)}
-                className={`flex-1 px-3 py-2 text-xs font-medium transition-colors ${
+                className={`flex-shrink-0 px-2 sm:px-3 py-2 text-xs font-medium transition-colors whitespace-nowrap ${
                   activeTab === tab.key
                     ? "border-b-2 border-blue-500 text-blue-500"
                     : "text-muted-foreground hover:text-foreground"
@@ -185,7 +193,7 @@ export default function NotificationDropdown({ role }: NotificationDropdownProps
             ))}
           </div>
 
-          <div className="max-h-80 overflow-y-auto">
+          <div className="max-h-[70vh] sm:max-h-80 overflow-y-auto">
             {notifications[activeTab].length === 0 ? (
               <div className="flex flex-col items-center justify-center py-8 text-center">
                 <Bell className="h-8 w-8 text-muted-foreground/50" />
@@ -195,7 +203,7 @@ export default function NotificationDropdown({ role }: NotificationDropdownProps
               notifications[activeTab].map((notification) => (
                 <div
                   key={notification.id}
-                  className={`relative flex gap-3 border-b border-border px-4 py-3 transition-colors hover:bg-accent/50 ${
+                  className={`relative flex gap-2 border-b border-border px-2 py-2.5 sm:px-4 sm:py-3 transition-colors hover:bg-accent/50 ${
                     !notification.isRead ? "bg-accent/30" : ""
                   }`}
                 >
@@ -203,18 +211,18 @@ export default function NotificationDropdown({ role }: NotificationDropdownProps
                     {getIcon(notification.icon)}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-start justify-between gap-2">
-                      <p className={`text-sm font-medium truncate ${!notification.isRead ? "text-foreground" : "text-muted-foreground"}`}>
+                    <div className="flex items-start justify-between gap-1 sm:gap-2">
+                      <p className={`text-xs sm:text-sm font-medium truncate ${!notification.isRead ? "text-foreground" : "text-muted-foreground"}`}>
                         {notification.title}
                       </p>
                       {!notification.isRead && (
-                        <span className="h-2 w-2 flex-shrink-0 rounded-full bg-blue-500 mt-1.5" />
+                        <span className="h-2 w-2 flex-shrink-0 rounded-full bg-blue-500 mt-1" />
                       )}
                     </div>
-                    <p className="mt-0.5 text-xs text-muted-foreground line-clamp-2">
+                    <p className="mt-0.5 text-[10px] sm:text-xs text-muted-foreground line-clamp-2">
                       {notification.message}
                     </p>
-                    <p className="mt-1 text-[10px] text-muted-foreground">
+                    <p className="mt-0.5 text-[9px] sm:text-[10px] text-muted-foreground">
                       {notification.time}
                     </p>
                   </div>
@@ -233,7 +241,7 @@ export default function NotificationDropdown({ role }: NotificationDropdownProps
           </div>
 
           <div className="border-t border-border p-2">
-            <button className="w-full rounded-lg px-4 py-2 text-xs font-medium text-blue-500 hover:bg-accent transition-colors">
+            <button className="w-full rounded-lg px-3 py-2 text-xs font-medium text-blue-500 hover:bg-accent transition-colors">
               Lihat semua notifikasi
             </button>
           </div>
