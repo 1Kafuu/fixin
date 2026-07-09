@@ -269,10 +269,12 @@ function Hero({ isDark }: { isDark: boolean }) {
 					</SlideUp>
 					<SlideUp delay={400}>
 						<div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-							<button className="flex items-center gap-2 rounded-lg bg-blue-500 px-6 py-4 font-semibold  text-xl text-white hover:opacity-90">
-								<Play />
-								Get Started
-							</button>
+							<Link href="/login">
+								<button className="flex items-center gap-2 rounded-lg bg-blue-500 px-6 py-4 font-semibold  text-xl text-white hover:opacity-90">
+									<Play />
+									Get Started
+								</button>
+							</Link>
 						</div>
 					</SlideUp>
 				</div>
