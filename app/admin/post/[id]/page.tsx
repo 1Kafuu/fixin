@@ -88,7 +88,7 @@ Dengan merawat baterai dengan baik, laptop Asus Anda akan lebih tahan lama dan p
 		views: 1250,
 		comments: 45,
 		likes: 89,
-		image: "https://picsum.photos/seed/asus1/800/400",
+		image: "/post-1.jpg",
 		tags: ["tips", "baterai", "asus"],
 	},
 	{
@@ -108,7 +108,7 @@ Dengan merawat baterai dengan baik, laptop Asus Anda akan lebih tahan lama dan p
 		views: 890,
 		comments: 23,
 		likes: 56,
-		image: "https://picsum.photos/seed/acer1/800/400",
+		image: "/post-2.webp",
 		tags: ["layar", "masalah", "acer"],
 	},
 	{
@@ -168,7 +168,7 @@ Dengan merawat baterai dengan baik, laptop Asus Anda akan lebih tahan lama dan p
 		views: 2100,
 		comments: 78,
 		likes: 156,
-		image: "https://picsum.photos/seed/dell1/800/400",
+		image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQevfTB88eVF7iLsp2sk_l5sllIto0kAVqRBV0mfoi293D02SEUtja62j0&s=10",
 		tags: ["perbandingan", "dell", "macbook"],
 	},
 	{
@@ -209,7 +209,7 @@ Dengan merawat baterai dengan baik, laptop Asus Anda akan lebih tahan lama dan p
 		views: 780,
 		comments: 19,
 		likes: 45,
-		image: "https://picsum.photos/seed/msi1/800/400",
+		image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRy8rhLxejS9ali6auvU-bjTQHXlc9K91__bEtT5fRXJQ&s=10",
 		tags: ["tutorial", "upgrade", "ram", "msi"],
 	},
 	{
@@ -248,7 +248,7 @@ Dengan merawat baterai dengan baik, laptop Asus Anda akan lebih tahan lama dan p
 		views: 3200,
 		comments: 92,
 		likes: 201,
-		image: "https://picsum.photos/seed/asus2/800/400",
+		image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTdrQIcY0gLx_jjxdXiiI9fE0giPEwWU4HniLI06dVMEMOCPnWByyQtQXJY&s=10",
 		tags: ["gaming", "budget", "rekomendasi"],
 	},
 	{
