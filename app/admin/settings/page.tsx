@@ -18,7 +18,6 @@ import {
   Monitor,
 } from "lucide-react";
 import { useTheme } from "@/components/ThemeProvider";
-import { CardSlideUp } from "@/components/ui/loading";
 
 const settingsSections = [
   { id: "profile", label: "Profile", icon: User },
@@ -35,8 +34,7 @@ function ProfileSection() {
   return (
     <div className="mx-auto max-w-2xl">
       <h3 className="mb-6 text-xl font-semibold text-foreground">Profile Settings</h3>
-      <CardSlideUp index={0}>
-        <div className="mb-6 rounded-xl border border-border bg-card p-6">
+      <div className="mb-6 rounded-xl border border-border bg-card p-6">
           <h4 className="mb-4 text-sm font-medium text-foreground">Profile Picture</h4>
           <div className="flex items-center gap-4">
             <div className="flex h-20 w-20 items-center justify-center rounded-full bg-blue-500 text-xl font-semibold text-white">AD</div>
@@ -46,9 +44,7 @@ function ProfileSection() {
             </div>
           </div>
         </div>
-      </CardSlideUp>
-      <CardSlideUp index={1}>
-        <div className="mb-6 rounded-xl border border-border bg-card p-6">
+      <div className="mb-6 rounded-xl border border-border bg-card p-6">
           <h4 className="mb-4 text-sm font-medium text-foreground">Personal Information</h4>
           <div className="grid gap-4 sm:grid-cols-2">
             <div><label className="mb-1 block text-sm text-muted-foreground">Full Name</label><input type="text" defaultValue="Admin FixIn" className="h-10 w-full rounded-lg border border-input bg-background px-3 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500" /></div>
@@ -57,19 +53,14 @@ function ProfileSection() {
             <div><label className="mb-1 block text-sm text-muted-foreground">Phone</label><input type="tel" defaultValue="+62 898 3567 8195" className="h-10 w-full rounded-lg border border-input bg-background px-3 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500" /></div>
           </div>
         </div>
-      </CardSlideUp>
-      <CardSlideUp index={2}>
-        <div className="mb-6 rounded-xl border border-border bg-card p-6">
+      <div className="mb-6 rounded-xl border border-border bg-card p-6">
           <h4 className="mb-4 text-sm font-medium text-foreground">Bio</h4>
           <textarea rows={4} defaultValue="Administrator for FixIn laptop repair service platform." className="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500" />
           <p className="mt-1 text-xs text-muted-foreground">Brief description for your profile.</p>
         </div>
-      </CardSlideUp>
-      <CardSlideUp index={3}>
         <button onClick={handleSave} className="flex items-center gap-2 rounded-lg bg-blue-500 px-6 py-2.5 text-sm font-medium text-white transition-colors hover:bg-blue-600">
           {saved ? <Check className="h-4 w-4" /> : <Save className="h-4 w-4" />}{saved ? "Saved!" : "Save Changes"}
         </button>
-      </CardSlideUp>
     </div>
   );
 }
@@ -81,8 +72,7 @@ function NotificationsSection() {
     <div className="mx-auto max-w-2xl">
       <h3 className="mb-6 text-xl font-semibold text-foreground">Notification Preferences</h3>
       <div className="mb-6 space-y-4">
-        <CardSlideUp index={0}>
-          <div className="rounded-xl border border-border bg-card p-6">
+        <div className="rounded-xl border border-border bg-card p-6">
             <div className="flex items-center gap-3 mb-4"><Mail className="h-5 w-5 text-blue-500" /><h4 className="text-sm font-medium text-foreground">Email Notifications</h4></div>
             <div className="space-y-3">
               {[{ label: "New user registrations", desc: "Get notified when new users sign up" }, { label: "Booking confirmations", desc: "Receive alerts for new bookings" }, { label: "Payment received", desc: "Email when payments are processed" }, { label: "System alerts", desc: "Critical system notifications" }].map((item) => (
@@ -93,8 +83,6 @@ function NotificationsSection() {
               ))}
             </div>
           </div>
-        </CardSlideUp>
-        <CardSlideUp index={1}>
           <div className="rounded-xl border border-border bg-card p-6">
             <div className="flex items-center gap-3 mb-4"><Smartphone className="h-5 w-5 text-blue-500" /><h4 className="text-sm font-medium text-foreground">Push Notifications</h4></div>
             <div className="space-y-3">
@@ -106,13 +94,10 @@ function NotificationsSection() {
               ))}
             </div>
           </div>
-        </CardSlideUp>
-      </div>
-      <CardSlideUp index={2}>
+        </div>
         <button onClick={handleSave} className="flex items-center gap-2 rounded-lg bg-blue-500 px-6 py-2.5 text-sm font-medium text-white transition-colors hover:bg-blue-600">
           {saved ? <Check className="h-4 w-4" /> : <Save className="h-4 w-4" />}{saved ? "Saved!" : "Save Changes"}
         </button>
-      </CardSlideUp>
     </div>
   );
 }
@@ -121,8 +106,7 @@ function SecuritySection() {
   return (
     <div className="mx-auto max-w-2xl">
       <h3 className="mb-6 text-xl font-semibold text-foreground">Security Settings</h3>
-      <CardSlideUp index={0}>
-        <div className="mb-6 rounded-xl border border-border bg-card p-6">
+      <div className="mb-6 rounded-xl border border-border bg-card p-6">
           <div className="flex items-center gap-3 mb-4"><Key className="h-5 w-5 text-blue-500" /><h4 className="text-sm font-medium text-foreground">Change Password</h4></div>
           <div className="space-y-4">
             <div><label className="mb-1 block text-sm text-muted-foreground">Current Password</label><input type="password" placeholder="Enter current password" className="h-10 w-full rounded-lg border border-input bg-background px-3 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500" /></div>
@@ -131,16 +115,12 @@ function SecuritySection() {
             <button className="rounded-lg border border-border bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent">Update Password</button>
           </div>
         </div>
-      </CardSlideUp>
-      <CardSlideUp index={1}>
         <div className="mb-6 rounded-xl border border-border bg-card p-6">
           <div className="flex items-center justify-between">
             <div><h4 className="text-sm font-medium text-foreground">Two-Factor Authentication</h4><p className="mt-1 text-xs text-muted-foreground">Add an extra layer of security to your account</p></div>
             <label className="relative inline-flex cursor-pointer items-center"><input type="checkbox" className="peer sr-only" /><div className="peer h-6 w-11 rounded-full bg-secondary after:absolute after:left-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-border after:bg-background after:transition-all after:content-[''] peer-checked:bg-blue-500 peer-checked:after:translate-x-full peer-checked:after:border-background" /></label>
           </div>
         </div>
-      </CardSlideUp>
-      <CardSlideUp index={2}>
         <div className="rounded-xl border border-border bg-card p-6">
           <h4 className="mb-4 text-sm font-medium text-foreground">Active Sessions</h4>
           <div className="space-y-3">
@@ -148,7 +128,6 @@ function SecuritySection() {
             <div className="flex items-center justify-between rounded-lg border border-border p-3"><div><p className="text-sm font-medium text-foreground">Safari on iPhone</p><p className="text-xs text-muted-foreground">Jakarta, Indonesia - 2 hours ago</p></div><button className="text-xs text-red-500 hover:underline">Revoke</button></div>
           </div>
         </div>
-      </CardSlideUp>
     </div>
   );
 }
@@ -159,8 +138,7 @@ function AppearanceSection() {
   return (
     <div className="mx-auto max-w-2xl">
       <h3 className="mb-6 text-xl font-semibold text-foreground">Appearance Settings</h3>
-      <CardSlideUp index={0}>
-        <div className="mb-6 rounded-xl border border-border bg-card p-6">
+      <div className="mb-6 rounded-xl border border-border bg-card p-6">
           <h4 className="mb-4 text-sm font-medium text-foreground">Theme</h4>
           <div className="grid grid-cols-3 gap-3">
             <button onClick={() => handleThemeChange("light")} className={`flex flex-col items-center gap-2 rounded-lg border-2 p-4 transition-all ${theme === "light" ? "border-blue-500 bg-card" : "border-border bg-card hover:border-muted-foreground"}`}><Sun className={`h-6 w-6 ${theme === "light" ? "text-blue-500" : "text-foreground"}`} /><span className={`text-xs font-medium ${theme === "light" ? "text-blue-500" : "text-muted-foreground"}`}>Light</span></button>
@@ -168,8 +146,6 @@ function AppearanceSection() {
             <button onClick={() => handleThemeChange("system")} className={`flex flex-col items-center gap-2 rounded-lg border-2 p-4 transition-all ${theme === "system" ? "border-blue-500 bg-card" : "border-border bg-card hover:border-muted-foreground"}`}><Monitor className={`h-6 w-6 ${theme === "system" ? "text-blue-500" : "text-foreground"}`} /><span className={`text-xs font-medium ${theme === "system" ? "text-blue-500" : "text-muted-foreground"}`}>System</span></button>
           </div>
         </div>
-      </CardSlideUp>
-      <CardSlideUp index={1}>
         <div className="mb-6 rounded-xl border border-border bg-card p-6">
           <h4 className="mb-4 text-sm font-medium text-foreground">Accent Color</h4>
           <div className="flex gap-3">
@@ -178,7 +154,6 @@ function AppearanceSection() {
             ))}
           </div>
         </div>
-      </CardSlideUp>
     </div>
   );
 }
@@ -190,8 +165,7 @@ function GeneralSection() {
     <div className="mx-auto max-w-2xl">
       <h3 className="mb-6 text-xl font-semibold text-foreground">General Settings</h3>
       <div className="mb-6 space-y-4">
-        <CardSlideUp index={0}>
-          <div className="rounded-xl border border-border bg-card p-6">
+        <div className="rounded-xl border border-border bg-card p-6">
             <h4 className="mb-4 text-sm font-medium text-foreground">Language & Region</h4>
             <div className="grid gap-4 sm:grid-cols-2">
               <div><label className="mb-1 block text-sm text-muted-foreground">Language</label><select className="h-10 w-full rounded-lg border border-input bg-background px-3 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"><option>English</option><option>Bahasa Indonesia</option></select></div>
@@ -200,8 +174,6 @@ function GeneralSection() {
               <div><label className="mb-1 block text-sm text-muted-foreground">Currency</label><select className="h-10 w-full rounded-lg border border-input bg-background px-3 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"><option>IDR (Rupiah)</option><option>USD (Dollar)</option></select></div>
             </div>
           </div>
-        </CardSlideUp>
-        <CardSlideUp index={1}>
           <div className="rounded-xl border border-border bg-card p-6">
             <h4 className="mb-4 text-sm font-medium text-foreground">Company Information</h4>
             <div className="space-y-4">
@@ -210,13 +182,10 @@ function GeneralSection() {
               <div><label className="mb-1 block text-sm text-muted-foreground">Contact Number</label><input type="tel" defaultValue="0898 3567 8195" className="h-10 w-full rounded-lg border border-input bg-background px-3 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500" /></div>
             </div>
           </div>
-        </CardSlideUp>
-      </div>
-      <CardSlideUp index={2}>
+        </div>
         <button onClick={handleSave} className="flex items-center gap-2 rounded-lg bg-blue-500 px-6 py-2.5 text-sm font-medium text-white transition-colors hover:bg-blue-600">
           {saved ? <Check className="h-4 w-4" /> : <Save className="h-4 w-4" />}{saved ? "Saved!" : "Save Changes"}
         </button>
-      </CardSlideUp>
     </div>
   );
 }
@@ -225,8 +194,7 @@ function DatabaseSection() {
   return (
     <div className="mx-auto max-w-2xl">
       <h3 className="mb-6 text-xl font-semibold text-foreground">Database Settings</h3>
-      <CardSlideUp index={0}>
-        <div className="mb-6 rounded-xl border border-border bg-card p-6">
+      <div className="mb-6 rounded-xl border border-border bg-card p-6">
           <h4 className="mb-4 text-sm font-medium text-foreground">Backup & Restore</h4>
           <div className="space-y-4">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 rounded-lg border border-border p-4">
@@ -236,8 +204,6 @@ function DatabaseSection() {
             <div><label className="mb-2 block text-sm text-muted-foreground">Restore from Backup</label><input type="file" className="w-full text-sm file:mr-4 file:rounded-lg file:border file:border-border file:bg-muted file:px-3 file:py-1.5 file:text-xs file:font-medium file:text-muted-foreground hover:file:bg-muted/80" /><p className="mt-1 text-xs text-muted-foreground">Upload a .sql or .json backup file</p></div>
           </div>
         </div>
-      </CardSlideUp>
-      <CardSlideUp index={1}>
         <div className="mb-6 rounded-xl border border-border bg-card p-6">
           <h4 className="mb-4 text-sm font-medium text-foreground">Cache Management</h4>
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
@@ -245,8 +211,6 @@ function DatabaseSection() {
             <button className="w-full sm:w-auto rounded-lg border border-border bg-background px-4 py-2 text-sm font-medium text-foreground hover:bg-accent">Clear Cache</button>
           </div>
         </div>
-      </CardSlideUp>
-      <CardSlideUp index={2}>
         <div className="rounded-xl border border-border bg-card p-6">
           <h4 className="mb-4 text-sm font-medium text-foreground">Maintenance Mode</h4>
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
@@ -254,7 +218,6 @@ function DatabaseSection() {
             <label className="relative inline-flex cursor-pointer items-center"><input type="checkbox" className="peer sr-only" /><div className="peer h-6 w-11 rounded-full bg-secondary after:absolute after:left-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-border after:bg-background after:transition-all after:content-[''] peer-checked:bg-amber-500 peer-checked:after:translate-x-full peer-checked:after:border-background" /></label>
           </div>
         </div>
-      </CardSlideUp>
     </div>
   );
 }
@@ -264,7 +227,7 @@ export default function SettingsPage() {
   const [animKey, setAnimKey] = useState(0);
 
   return (
-    <div className="flex h-[calc(100vh-4rem)] overflow-hidden">
+    <div className="flex overflow-hidden min-h-screen">
       <aside className="hidden md:block w-64 flex-shrink-0 border-r border-border bg-card p-4">
         <h2 className="mb-4 px-2 text-lg font-semibold text-foreground">Settings</h2>
         <nav className="space-y-1">
@@ -280,7 +243,7 @@ export default function SettingsPage() {
           ))}
         </nav>
       </aside>
-      <div className="flex-1 flex flex-col overflow-y-auto scrollbar-none">
+      <div className="flex-1 flex flex-col overflow-x-auto">
         <div className="flex md:hidden border-b border-border bg-card px-4 overflow-x-auto flex-shrink-0">
           <div className="flex gap-2 py-3">
             {settingsSections.map((section) => (

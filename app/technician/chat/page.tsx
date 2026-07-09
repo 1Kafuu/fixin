@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { Search, MessageSquare, Clock } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { CardSlideUp } from "@/components/ui/loading";
 
 const MOCK_CONVERSATIONS = [
   {
@@ -78,9 +79,9 @@ export default function ChatListPage() {
 
         {/* Conversation Items */}
         <div className="space-y-4">
-          {filteredConversations.map((conv) => (
+          {filteredConversations.map((conv, index) => (
+            <CardSlideUp key={conv.id} index={index}>
             <Link
-              key={conv.id}
               href={`/technician/chat/${conv.id}`}
               className="flex items-start gap-4 rounded-lg border border-border p-4 hover:bg-muted/50 transition-colors"
             >
@@ -117,6 +118,7 @@ export default function ChatListPage() {
                 </div>
               )}
             </Link>
+            </CardSlideUp>
           ))}
 
           {filteredConversations.length === 0 && (

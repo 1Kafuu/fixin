@@ -75,7 +75,7 @@ export default function CustomerSettingsPage() {
         </div>
       </header>
 
-      <div className="flex flex-col md:flex-row">
+      <div className="flex flex-col md:flex-row h-screen">
         {/* Desktop Sidebar */}
         <aside className="hidden md:block w-64 flex-shrink-0 border-r border-border bg-card p-4">
           <h2 className="mb-4 px-2 text-sm font-medium text-muted-foreground">Menu</h2>

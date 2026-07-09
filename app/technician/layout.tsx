@@ -187,7 +187,7 @@ export default function TechnicianLayout({
       </header>
 
       {/* Page Content */}
-      <main className="px-4 sm:px-6 py-4 sm:py-6">{children}</main>
+      <main>{children}</main>
     </div>
   );
 }

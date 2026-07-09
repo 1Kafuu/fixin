@@ -57,7 +57,7 @@ export default function TechnicianSettingsPage() {
   };
 
   return (
-    <div className="flex flex-col md:flex-row">
+    <div className="flex flex-col md:flex-row min-h-screen">
       {/* Desktop Sidebar */}
       <aside className="hidden md:block w-64 flex-shrink-0 border-r border-border bg-card p-4">
         <h2 className="mb-4 px-2 text-lg font-semibold text-foreground">Pengaturan</h2>

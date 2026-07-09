@@ -19,7 +19,6 @@ import {
 import { StatusBadge } from "@/components/admin/StatusBadge";
 import { StatusUpdateForm } from "@/components/technician/StatusUpdateForm";
 import { OfflineToast, useOfflineToast } from "@/components/technician/OfflineToast";
-import { PageLoading } from "@/components/ui/loading";
 import { cn } from "@/lib/utils";
 
 const MOCK_ORDER = {
@@ -166,14 +165,14 @@ export default function OrderDetailPage() {
           rel="noopener noreferrer"
           className="flex items-center justify-center gap-2 rounded-xl border border-border bg-card p-4 hover:bg-muted transition-colors"
         >
-          <Navigation className="h-5 w-5 text-blue-500" />
+          <Navigation className="h-5 w-5 text-blue-500 dark:text-blue-400" />
           <span className="text-sm font-medium">Navigasi</span>
         </a>
         <Link
           href={`/technician/chat/${order.id}`}
           className="flex items-center justify-center gap-2 rounded-xl border border-border bg-card p-4 hover:bg-muted transition-colors"
         >
-          <MessageSquare className="h-5 w-5 text-blue-500" />
+          <MessageSquare className="h-5 w-5 text-blue-500 dark:text-blue-400" />
           <span className="text-sm font-medium">Chat</span>
         </Link>
       </div>
@@ -185,8 +184,8 @@ export default function OrderDetailPage() {
         </div>
         <div className="space-y-3">
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-50">
-              <User className="h-5 w-5 text-blue-500" />
+            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-50 dark:bg-blue-900/30">
+              <User className="h-5 w-5 text-blue-500 dark:text-blue-400" />
             </div>
             <div className="flex-1">
               <p className="font-medium text-foreground">{order.customerName}</p>

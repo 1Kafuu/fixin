@@ -78,8 +78,8 @@ export default function ReportPage() {
                 onClick={() => setSelectedOrderId(order.id)}
                 className="w-full text-left flex items-start gap-4 rounded-lg border border-border p-4 hover:border-blue-500 hover:bg-blue-50/30 transition-all"
               >
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-blue-50">
-                  <Wrench className="h-5 w-5 text-blue-500" />
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-blue-50 dark:bg-blue-900/30">
+                  <Wrench className="h-5 w-5 text-blue-500 dark:text-blue-400" />
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="font-medium text-foreground">{order.serviceType}</p>
@@ -97,8 +97,8 @@ export default function ReportPage() {
           {/* Order Summary Card */}
           <div className="rounded-xl border border-border bg-card p-4 sm:p-5 shadow-sm">
             <div className="flex items-center gap-4">
-              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-blue-50">
-                <Wrench className="h-5 w-5 text-blue-500" />
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-blue-50 dark:bg-blue-900/30">
+                <Wrench className="h-5 w-5 text-blue-500 dark:text-blue-400" />
               </div>
               <div className="flex-1">
                 <p className="font-medium text-foreground">{selectedOrder?.serviceType}</p>
@@ -266,8 +266,8 @@ export default function ReportPage() {
       {/* Success Modal */}
       <Modal open={showSuccessModal} onClose={() => setShowSuccessModal(false)} size="sm">
         <div className="text-center py-6">
-          <div className="flex h-16 w-16 mx-auto items-center justify-center rounded-full bg-emerald-100">
-            <CheckCircle className="h-8 w-8 text-emerald-600" />
+          <div className="flex h-16 w-16 mx-auto items-center justify-center rounded-full bg-emerald-100 dark:bg-emerald-900/30">
+            <CheckCircle className="h-8 w-8 text-emerald-600 dark:text-emerald-400" />
           </div>
           <h3 className="mt-4 text-lg font-semibold">Laporan Terkirim</h3>
           <p className="mt-2 text-sm text-muted-foreground">

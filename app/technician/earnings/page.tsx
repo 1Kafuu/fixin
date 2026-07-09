@@ -1,9 +1,9 @@
 "use client";
 
-import { useCallback } from "react";
 import { Wallet, TrendingUp, CheckCircle, Clock, Download, DollarSign, Calendar } from "lucide-react";
-import { useApiTimeout } from "@/hooks/useApiTimeout";
 import { cn } from "@/lib/utils";
+import { CardSlideUp } from "@/components/ui/loading";
+import { StatCard } from "@/components/admin";
 import {
   BarChart,
   Bar,
@@ -35,24 +35,7 @@ const MOCK_ORDER_LIST = [
   { id: "4", customerName: "Dewi Lestari", serviceType: "Upgrade RAM", amount: 450000, status: "pending", completedAt: "2025-01-12" },
 ];
 
-interface EarningsData {
-  totalBalance: number;
-  monthlyEarnings: Array<{ month: string; amount: number }>;
-  completedOrders: number;
-  pendingOrders: number;
-}
-
 export default function EarningsPage() {
-  const fetchEarnings = useCallback(async (): Promise<EarningsData> => {
-    await new Promise((resolve) => setTimeout(resolve, 800));
-    return MOCK_EARNINGS;
-  }, []);
-
-  const { data, isLoading } = useApiTimeout<EarningsData>({
-    fetchFn: fetchEarnings,
-    timeoutMs: 10000,
-  });
-
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat("id-ID", {
       style: "currency",
@@ -66,20 +49,12 @@ export default function EarningsPage() {
   const totalPaid = paidOrders.reduce((sum, o) => sum + o.amount, 0);
   const totalPending = pendingOrders.reduce((sum, o) => sum + o.amount, 0);
 
-  if (isLoading) {
-    return (
-      <div className="p-4 sm:p-6">
-        <div className="animate-pulse space-y-6">
-          <div className="h-8 w-48 bg-muted rounded" />
-          <div className="grid grid-cols-2 gap-4">
-            <div className="h-24 bg-muted rounded-xl" />
-            <div className="h-24 bg-muted rounded-xl" />
-          </div>
-          <div className="h-64 bg-muted rounded-xl" />
-        </div>
-      </div>
-    );
-  }
+  const earningsStats = [
+    { title: "Total Saldo", value: formatCurrency(MOCK_EARNINGS.totalBalance), subtitle: "Saldo Anda", icon: Wallet, color: "bg-blue-50 dark:bg-blue-900/30" },
+    { title: "Bulan Ini", value: formatCurrency(MOCK_EARNINGS.monthlyEarnings[MOCK_EARNINGS.monthlyEarnings.length - 1].amount), change: "12%", changeType: "up" as const, icon: TrendingUp, color: "bg-emerald-50 dark:bg-emerald-900/30" },
+    { title: "Pesanan Selesai", value: MOCK_EARNINGS.completedOrders.toString(), subtitle: "Total pesanan", icon: CheckCircle, color: "bg-violet-50 dark:bg-violet-900/30" },
+    { title: "Menunggu Bayar", value: MOCK_EARNINGS.pendingOrders.toString(), subtitle: "Pending", icon: Clock, color: "bg-amber-50 dark:bg-amber-900/30" },
+  ];
 
   return (
     <div className="p-4 sm:p-6">
@@ -93,64 +68,15 @@ export default function EarningsPage() {
 
       {/* KPI Cards */}
       <div className="mb-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <div className="rounded-xl border border-border bg-card p-5 shadow-sm">
-          <div className="flex items-start justify-between">
-            <div>
-              <p className="text-sm font-medium text-muted-foreground">Total Saldo</p>
-              <p className="mt-1 text-2xl font-semibold text-blue-500">
-                {formatCurrency(data?.totalBalance || 0)}
-              </p>
-            </div>
-            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50">
-              <Wallet className="h-6 w-6 text-blue-500" />
-            </div>
-          </div>
-        </div>
-
-        <div className="rounded-xl border border-border bg-card p-5 shadow-sm">
-          <div className="flex items-start justify-between">
-            <div>
-              <p className="text-sm font-medium text-muted-foreground">Bulan Ini</p>
-              <p className="mt-1 text-2xl font-semibold text-emerald-500">
-                {formatCurrency(data?.monthlyEarnings[data.monthlyEarnings.length - 1]?.amount || 0)}
-              </p>
-            </div>
-            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-50">
-              <TrendingUp className="h-6 w-6 text-emerald-500" />
-            </div>
-          </div>
-          <div className="mt-2 flex items-center gap-1 text-emerald-500">
-            <span className="text-sm font-medium">↑ 12%</span>
-            <span className="text-xs text-muted-foreground">vs last month</span>
-          </div>
-        </div>
-
-        <div className="rounded-xl border border-border bg-card p-5 shadow-sm">
-          <div className="flex items-start justify-between">
-            <div>
-              <p className="text-sm font-medium text-muted-foreground">Pesanan Selesai</p>
-              <p className="mt-1 text-2xl font-semibold text-foreground">{data?.completedOrders || 0}</p>
-            </div>
-            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-violet-50">
-              <CheckCircle className="h-6 w-6 text-violet-500" />
-            </div>
-          </div>
-        </div>
-
-        <div className="rounded-xl border border-border bg-card p-5 shadow-sm">
-          <div className="flex items-start justify-between">
-            <div>
-              <p className="text-sm font-medium text-muted-foreground">Menunggu Bayar</p>
-              <p className="mt-1 text-2xl font-semibold text-amber-500">{data?.pendingOrders || 0}</p>
-            </div>
-            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-amber-50">
-              <Clock className="h-6 w-6 text-amber-500" />
-            </div>
-          </div>
-        </div>
+        {earningsStats.map((stat, i) => (
+          <CardSlideUp key={stat.title} index={i}>
+            <StatCard {...stat} />
+          </CardSlideUp>
+        ))}
       </div>
 
       {/* Chart Card */}
+      <CardSlideUp index={4}>
       <div className="mb-6 rounded-xl border border-border bg-card p-4 sm:p-5 shadow-sm">
         <div className="mb-4 flex items-center justify-between">
           <h3 className="font-semibold text-foreground">Grafik Pendapatan</h3>
@@ -162,7 +88,7 @@ export default function EarningsPage() {
 
         {/* Chart */}
         <ResponsiveContainer width="100%" height={200}>
-          <BarChart data={data?.monthlyEarnings} margin={{ top: 5, right: 5, left: -20, bottom: 5 }}>
+          <BarChart data={MOCK_EARNINGS.monthlyEarnings} margin={{ top: 5, right: 5, left: -20, bottom: 5 }}>
             <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: "oklch(0.556 0 0)" }} />
             <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: "oklch(0.556 0 0)" }} tickFormatter={(v) => `${v / 1000000}M`} />
             <Tooltip
@@ -179,7 +105,7 @@ export default function EarningsPage() {
           <div>
             <p className="text-xs sm:text-sm text-muted-foreground">Total Pendapatan Tahun Ini</p>
             <p className="text-lg sm:text-xl font-semibold text-foreground">
-              {formatCurrency(data?.monthlyEarnings.reduce((sum, m) => sum + m.amount, 0) || 0)}
+              {formatCurrency(MOCK_EARNINGS.monthlyEarnings.reduce((sum, m) => sum + m.amount, 0))}
             </p>
           </div>
           <div className="flex items-center gap-1 text-emerald-500">
@@ -188,8 +114,10 @@ export default function EarningsPage() {
           </div>
         </div>
       </div>
+      </CardSlideUp>
 
       {/* Order History Card */}
+      <CardSlideUp index={5}>
       <div className="rounded-xl border border-border bg-card p-4 sm:p-5 shadow-sm">
         <div className="mb-4 flex items-center justify-between">
           <h3 className="font-semibold text-foreground">Riwayat Pesanan</h3>
@@ -269,6 +197,7 @@ export default function EarningsPage() {
           </div>
         </div>
       </div>
+      </CardSlideUp>
     </div>
   );
 }
