@@ -13,7 +13,7 @@ import {
 	MapPin,
 	Phone,
 } from "lucide-react";
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import { cn } from "@/lib/utils";
 import {
 	StatusBadge,
@@ -111,7 +111,7 @@ function BookingDetailModal({ booking, onClose }: { booking: Booking; onClose: (
 	);
 }
 
-export default function BookingPage() {
+function BookingContent() {
 	const searchParams = useSearchParams();
 	const userIdFilter = searchParams.get("user_id");
 
@@ -220,5 +220,13 @@ export default function BookingPage() {
 
 			{selectedBooking && <BookingDetailModal booking={selectedBooking} onClose={() => setSelectedBooking(null)} />}
 		</div>
+	);
+}
+
+export default function BookingPage() {
+	return (
+		<Suspense fallback={<div className="p-6">Loading...</div>}>
+			<BookingContent />
+		</Suspense>
 	);
 }
