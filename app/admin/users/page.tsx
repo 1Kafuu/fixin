@@ -27,6 +27,7 @@ import {
   Modal,
   PageHeader,
 } from "@/components/admin";
+import { CardSlideUp, SlideUpRow } from "@/components/ui/loading";
 import { Pagination } from "@/components/admin/Pagination";
 
 type UserRole = "Customer" | "Technician" | "Admin";
@@ -340,6 +341,7 @@ export default function UsersPage() {
   const [editingUser, setEditingUser] = useState<User | null>(null);
   const [viewingUser, setViewingUser] = useState<User | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const [animKey, setAnimKey] = useState(0);
   const itemsPerPage = 10;
 
   const filteredUsers = users.filter((user) => {
@@ -391,7 +393,7 @@ export default function UsersPage() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="p-6 space-y-6">
       <PageHeader
         title="Users"
         description="Manage all users in the system"
@@ -407,8 +409,10 @@ export default function UsersPage() {
       />
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        {userStats.map((stat) => (
-          <StatCard key={stat.title} {...stat} />
+        {userStats.map((stat, i) => (
+          <CardSlideUp key={stat.title} index={i}>
+            <StatCard {...stat} />
+          </CardSlideUp>
         ))}
       </div>
 
@@ -422,7 +426,7 @@ export default function UsersPage() {
         <div className="flex gap-2">
           <select
             value={roleFilter}
-            onChange={(e) => setRoleFilter(e.target.value as UserRole | "All")}
+            onChange={(e) => { setRoleFilter(e.target.value as UserRole | "All"); setCurrentPage(1); setAnimKey((k) => k + 1); }}
             className="px-3 py-2 rounded-lg border border-input bg-background text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             <option value="All">All Roles</option>
@@ -432,7 +436,7 @@ export default function UsersPage() {
           </select>
           <select
             value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value as UserStatus | "All")}
+            onChange={(e) => { setStatusFilter(e.target.value as UserStatus | "All"); setCurrentPage(1); setAnimKey((k) => k + 1); }}
             className="px-3 py-2 rounded-lg border border-input bg-background text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             <option value="All">All Status</option>
@@ -443,8 +447,8 @@ export default function UsersPage() {
         </div>
       </div>
 
-      <div className="rounded-lg border bg-card">
-        <div className="overflow-x-auto">
+      <div className="rounded-lg border bg-card ">
+        <div className="overflow-x-auto overflow-y-hidden scrollbar-none">
           <table className="w-full">
             <thead>
               <tr className="border-b bg-muted/50">
@@ -456,9 +460,9 @@ export default function UsersPage() {
                 <th className="text-right px-4 py-3 text-sm font-medium">Actions</th>
               </tr>
             </thead>
-            <tbody>
-              {paginatedUsers.map((user) => (
-                <tr key={user.id} className="border-b last:border-0 hover:bg-muted/50 transition-colors">
+            <tbody key={animKey}>
+              {paginatedUsers.map((user, i) => (
+                <SlideUpRow key={user.id} index={i}>
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-3">
                       <UserAvatar name={user.name} size="sm" />
@@ -503,7 +507,7 @@ export default function UsersPage() {
                       </button>
                     </div>
                   </td>
-                </tr>
+                </SlideUpRow>
               ))}
             </tbody>
           </table>

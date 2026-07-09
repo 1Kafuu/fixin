@@ -28,6 +28,7 @@ import {
 	Legend,
 } from "recharts";
 import { StatCard, PageHeader } from "@/components/admin";
+import { SlideUp, CardSlideUp, SlideUpRow } from "@/components/ui/loading";
 
 // Mock Data
 const userGrowthData = [
@@ -100,165 +101,191 @@ export default function AnalyticsPage() {
 
 	return (
 		<div className="p-6 space-y-6">
-			<PageHeader title="Analytics Dashboard" description="Comprehensive insights and performance metrics" />
+			<SlideUp delay={0}>
+				<PageHeader title="Analytics Dashboard" description="Comprehensive insights and performance metrics" />
+			</SlideUp>
 
 			<div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-				<StatCard title="Total Users" value={totalUsers.toLocaleString()} change="12.5%" changeType="up" icon={Users} color="bg-blue-50 dark:bg-blue-900/30" delay={0} />
-				<StatCard title="Active Technicians" value={totalTechnicians} change="8.2%" changeType="up" icon={Wrench} color="bg-violet-50 dark:bg-violet-900/30" delay={100} />
-				<StatCard title="Total Bookings" value={totalBookings.toLocaleString()} change="15.3%" changeType="up" icon={Calendar} color="bg-emerald-50 dark:bg-emerald-900/30" delay={200} />
-				<StatCard title="Total Revenue" value={`Rp ${formatCurrency(totalRevenue)}`} change="18.7%" changeType="up" icon={DollarSign} color="bg-amber-50 dark:bg-amber-900/30" delay={300} />
+				<SlideUp delay={0}><StatCard title="Total Users" value={totalUsers.toLocaleString()} change="12.5%" changeType="up" icon={Users} color="bg-blue-50 dark:bg-blue-900/30" /></SlideUp>
+				<SlideUp delay={100}><StatCard title="Active Technicians" value={totalTechnicians} change="8.2%" changeType="up" icon={Wrench} color="bg-violet-50 dark:bg-violet-900/30" /></SlideUp>
+				<SlideUp delay={200}><StatCard title="Total Bookings" value={totalBookings.toLocaleString()} change="15.3%" changeType="up" icon={Calendar} color="bg-emerald-50 dark:bg-emerald-900/30" /></SlideUp>
+				<SlideUp delay={300}><StatCard title="Total Revenue" value={`Rp ${formatCurrency(totalRevenue)}`} change="18.7%" changeType="up" icon={DollarSign} color="bg-amber-50 dark:bg-amber-900/30" /></SlideUp>
 			</div>
 
 			<div className="grid gap-6 lg:grid-cols-2">
-				<div className="rounded-xl border border-border bg-card p-5 shadow-sm">
-					<h3 className="mb-4 text-sm font-semibold">User Growth Trend</h3>
-					<ResponsiveContainer width="100%" height={280}>
-						<LineChart data={userGrowthData}>
-							<CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-							<XAxis dataKey="month" tick={{ fontSize: 12 }} stroke="#6b7280" />
-							<YAxis tick={{ fontSize: 12 }} stroke="#6b7280" />
-							<Tooltip />
-							<Legend />
-							<Line type="monotone" dataKey="users" stroke="#3B82F6" strokeWidth={2} dot={{ fill: "#3B82F6" }} name="Users" />
-							<Line type="monotone" dataKey="technicians" stroke="#8B5CF6" strokeWidth={2} dot={{ fill: "#8B5CF6" }} name="Technicians" />
-						</LineChart>
-					</ResponsiveContainer>
-				</div>
+				<SlideUp delay={400}>
+					<div className="rounded-xl border border-border bg-card p-5 shadow-sm">
+						<h3 className="mb-4 text-sm font-semibold">User Growth Trend</h3>
+						<ResponsiveContainer width="100%" height={280}>
+							<LineChart data={userGrowthData}>
+								<CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+								<XAxis dataKey="month" tick={{ fontSize: 12 }} stroke="#6b7280" />
+								<YAxis tick={{ fontSize: 12 }} stroke="#6b7280" />
+								<Tooltip />
+								<Legend />
+								<Line type="monotone" dataKey="users" stroke="#3B82F6" strokeWidth={2} dot={{ fill: "#3B82F6" }} name="Users" isAnimationActive={true} animationDuration={1200} animationBegin={900} />
+								<Line type="monotone" dataKey="technicians" stroke="#8B5CF6" strokeWidth={2} dot={{ fill: "#8B5CF6" }} name="Technicians" isAnimationActive={true} animationDuration={1200} animationBegin={900} />
+							</LineChart>
+						</ResponsiveContainer>
+					</div>
+				</SlideUp>
 
-				<div className="rounded-xl border border-border bg-card p-5 shadow-sm">
-					<h3 className="mb-4 text-sm font-semibold">Booking Trends</h3>
-					<ResponsiveContainer width="100%" height={280}>
-						<BarChart data={bookingTrendsData}>
-							<CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-							<XAxis dataKey="month" tick={{ fontSize: 12 }} stroke="#6b7280" />
-							<YAxis tick={{ fontSize: 12 }} stroke="#6b7280" />
-							<Tooltip />
-							<Legend />
-							<Bar dataKey="bookings" fill="#3B82F6" name="Total Bookings" radius={[4, 4, 0, 0]} />
-							<Bar dataKey="completed" fill="#10B981" name="Completed" radius={[4, 4, 0, 0]} />
-						</BarChart>
-					</ResponsiveContainer>
-				</div>
+				<SlideUp delay={500}>
+					<div className="rounded-xl border border-border bg-card p-5 shadow-sm">
+						<h3 className="mb-4 text-sm font-semibold">Booking Trends</h3>
+						<ResponsiveContainer width="100%" height={280}>
+							<BarChart data={bookingTrendsData}>
+								<CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+								<XAxis dataKey="month" tick={{ fontSize: 12 }} stroke="#6b7280" />
+								<YAxis tick={{ fontSize: 12 }} stroke="#6b7280" />
+								<Tooltip />
+								<Legend />
+								<Bar dataKey="bookings" fill="#3B82F6" name="Total Bookings" radius={[4, 4, 0, 0]} isAnimationActive={true} animationDuration={1200} animationBegin={1000} />
+								<Bar dataKey="completed" fill="#10B981" name="Completed" radius={[4, 4, 0, 0]} isAnimationActive={true} animationDuration={1200} animationBegin={1000} />
+							</BarChart>
+						</ResponsiveContainer>
+					</div>
+				</SlideUp>
 			</div>
 
 			<div className="grid gap-6 lg:grid-cols-3">
-				<div className="rounded-xl border border-border bg-card p-5 shadow-sm">
-					<h3 className="mb-4 text-sm font-semibold">Service Distribution</h3>
-					<ResponsiveContainer width="100%" height={240}>
-						<PieChart>
-							<Pie data={serviceDistribution} cx="50%" cy="50%" innerRadius={50} outerRadius={80} paddingAngle={2} dataKey="value">
-								{serviceDistribution.map((entry, index) => <Cell key={`cell-${entry.name}`} fill={COLORS[index % COLORS.length]} />)}
-							</Pie>
-							<Tooltip />
-						</PieChart>
-					</ResponsiveContainer>
-					<div className="mt-2 space-y-1">
-						{serviceDistribution.map((entry) => (
-							<div key={entry.name} className="flex items-center justify-between text-xs">
-								<div className="flex items-center gap-2">
-									<div className="h-2 w-2 rounded-full" style={{ backgroundColor: entry.color }} />
-									<span className="text-muted-foreground">{entry.name}</span>
+				<SlideUp delay={600}>
+					<div className="rounded-xl border border-border bg-card p-5 shadow-sm h-full">
+						<h3 className="mb-4 text-sm font-semibold">Service Distribution</h3>
+						<ResponsiveContainer width="100%" height={240}>
+							<PieChart>
+								<Pie data={serviceDistribution} cx="50%" cy="50%" innerRadius={50} outerRadius={80} paddingAngle={2} dataKey="value" isAnimationActive={true} animationDuration={1200} animationBegin={1200}>
+									{serviceDistribution.map((entry, index) => <Cell key={`cell-${entry.name}`} fill={COLORS[index % COLORS.length]} />)}
+								</Pie>
+								<Tooltip />
+							</PieChart>
+						</ResponsiveContainer>
+						<div className="mt-2 space-y-1">
+							{serviceDistribution.map((entry) => (
+								<div key={entry.name} className="flex items-center justify-between text-xs">
+									<div className="flex items-center gap-2">
+										<div className="h-2 w-2 rounded-full" style={{ backgroundColor: entry.color }} />
+										<span className="text-muted-foreground">{entry.name}</span>
+									</div>
+									<span className="font-medium">{entry.value}%</span>
 								</div>
-								<span className="font-medium">{entry.value}%</span>
-							</div>
-						))}
+							))}
+						</div>
 					</div>
-				</div>
+				</SlideUp>
 
-				<div className="rounded-xl border border-border bg-card p-5 shadow-sm lg:col-span-2">
-					<h3 className="mb-4 text-sm font-semibold">Revenue Overview</h3>
-					<ResponsiveContainer width="100%" height={280}>
-						<AreaChart data={revenueData}>
-							<CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-							<XAxis dataKey="month" tick={{ fontSize: 12 }} stroke="#6b7280" />
-							<YAxis tick={{ fontSize: 10 }} stroke="#6b7280" tickFormatter={(v) => `${(v / 1000000).toFixed(0)}M`} />
-							<Tooltip />
-							<Legend />
-							<Area type="monotone" dataKey="revenue" stroke="#3B82F6" fill="#3B82F6" fillOpacity={0.1} name="Revenue" />
-							<Area type="monotone" dataKey="expenses" stroke="#EF4444" fill="#EF4444" fillOpacity={0.1} name="Expenses" />
-						</AreaChart>
-					</ResponsiveContainer>
-				</div>
+				<SlideUp delay={700} className="lg:col-span-2">
+					<div className="rounded-xl border border-border bg-card p-5 shadow-sm h-full">
+						<h3 className="mb-4 text-sm font-semibold">Revenue Overview</h3>
+						<ResponsiveContainer width="100%" height={280}>
+							<AreaChart data={revenueData}>
+								<CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+								<XAxis dataKey="month" tick={{ fontSize: 12 }} stroke="#6b7280" />
+								<YAxis tick={{ fontSize: 10 }} stroke="#6b7280" tickFormatter={(v) => `${(v / 1000000).toFixed(0)}M`} />
+								<Tooltip />
+								<Legend />
+								<Area type="monotone" dataKey="revenue" stroke="#3B82F6" fill="#3B82F6" fillOpacity={0.1} name="Revenue" isAnimationActive={true} animationDuration={1200} animationBegin={1200} />
+								<Area type="monotone" dataKey="expenses" stroke="#EF4444" fill="#EF4444" fillOpacity={0.1} name="Expenses" isAnimationActive={true} animationDuration={1200} animationBegin={1200} />
+							</AreaChart>
+						</ResponsiveContainer>
+					</div>
+				</SlideUp>
 			</div>
 
 			<div className="grid gap-6 lg:grid-cols-2">
-				<div className="rounded-xl border border-border bg-card p-5 shadow-sm">
-					<h3 className="mb-4 text-sm font-semibold">Top Performing Services</h3>
-					<div className="space-y-4">
-						{topServicesData.map((service, index) => {
-							const maxRevenue = topServicesData[0].revenue;
-							const percentage = (service.revenue / maxRevenue) * 100;
-							return (
-								<div key={service.service}>
-									<div className="mb-1 flex items-center justify-between">
-										<div className="flex items-center gap-2">
-											<span className="flex h-5 w-5 items-center justify-center rounded-full bg-blue-50 text-xs font-medium text-blue-600">{index + 1}</span>
-											<span className="text-sm font-medium">{service.service}</span>
+				<SlideUp delay={800}>
+					<div className="rounded-xl border border-border bg-card p-5 shadow-sm">
+						<h3 className="mb-4 text-sm font-semibold">Top Performing Services</h3>
+						<div className="space-y-4">
+							{topServicesData.map((service, index) => {
+								const maxRevenue = topServicesData[0].revenue;
+								const percentage = (service.revenue / maxRevenue) * 100;
+								return (
+									<CardSlideUp key={service.service} index={index}>
+										<div>
+											<div className="mb-1 flex items-center justify-between">
+												<div className="flex items-center gap-2">
+													<span className="flex h-5 w-5 items-center justify-center rounded-full bg-blue-50 text-xs font-medium text-blue-600">{index + 1}</span>
+													<span className="text-sm font-medium">{service.service}</span>
+												</div>
+												<span className="text-sm font-medium">Rp {(service.revenue / 1000000).toFixed(1)}M</span>
+											</div>
+											<div className="ml-7 h-2 overflow-hidden rounded-full bg-muted">
+												<div className="h-full rounded-full bg-blue-500 transition-all" style={{ width: `${percentage}%` }} />
+											</div>
+											<p className="ml-7 mt-1 text-xs text-muted-foreground">{service.bookings} bookings</p>
 										</div>
-										<span className="text-sm font-medium">Rp {(service.revenue / 1000000).toFixed(1)}M</span>
-									</div>
-									<div className="ml-7 h-2 overflow-hidden rounded-full bg-muted">
-										<div className="h-full rounded-full bg-blue-500 transition-all" style={{ width: `${percentage}%` }} />
-									</div>
-									<p className="ml-7 mt-1 text-xs text-muted-foreground">{service.bookings} bookings</p>
-								</div>
-							);
-						})}
+									</CardSlideUp>
+								);
+							})}
+						</div>
 					</div>
-				</div>
+				</SlideUp>
 
-				<div className="rounded-xl border border-border bg-card p-5 shadow-sm">
-					<h3 className="mb-4 text-sm font-semibold">Technician Performance</h3>
-					<div className="overflow-x-auto">
-						<table className="w-full">
-							<thead>
-								<tr className="border-b border-border">
-									<th className="pb-2 text-left text-xs font-medium uppercase tracking-wider text-muted-foreground">Technician</th>
-									<th className="pb-2 text-right text-xs font-medium uppercase tracking-wider text-muted-foreground">Completed</th>
-									<th className="pb-2 text-right text-xs font-medium uppercase tracking-wider text-muted-foreground">Rating</th>
-									<th className="pb-2 text-right text-xs font-medium uppercase tracking-wider text-muted-foreground">Earnings</th>
-								</tr>
-							</thead>
-							<tbody className="divide-y divide-border">
-								{technicianPerformance.map((tech) => (
-									<tr key={tech.name}>
-										<td className="py-3 text-sm font-medium">{tech.name}</td>
-										<td className="py-3 text-right text-sm">{tech.completed}</td>
-										<td className="py-3 text-right"><span className="inline-flex items-center gap-1 text-sm font-medium text-amber-600">★ {tech.rating}</span></td>
-										<td className="py-3 text-right text-sm font-medium text-emerald-600">Rp {(tech.earnings / 1000000).toFixed(1)}M</td>
+				<SlideUp delay={900}>
+					<div className="rounded-xl border border-border bg-card p-5 shadow-sm h-full">
+						<h3 className="mb-4 text-sm font-semibold">Technician Performance</h3>
+						<div className="overflow-x-auto">
+							<table className="w-full">
+								<thead>
+									<tr className="border-b border-border">
+										<th className="pb-2 text-left text-xs font-medium uppercase tracking-wider text-muted-foreground">Technician</th>
+										<th className="pb-2 text-right text-xs font-medium uppercase tracking-wider text-muted-foreground">Completed</th>
+										<th className="pb-2 text-right text-xs font-medium uppercase tracking-wider text-muted-foreground">Rating</th>
+										<th className="pb-2 text-right text-xs font-medium uppercase tracking-wider text-muted-foreground">Earnings</th>
 									</tr>
-								))}
-							</tbody>
-						</table>
+								</thead>
+								<tbody className="divide-y divide-border">
+									{technicianPerformance.map((tech, index) => (
+										<SlideUpRow key={tech.name} index={index}>
+											<td className="py-3 text-sm font-medium">{tech.name}</td>
+											<td className="py-3 text-right text-sm">{tech.completed}</td>
+											<td className="py-3 text-right"><span className="inline-flex items-center gap-1 text-sm font-medium text-amber-600">★ {tech.rating}</span></td>
+											<td className="py-3 text-right text-sm font-medium text-emerald-600">Rp {(tech.earnings / 1000000).toFixed(1)}M</td>
+										</SlideUpRow>
+									))}
+								</tbody>
+							</table>
+						</div>
 					</div>
-				</div>
+				</SlideUp>
 			</div>
 
-			<div className="rounded-xl border border-border bg-card p-5 shadow-sm">
-				<h3 className="mb-4 text-sm font-semibold">Platform Metrics</h3>
-				<div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-					<div className="text-center">
-						<div className="mx-auto mb-3 flex h-16 w-16 items-center justify-center rounded-full bg-blue-50"><Eye className="h-8 w-8 text-blue-500" /></div>
-						<p className="text-2xl font-bold">12.4K</p>
-						<p className="text-sm text-muted-foreground">Total Views</p>
-					</div>
-					<div className="text-center">
-						<div className="mx-auto mb-3 flex h-16 w-16 items-center justify-center rounded-full bg-emerald-50"><MessageSquare className="h-8 w-8 text-emerald-500" /></div>
-						<p className="text-2xl font-bold">2.8K</p>
-						<p className="text-sm text-muted-foreground">Comments</p>
-					</div>
-					<div className="text-center">
-						<div className="mx-auto mb-3 flex h-16 w-16 items-center justify-center rounded-full bg-violet-50"><Bookmark className="h-8 w-8 text-violet-500" /></div>
-						<p className="text-2xl font-bold">5.6K</p>
-						<p className="text-sm text-muted-foreground">Saved Services</p>
-					</div>
-					<div className="text-center">
-						<div className="mx-auto mb-3 flex h-16 w-16 items-center justify-center rounded-full bg-amber-50"><TrendingUp className="h-8 w-8 text-amber-500" /></div>
-						<p className="text-2xl font-bold">94.2%</p>
-						<p className="text-sm text-muted-foreground">Completion Rate</p>
+			<SlideUp delay={1000}>
+				<div className="rounded-xl border border-border bg-card p-5 shadow-sm">
+					<h3 className="mb-4 text-sm font-semibold">Platform Metrics</h3>
+					<div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+						<CardSlideUp index={0}>
+							<div className="text-center">
+								<div className="mx-auto mb-3 flex h-16 w-16 items-center justify-center rounded-full bg-blue-50"><Eye className="h-8 w-8 text-blue-500" /></div>
+								<p className="text-2xl font-bold">12.4K</p>
+								<p className="text-sm text-muted-foreground">Total Views</p>
+							</div>
+						</CardSlideUp>
+						<CardSlideUp index={1}>
+							<div className="text-center">
+								<div className="mx-auto mb-3 flex h-16 w-16 items-center justify-center rounded-full bg-emerald-50"><MessageSquare className="h-8 w-8 text-emerald-500" /></div>
+								<p className="text-2xl font-bold">2.8K</p>
+								<p className="text-sm text-muted-foreground">Comments</p>
+							</div>
+						</CardSlideUp>
+						<CardSlideUp index={2}>
+							<div className="text-center">
+								<div className="mx-auto mb-3 flex h-16 w-16 items-center justify-center rounded-full bg-violet-50"><Bookmark className="h-8 w-8 text-violet-500" /></div>
+								<p className="text-2xl font-bold">5.6K</p>
+								<p className="text-sm text-muted-foreground">Saved Services</p>
+							</div>
+						</CardSlideUp>
+						<CardSlideUp index={3}>
+							<div className="text-center">
+								<div className="mx-auto mb-3 flex h-16 w-16 items-center justify-center rounded-full bg-amber-50"><TrendingUp className="h-8 w-8 text-amber-500" /></div>
+								<p className="text-2xl font-bold">94.2%</p>
+								<p className="text-sm text-muted-foreground">Completion Rate</p>
+							</div>
+						</CardSlideUp>
 					</div>
 				</div>
-			</div>
+			</SlideUp>
 		</div>
 	);
 }

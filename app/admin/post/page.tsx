@@ -16,19 +16,14 @@ import {
 	RotateCcw,
 	FileText,
 	Tag,
-	EyeOff,
-	Clock,
-	MessageSquare,
-	Image as ImageIcon,
 	Bookmark,
 	Laptop,
 	Smartphone,
 	Monitor,
-	Archive,
 } from "lucide-react";
 import { useState } from "react";
+import { SlideUp, CardSlideUp } from "@/components/ui/loading";
 
-// Types
 type PostStatus = "Published" | "Draft" | "Flagged" | "Archived";
 type LaptopBrand = "All" | "Asus" | "Acer" | "Lenovo" | "HP" | "Dell" | "Apple" | "MSI" | "Samsung" | "Other";
 
@@ -57,7 +52,6 @@ interface Brand {
 	postCount: number;
 }
 
-// Mock Data
 const mockBrands: Brand[] = [
 	{ id: "All", name: "Semua", icon: Laptop, postCount: 156 },
 	{ id: "Asus", name: "Asus", icon: Monitor, postCount: 42 },
@@ -223,22 +217,21 @@ const mockPosts: Post[] = [
 	},
 ];
 
-// Components
-	function StatusBadge({ status }: { status: PostStatus }) {
-		const config: Record<PostStatus, { className: string; dotClass: string }> = {
-			Published: { className: "border-emerald-200 bg-emerald-50 text-emerald-700", dotClass: "bg-emerald-500" },
-			Draft: { className: "border-gray-200 bg-gray-50 text-gray-600", dotClass: "bg-gray-400" },
-			Flagged: { className: "border-amber-200 bg-amber-50 text-amber-700", dotClass: "bg-amber-500" },
-			Archived: { className: "border-slate-200 bg-slate-50 text-slate-600", dotClass: "bg-slate-400" },
-		};
-		const { className, dotClass } = config[status];
-		return (
-			<span className={cn("inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-xs font-medium truncate max-w-[80px] sm:max-w-none", className)}>
-				<span className={cn("h-1.5 w-1.5 rounded-full flex-shrink-0", dotClass)} />
-				{status}
-			</span>
-		);
-	}
+function StatusBadge({ status }: { status: PostStatus }) {
+	const config: Record<PostStatus, { className: string; dotClass: string }> = {
+		Published: { className: "border-emerald-200 bg-emerald-50 text-emerald-700", dotClass: "bg-emerald-500" },
+		Draft: { className: "border-gray-200 bg-gray-50 text-gray-600", dotClass: "bg-gray-400" },
+		Flagged: { className: "border-amber-200 bg-amber-50 text-amber-700", dotClass: "bg-amber-500" },
+		Archived: { className: "border-slate-200 bg-slate-50 text-slate-600", dotClass: "bg-slate-400" },
+	};
+	const { className, dotClass } = config[status];
+	return (
+		<span className={cn("inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-xs font-medium truncate max-w-[80px] sm:max-w-none", className)}>
+			<span className={cn("h-1.5 w-1.5 rounded-full flex-shrink-0", dotClass)} />
+			{status}
+		</span>
+	);
+}
 
 function BrandBadge({ brand }: { brand: string }) {
 	const brandColors: Record<string, string> = {
@@ -259,12 +252,9 @@ function BrandBadge({ brand }: { brand: string }) {
 	);
 }
 
-function StatCard({ title, value, icon: Icon, color, delay }: { title: string; value: number | string; icon: React.ElementType; color: string; delay: number }) {
+function StatCard({ title, value, icon: Icon, color }: { title: string; value: number | string; icon: React.ElementType; color: string }) {
 	return (
-		<div
-			className=" rounded-xl border border-border bg-card p-5 shadow-sm"
-			style={{ animationDelay: `${delay}ms` }}
-		>
+		<div className="rounded-xl border border-border bg-card p-5 shadow-sm">
 			<div className="flex items-start justify-between">
 				<div>
 					<p className="text-sm font-medium text-muted-foreground">{title}</p>
@@ -322,7 +312,6 @@ function ActionMenu({ postId, onFlag, onDelete, onRestore, status }: { postId: s
 	);
 }
 
-// Main Page
 export default function PostModerationPage() {
 	const router = useRouter();
 	const [posts, setPosts] = useState<Post[]>(mockPosts);
@@ -333,13 +322,11 @@ export default function PostModerationPage() {
 
 	const itemsPerPage = 6;
 
-	// Stats
 	const totalPosts = posts.length;
 	const publishedPosts = posts.filter((p) => p.status === "Published").length;
 	const draftPosts = posts.filter((p) => p.status === "Draft").length;
 	const flaggedPosts = posts.filter((p) => p.status === "Flagged").length;
 
-	// Filter
 	const filteredPosts = posts.filter((p) => {
 		const matchesBrand = selectedBrand === "All" || p.brand === selectedBrand;
 		const matchesStatus = statusFilter === "All" || p.status === statusFilter;
@@ -350,7 +337,6 @@ export default function PostModerationPage() {
 	const totalPages = Math.ceil(filteredPosts.length / itemsPerPage);
 	const paginatedPosts = filteredPosts.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
-	// Handlers
 	const handleFlag = (postId: string) => {
 		setPosts((prev) => prev.map((p) => p.id === postId ? { ...p, status: "Flagged" as PostStatus, flags: (p.flags || 0) + 1 } : p));
 	};
@@ -372,7 +358,6 @@ export default function PostModerationPage() {
 	const formatDate = (dateStr: string) => new Date(dateStr).toLocaleDateString("id-ID", { day: "numeric", month: "short", year: "numeric" });
 	const formatNumber = (num: number) => num >= 1000 ? `${(num / 1000).toFixed(1)}k` : num.toString();
 
-	// Brand counts
 	const brandCounts = mockBrands.map((brand) => ({
 		...brand,
 		postCount: brand.id === "All" ? posts.length : posts.filter((p) => p.brand === brand.id).length,
@@ -380,153 +365,148 @@ export default function PostModerationPage() {
 
 	return (
 		<div className="p-6">
-			{/* Header */}
-			<div className="mb-6 ">
-				<h1 className="text-2xl font-semibold text-foreground">Post Moderation</h1>
-				<p className="mt-1 text-sm text-muted-foreground">Manage and moderate community posts by laptop brand</p>
-			</div>
+			<SlideUp delay={0}>
+				<div className="mb-6">
+					<h1 className="text-2xl font-semibold text-foreground">Post Moderation</h1>
+					<p className="mt-1 text-sm text-muted-foreground">Manage and moderate community posts by laptop brand</p>
+				</div>
+			</SlideUp>
 
-			{/* Stats Grid */}
 			<div className="mb-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-				<StatCard title="Total Post" value={totalPosts} icon={FileText} color="bg-blue-50 dark:bg-blue-900/30" delay={0} />
-				<StatCard title="Published" value={publishedPosts} icon={CheckCircle} color="bg-emerald-50 dark:bg-emerald-900/30" delay={100} />
-				<StatCard title="Draft" value={draftPosts} icon={Clock} color="bg-gray-50 dark:bg-gray-900/30" delay={200} />
-				<StatCard title="Flagged" value={flaggedPosts} icon={AlertTriangle} color="bg-amber-50 dark:bg-amber-900/30" delay={300} />
+				<SlideUp delay={0}><StatCard title="Total Post" value={totalPosts} icon={FileText} color="bg-blue-50 dark:bg-blue-900/30" /></SlideUp>
+				<SlideUp delay={100}><StatCard title="Published" value={publishedPosts} icon={CheckCircle} color="bg-emerald-50 dark:bg-emerald-900/30" /></SlideUp>
+				<SlideUp delay={200}><StatCard title="Draft" value={draftPosts} icon={AlertTriangle} color="bg-gray-50 dark:bg-gray-900/30" /></SlideUp>
+				<SlideUp delay={300}><StatCard title="Flagged" value={flaggedPosts} icon={Flag} color="bg-amber-50 dark:bg-amber-900/30" /></SlideUp>
 			</div>
 
-			{/* Brand Filter Tabs */}
-			<div className="mb-6  overflow-x-auto" style={{ animationDelay: "400ms" }}>
-				<div className="flex gap-2 pb-2">
-					{brandCounts.map((brand) => {
-						const Icon = brand.icon;
-						return (
-							<button
-								key={brand.id}
-								onClick={() => { setSelectedBrand(brand.id); setCurrentPage(1); }}
-								className={cn("flex items-center gap-2 whitespace-nowrap rounded-lg border px-3 py-2 text-sm font-medium transition-colors", selectedBrand === brand.id ? "border-blue-500 bg-blue-50 text-blue-700" : "border-border bg-card text-muted-foreground hover:bg-muted")}
-							>
-								<Icon className="h-4 w-4" />
-								{brand.name}
-								<span className={cn("rounded-full px-1.5 py-0.5 text-xs", selectedBrand === brand.id ? "bg-blue-100 text-blue-700" : "bg-muted")}>{brand.postCount}</span>
-							</button>
-						);
-					})}
-				</div>
-			</div>
-
-			{/* Main Content */}
-			<div className=" rounded-xl border border-border bg-card shadow-sm" style={{ animationDelay: "500ms" }}>
-				{/* Toolbar */}
-				<div className="flex flex-col gap-4 border-b border-border p-4 sm:flex-row">
-					<div className="relative flex-1">
-						<Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-						<input
-							type="text"
-							value={search}
-							onChange={(e) => { setSearch(e.target.value); setCurrentPage(1); }}
-							placeholder="Cari judul, author, atau tag..."
-							className="h-10 w-full rounded-lg border border-input bg-background pl-10 pr-3 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
-						/>
-					</div>
-					<div className="flex gap-2 overflow-x-auto pb-2 -mb-2">
-						{(["All", "Published", "Draft", "Flagged", "Archived"] as const).map((status) => (
-							<button
-								key={status}
-								onClick={() => { setStatusFilter(status as PostStatus | "All"); setCurrentPage(1); }}
-								className={cn("rounded-lg border px-3 py-2 text-sm font-medium transition-colors whitespace-nowrap flex-shrink-0", statusFilter === status ? "border-blue-500 bg-blue-50 text-blue-700" : "border-border bg-background text-muted-foreground hover:bg-muted")}
-							>
-								{status === "All" ? "Semua" : status}
-							</button>
-						))}
-					</div>
-				</div>
-
-				{/* Posts Grid */}
-				<div className="grid gap-4 p-4 sm:grid-cols-2 lg:grid-cols-3">
-					{paginatedPosts.map((post) => (
-						<div key={post.id} className="group overflow-hidden rounded-xl border border-border bg-card transition-shadow hover:shadow-md">
-							{/* Image */}
-							{post.image ? (
-								<div className="relative h-40 overflow-hidden">
-									<Image src={post.image} alt={post.title} width={400} height={160} className="h-full w-full object-cover transition-transform group-hover:scale-105" />
-									<div className="absolute top-2 right-2"><StatusBadge status={post.status} /></div>
-									<div className="absolute top-2 left-2"><BrandBadge brand={post.brand} /></div>
-								</div>
-							) : (
-								<div className="relative h-32 bg-muted flex items-center justify-center">
-									<FileText className="h-12 w-12 text-muted-foreground/30" />
-									<div className="absolute top-2 right-2"><StatusBadge status={post.status} /></div>
-									<div className="absolute top-2 left-2"><BrandBadge brand={post.brand} /></div>
-								</div>
-							)}
-
-							{/* Content */}
-							<div className="p-4">
-								<h3 className="mb-2 line-clamp-2 text-sm font-medium text-foreground">{post.title}</h3>
-
-								{/* Author */}
-								<div className="mb-3 flex items-center gap-2">
-									<Image src={post.author.avatar} alt={post.author.name} width={24} height={24} className="h-6 w-6 rounded-full bg-muted" />
-									<span className="text-xs text-muted-foreground">{post.author.name}</span>
-									<span className="text-xs text-muted-foreground">•</span>
-									<span className="text-xs text-muted-foreground">{formatDate(post.createdAt)}</span>
-								</div>
-
-								{/* Stats */}
-								<div className="mb-3 flex items-center gap-4 text-xs text-muted-foreground">
-									<span className="flex items-center gap-1"><Eye className="h-3 w-3" />{formatNumber(post.views)}</span>
-									<span className="flex items-center gap-1"><MessageSquare className="h-3 w-3" />{formatNumber(post.comments)}</span>
-									<span className="flex items-center gap-1"><Bookmark className="h-3 w-3" />{formatNumber(post.likes)}</span>
-									{(post.flags ?? 0) > 0 && <span className="flex items-center gap-1 text-amber-600"><Flag className="h-3 w-3" />{post.flags}</span>}
-								</div>
-
-								{/* Tags */}
-								<div className="mb-3 flex flex-wrap gap-1 overflow-hidden">
-									{post.tags.slice(0, 3).map((tag) => (
-										<span key={tag} className="rounded bg-muted px-1.5 py-0.5 text-xs text-muted-foreground truncate max-w-[120px] sm:max-w-none">#{tag}</span>
-									))}
-								</div>
-
-								{/* Actions */}
-								<div className="flex items-center justify-between">
+			<SlideUp delay={400}>
+				<div className="mb-6 overflow-x-auto">
+					<div className="flex gap-2 pb-2">
+						{brandCounts.map((brand, index) => {
+							const Icon = brand.icon;
+							return (
+								<CardSlideUp key={brand.id} index={index}>
 									<button
-										onClick={() => router.push(`/admin/post/${post.id}`)}
-										className="flex items-center gap-1.5 rounded-lg bg-blue-50 px-3 py-1.5 text-xs font-medium text-blue-700 hover:bg-blue-100"
+										onClick={() => { setSelectedBrand(brand.id); setCurrentPage(1); }}
+										className={cn("flex items-center gap-2 whitespace-nowrap rounded-lg border px-3 py-2 text-sm font-medium transition-colors", selectedBrand === brand.id ? "border-blue-500 bg-blue-50 text-blue-700" : "border-border bg-card text-muted-foreground hover:bg-muted")}
 									>
-										<Eye className="h-3 w-3" />Detail
+										<Icon className="h-4 w-4" />
+										{brand.name}
+										<span className={cn("rounded-full px-1.5 py-0.5 text-xs", selectedBrand === brand.id ? "bg-blue-100 text-blue-700" : "bg-muted")}>{brand.postCount}</span>
 									</button>
-									<ActionMenu postId={post.id} onFlag={() => handleFlag(post.id)} onDelete={() => handleDelete(post.id)} onRestore={() => handleRestore(post.id)} status={post.status} />
-								</div>
-							</div>
-						</div>
-					))}
-
-					{paginatedPosts.length === 0 && (
-						<div className="col-span-full py-12 text-center">
-							<FileText className="mx-auto h-12 w-12 text-muted-foreground/30 mb-3" />
-							<p className="text-sm text-muted-foreground">Tidak ada postingan ditemukan</p>
-						</div>
-					)}
-				</div>
-
-				{/* Pagination */}
-				<div className="flex items-center justify-between border-t border-border px-4 py-3">
-					<p className="text-sm text-muted-foreground">Showing {(currentPage - 1) * itemsPerPage + 1} to {Math.min(currentPage * itemsPerPage, filteredPosts.length)} of {filteredPosts.length} posts</p>
-					<div className="flex items-center gap-1">
-						<button onClick={() => setCurrentPage((p) => Math.max(1, p - 1))} disabled={currentPage === 1} className="flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground disabled:opacity-50 disabled:cursor-not-allowed">
-							<ChevronLeft className="h-4 w-4" />
-						</button>
-						{Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-							<button key={page} onClick={() => setCurrentPage(page)} className={cn("flex h-8 w-8 items-center justify-center rounded-lg text-sm font-medium", page === currentPage ? "bg-blue-500 text-white" : "text-muted-foreground hover:bg-muted hover:text-foreground")}>
-								{page}
-							</button>
-						))}
-						<button onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))} disabled={currentPage === totalPages} className="flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground disabled:opacity-50 disabled:cursor-not-allowed">
-							<ChevronRight className="h-4 w-4" />
-						</button>
+								</CardSlideUp>
+							);
+						})}
 					</div>
 				</div>
-			</div>
+			</SlideUp>
+
+			<SlideUp delay={500}>
+				<div className="rounded-xl border border-border bg-card shadow-sm">
+					<div className="flex flex-col gap-4 border-b border-border p-4 sm:flex-row">
+						<div className="relative flex-1">
+							<Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+							<input
+								type="text"
+								value={search}
+								onChange={(e) => { setSearch(e.target.value); setCurrentPage(1); }}
+								placeholder="Cari judul, author, atau tag..."
+								className="h-10 w-full rounded-lg border border-input bg-background pl-10 pr-3 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+							/>
+						</div>
+						<div className="flex gap-2 overflow-x-auto pb-2 -mb-2">
+							{(["All", "Published", "Draft", "Flagged", "Archived"] as const).map((status) => (
+								<button
+									key={status}
+									onClick={() => { setStatusFilter(status as PostStatus | "All"); setCurrentPage(1); }}
+									className={cn("rounded-lg border px-3 py-2 text-sm font-medium transition-colors whitespace-nowrap flex-shrink-0", statusFilter === status ? "border-blue-500 bg-blue-50 text-blue-700" : "border-border bg-background text-muted-foreground hover:bg-muted")}
+								>
+									{status === "All" ? "Semua" : status}
+								</button>
+							))}
+						</div>
+					</div>
+
+					<div className="grid gap-4 p-4 sm:grid-cols-2 lg:grid-cols-3">
+						{paginatedPosts.map((post, index) => (
+							<CardSlideUp key={post.id} index={index}>
+								<div className="group overflow-hidden rounded-xl border border-border bg-card transition-shadow hover:shadow-md">
+									{post.image ? (
+										<div className="relative h-40 overflow-hidden">
+											<Image src={post.image} alt={post.title} width={400} height={160} className="h-full w-full object-cover transition-transform group-hover:scale-105" />
+											<div className="absolute top-2 right-2"><StatusBadge status={post.status} /></div>
+											<div className="absolute top-2 left-2"><BrandBadge brand={post.brand} /></div>
+										</div>
+									) : (
+										<div className="relative h-32 bg-muted flex items-center justify-center">
+											<FileText className="h-12 w-12 text-muted-foreground/30" />
+											<div className="absolute top-2 right-2"><StatusBadge status={post.status} /></div>
+											<div className="absolute top-2 left-2"><BrandBadge brand={post.brand} /></div>
+										</div>
+									)}
+
+									<div className="p-4">
+										<h3 className="mb-2 line-clamp-2 text-sm font-medium text-foreground">{post.title}</h3>
+
+										<div className="mb-3 flex items-center gap-2">
+											<Image src={post.author.avatar} alt={post.author.name} width={24} height={24} className="h-6 w-6 rounded-full bg-muted" />
+											<span className="text-xs text-muted-foreground">{post.author.name}</span>
+											<span className="text-xs text-muted-foreground">•</span>
+											<span className="text-xs text-muted-foreground">{formatDate(post.createdAt)}</span>
+										</div>
+
+										<div className="mb-3 flex items-center gap-4 text-xs text-muted-foreground">
+											<span className="flex items-center gap-1"><Eye className="h-3 w-3" />{formatNumber(post.views)}</span>
+											<span className="flex items-center gap-1"><Bookmark className="h-3 w-3" />{formatNumber(post.likes)}</span>
+											{(post.flags ?? 0) > 0 && <span className="flex items-center gap-1 text-amber-600"><Flag className="h-3 w-3" />{post.flags}</span>}
+										</div>
+
+										<div className="mb-3 flex flex-wrap gap-1 overflow-hidden">
+											{post.tags.slice(0, 3).map((tag) => (
+												<span key={tag} className="rounded bg-muted px-1.5 py-0.5 text-xs text-muted-foreground truncate max-w-[120px] sm:max-w-none">#{tag}</span>
+											))}
+										</div>
+
+										<div className="flex items-center justify-between">
+											<button
+												onClick={() => router.push(`/admin/post/${post.id}`)}
+												className="flex items-center gap-1.5 rounded-lg bg-blue-50 px-3 py-1.5 text-xs font-medium text-blue-700 hover:bg-blue-100"
+											>
+												<Eye className="h-3 w-3" />Detail
+											</button>
+											<ActionMenu postId={post.id} onFlag={() => handleFlag(post.id)} onDelete={() => handleDelete(post.id)} onRestore={() => handleRestore(post.id)} status={post.status} />
+										</div>
+									</div>
+								</div>
+							</CardSlideUp>
+						))}
+
+						{paginatedPosts.length === 0 && (
+							<div className="col-span-full py-12 text-center">
+								<FileText className="mx-auto h-12 w-12 text-muted-foreground/30 mb-3" />
+								<p className="text-sm text-muted-foreground">Tidak ada postingan ditemukan</p>
+							</div>
+						)}
+					</div>
+
+					<div className="flex items-center justify-between border-t border-border px-4 py-3">
+						<p className="text-sm text-muted-foreground">Showing {(currentPage - 1) * itemsPerPage + 1} to {Math.min(currentPage * itemsPerPage, filteredPosts.length)} of {filteredPosts.length} posts</p>
+						<div className="flex items-center gap-1">
+							<button onClick={() => setCurrentPage((p) => Math.max(1, p - 1))} disabled={currentPage === 1} className="flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground disabled:opacity-50 disabled:cursor-not-allowed">
+								<ChevronLeft className="h-4 w-4" />
+							</button>
+							{Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+								<button key={page} onClick={() => setCurrentPage(page)} className={cn("flex h-8 w-8 items-center justify-center rounded-lg text-sm font-medium", page === currentPage ? "bg-blue-500 text-white" : "text-muted-foreground hover:bg-muted hover:text-foreground")}>
+									{page}
+								</button>
+							))}
+							<button onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))} disabled={currentPage === totalPages} className="flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground hover:bg-muted hover:text-foreground disabled:opacity-50 disabled:cursor-not-allowed">
+								<ChevronRight className="h-4 w-4" />
+							</button>
+						</div>
+					</div>
+				</div>
+			</SlideUp>
 		</div>
 	);
 }

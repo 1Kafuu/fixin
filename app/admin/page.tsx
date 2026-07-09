@@ -27,6 +27,38 @@ import {
   Area,
   AreaChart,
 } from "recharts";
+import { CardSlideUp } from "@/components/ui/loading";
+import { useEffect, useRef, useState } from "react";
+
+function AnimatedChart({ children, className, delay = 400 }: { children: React.ReactNode; className?: string; delay?: number }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [isReady, setIsReady] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsReady(false);
+          setTimeout(() => setIsReady(true), delay);
+          observer.unobserve(el);
+        }
+      },
+      { threshold: 0.3 },
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [delay]);
+
+  return (
+    <div ref={ref} className={`transition-opacity duration-500 ${isReady ? "opacity-100" : "opacity-0"} ${className}`}>
+      {isReady ? children : null}
+    </div>
+  );
+}
 
 // Mock data
 const kpiData = [
@@ -241,16 +273,17 @@ export default function AdminDashboard() {
       {/* KPI Cards */}
       <div className="mb-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {kpiData.map((kpi, i) => (
-          <div key={kpi.title} className="" style={{ animationDelay: `${i * 100}ms` }}>
+          <CardSlideUp key={kpi.title} index={i}>
             <KPICard {...kpi} />
-          </div>
+          </CardSlideUp>
         ))}
       </div>
 
       {/* Charts Row */}
       <div className="mb-6 grid gap-6 lg:grid-cols-2">
         {/* Revenue Overview - Bar Chart */}
-        <div className=" rounded-xl border border-border bg-card p-4 sm:p-5 shadow-sm" style={{ animationDelay: "400ms" }}>
+        <CardSlideUp index={4}>
+        <div className=" rounded-xl border border-border bg-card p-4 sm:p-5 shadow-sm">
           <div className="mb-4 flex items-center justify-between">
             <h3 className="font-semibold text-foreground">Revenue Overview</h3>
             <select className="rounded-md border border-input bg-background px-3 py-1 text-sm text-muted-foreground">
@@ -259,12 +292,14 @@ export default function AdminDashboard() {
             </select>
           </div>
           <ResponsiveContainer width="100%" height={180} className="sm:!height-[200px]">
-            <BarChart data={revenueData} margin={{ top: 5, right: 5, left: -20, bottom: 5 }}>
-              <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: "oklch(0.556 0 0)" }} />
-              <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: "oklch(0.556 0 0)" }} tickFormatter={(v) => `${v}M`} />
-              <Tooltip content={<RevenueTooltip />} cursor={{ fill: "oklch(0.97 0 0)" }} />
-              <Bar dataKey="value" fill="#3b82f6" radius={[4, 4, 0, 0]} />
-            </BarChart>
+            <AnimatedChart className="w-full h-full">
+              <BarChart data={revenueData} margin={{ top: 5, right: 5, left: -20, bottom: 5 }}>
+                <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: "oklch(0.556 0 0)" }} />
+                <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: "oklch(0.556 0 0)" }} tickFormatter={(v) => `${v}M`} />
+                <Tooltip content={<RevenueTooltip />} cursor={{ fill: "oklch(0.97 0 0)" }} />
+                <Bar dataKey="value" fill="#3b82f6" radius={[4, 4, 0, 0]} animationDuration={1200} animationEasing="ease-out" isAnimationActive={true} />
+              </BarChart>
+            </AnimatedChart>
           </ResponsiveContainer>
           <div className="mt-4 flex items-center justify-between border-t border-border pt-4">
             <div>
@@ -277,9 +312,11 @@ export default function AdminDashboard() {
             </div>
           </div>
         </div>
+        </CardSlideUp>
 
         {/* System Health - Area Chart */}
-        <div className=" rounded-xl border border-border bg-card p-4 sm:p-5 shadow-sm" style={{ animationDelay: "500ms" }}>
+        <CardSlideUp index={5}>
+        <div className=" rounded-xl border border-border bg-card p-4 sm:p-5 shadow-sm">
           <div className="mb-4 flex items-center justify-between">
             <h3 className="font-semibold text-foreground">System Health</h3>
             <div className="flex items-center gap-2">
@@ -288,19 +325,21 @@ export default function AdminDashboard() {
             </div>
           </div>
           <ResponsiveContainer width="100%" height={180} className="sm:!height-[200px]">
-            <AreaChart data={healthData} margin={{ top: 5, right: 5, left: -20, bottom: 5 }}>
-              <defs>
-                <linearGradient id="healthGradient" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#10b981" stopOpacity={0.3} />
-                  <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
-                </linearGradient>
-              </defs>
-              <CartesianGrid strokeDasharray="3 3" stroke="oklch(0.92 0 0)" vertical={false} />
-              <XAxis dataKey="time" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: "oklch(0.556 0 0)" }} />
-              <YAxis domain={[99, 100]} axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: "oklch(0.556 0 0)" }} tickFormatter={(v) => `${v}%`} />
-              <Tooltip content={<HealthTooltip />} />
-              <Area type="monotone" dataKey="value" stroke="#10b981" strokeWidth={2} fill="url(#healthGradient)" />
-            </AreaChart>
+            <AnimatedChart className="w-full h-full">
+              <AreaChart data={healthData} margin={{ top: 5, right: 5, left: -20, bottom: 5 }}>
+                <defs>
+                  <linearGradient id="healthGradient" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#10b981" stopOpacity={0.3} />
+                    <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" stroke="oklch(0.92 0 0)" vertical={false} />
+                <XAxis dataKey="time" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: "oklch(0.556 0 0)" }} />
+                <YAxis domain={[99, 100]} axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: "oklch(0.556 0 0)" }} tickFormatter={(v) => `${v}%`} />
+                <Tooltip content={<HealthTooltip />} />
+                <Area type="monotone" dataKey="value" stroke="#10b981" strokeWidth={2} fill="url(#healthGradient)" animationDuration={1200} animationEasing="ease-out" isAnimationActive={true} />
+              </AreaChart>
+            </AnimatedChart>
           </ResponsiveContainer>
           <div className="mt-4 grid grid-cols-3 gap-4 border-t border-border pt-4">
             <div>
@@ -317,12 +356,14 @@ export default function AdminDashboard() {
             </div>
           </div>
         </div>
+        </CardSlideUp>
       </div>
 
       {/* Info Panels Row */}
       <div className="grid gap-6 lg:grid-cols-3">
         {/* Recent Activity */}
-        <div className=" rounded-xl border border-border bg-card p-4 sm:p-5 shadow-sm" style={{ animationDelay: "600ms" }}>
+        <CardSlideUp index={4}>
+        <div className=" rounded-xl border border-border bg-card p-4 sm:p-5 shadow-sm">
           <div className="mb-4 flex items-center justify-between">
             <h3 className="font-semibold text-foreground">Recent Activity</h3>
             <button className="text-sm text-blue-500 hover:underline">View All</button>
@@ -357,9 +398,11 @@ export default function AdminDashboard() {
             ))}
           </div>
         </div>
+        </CardSlideUp>
 
         {/* Top Services */}
-        <div className=" rounded-xl border border-border bg-card p-4 sm:p-5 shadow-sm" style={{ animationDelay: "700ms" }}>
+        <CardSlideUp index={5}>
+        <div className=" rounded-xl border border-border bg-card p-4 sm:p-5 shadow-sm">
           <div className="mb-4 flex items-center justify-between">
             <h3 className="font-semibold text-foreground">Top Services</h3>
             <Wrench className="h-5 w-5 text-muted-foreground" />
@@ -376,9 +419,11 @@ export default function AdminDashboard() {
             ))}
           </div>
         </div>
+        </CardSlideUp>
 
         {/* Performance Metrics */}
-        <div className=" rounded-xl border border-border bg-card p-4 sm:p-5 shadow-sm" style={{ animationDelay: "800ms" }}>
+        <CardSlideUp index={6}>
+        <div className=" rounded-xl border border-border bg-card p-4 sm:p-5 shadow-sm">
           <div className="mb-4 flex items-center justify-between">
             <h3 className="font-semibold text-foreground">Performance Metrics</h3>
             <Activity className="h-5 w-5 text-muted-foreground" />
@@ -397,6 +442,7 @@ export default function AdminDashboard() {
             ))}
           </div>
         </div>
+        </CardSlideUp>
       </div>
     </div>
   );

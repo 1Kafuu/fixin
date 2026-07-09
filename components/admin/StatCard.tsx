@@ -8,7 +8,6 @@ interface StatCardProps {
 	subtitle?: string;
 	icon: React.ElementType;
 	color: string;
-	delay?: number;
 }
 
 export function StatCard({
@@ -19,7 +18,6 @@ export function StatCard({
 	subtitle,
 	icon: Icon,
 	color,
-	delay = 0,
 }: StatCardProps) {
 	return (
 		<div

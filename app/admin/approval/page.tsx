@@ -6,22 +6,13 @@ import {
 	Clock,
 	XCircle,
 	Eye,
-	ChevronLeft,
-	ChevronRight,
-	Download,
-	Home,
-	MapPin,
 	Mail,
 	Phone,
 	Calendar,
-	User,
+	MapPin,
 	Briefcase,
 	Shield,
-	AlertCircle,
-	Image as ImageIcon,
-	Pencil,
-	Trash2,
-	Plus,
+	Home,
 } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
@@ -32,11 +23,10 @@ import {
 	FilterTabs,
 	Modal,
 	PageHeader,
-	ActionMenu,
 } from "@/components/admin";
 import { Pagination } from "@/components/admin/Pagination";
+import { SlideUp, CardSlideUp, SlideUpRow } from "@/components/ui/loading";
 
-// Types
 type Status = "Menunggu" | "Disetujui" | "Ditolak";
 
 interface Applicant {
@@ -141,7 +131,6 @@ function formatDate(dateStr: string) {
 	return new Date(dateStr).toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" });
 }
 
-// Detail Modal
 function DetailModal({ applicant, onClose, onApprove, onReject }: { applicant: Applicant; onClose: () => void; onApprove: () => void; onReject: () => void }) {
 	const [notes, setNotes] = useState(applicant.adminNotes || "");
 	const [showRejectModal, setShowRejectModal] = useState(false);
@@ -212,7 +201,7 @@ function DetailModal({ applicant, onClose, onApprove, onReject }: { applicant: A
 								<div>
 									<p className="mb-2 text-xs font-medium">Sertifikat</p>
 									<div className="relative cursor-pointer overflow-hidden rounded-lg border hover:border-blue-500" onClick={() => setPreviewDoc({ src: applicant.documents.certificate!, title: "Sertifikat" })}>
-										<Image src={applicant.documents.certificate} alt="Certificate" width={400} height={96} className="h-24 w-full object-cover" />
+										<Image src={applicant.documents.certificate!} alt="Certificate" width={400} height={96} className="h-24 w-full object-cover" />
 									</div>
 								</div>
 							)}
@@ -307,69 +296,73 @@ export default function ApprovalPage() {
 
 	return (
 		<div className="p-6">
-			<PageHeader title="Technician Registration Approval" description="Verify and approve new technician registrations" />
+			<SlideUp delay={0}>
+				<PageHeader title="Technician Registration Approval" description="Verify and approve new technician registrations" />
+			</SlideUp>
 
 			<div className="mb-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-				<StatCard title="Pending" value={pendingCount} icon={Clock} color="bg-amber-50 dark:bg-amber-900/30" delay={0} />
-				<StatCard title="Approved" value={approvedCount} icon={CheckCircle} color="bg-emerald-50 dark:bg-emerald-900/30" delay={100} />
-				<StatCard title="Rejected" value={rejectedCount} icon={XCircle} color="bg-red-50 dark:bg-red-900/30" delay={200} />
-				<StatCard title="Total" value={applicants.length} icon={User} color="bg-blue-50 dark:bg-blue-900/30" delay={300} />
+				<SlideUp delay={0}><StatCard title="Pending" value={pendingCount} icon={Clock} color="bg-amber-50 dark:bg-amber-900/30" /></SlideUp>
+				<SlideUp delay={100}><StatCard title="Approved" value={approvedCount} icon={CheckCircle} color="bg-emerald-50 dark:bg-emerald-900/30" /></SlideUp>
+				<SlideUp delay={200}><StatCard title="Rejected" value={rejectedCount} icon={XCircle} color="bg-red-50 dark:bg-red-900/30" /></SlideUp>
+				<SlideUp delay={300}><StatCard title="Total" value={applicants.length} icon={Eye} color="bg-blue-50 dark:bg-blue-900/30" /></SlideUp>
 			</div>
 
-			<div className="rounded-xl border border-border bg-card shadow-sm">
-				<div className="flex flex-col gap-4 border-b border-border p-4 sm:flex-row">
-					<SearchInput value={search} onChange={(v) => { setSearch(v); setCurrentPage(1); }} placeholder="Search by name, email, or ID..." className="flex-1" />
-					<FilterTabs
-						tabs={[
-							{ value: "All", label: "All" },
-							{ value: "Menunggu", label: "Pending" },
-							{ value: "Disetujui", label: "Approved" },
-							{ value: "Ditolak", label: "Rejected" },
-						]}
-						activeTab={statusFilter}
-						onTabChange={(v) => { setStatusFilter(v as Status | "All"); setCurrentPage(1); }}
-					/>
-				</div>
+			<SlideUp delay={400}>
+				<div className="rounded-xl border border-border bg-card shadow-sm">
+					<div className="flex flex-col gap-4 border-b border-border p-4 sm:flex-row">
+						<SearchInput value={search} onChange={(v) => { setSearch(v); setCurrentPage(1); }} placeholder="Search by name, email, or ID..." className="flex-1" />
+						<FilterTabs
+							tabs={[
+								{ value: "All", label: "All" },
+								{ value: "Menunggu", label: "Pending" },
+								{ value: "Disetujui", label: "Approved" },
+								{ value: "Ditolak", label: "Rejected" },
+							]}
+							activeTab={statusFilter}
+							onTabChange={(v) => { setStatusFilter(v as Status | "All"); setCurrentPage(1); }}
+						/>
+					</div>
 
-				<div className="overflow-x-auto">
-					<table className="w-full">
-						<thead>
-							<tr className="border-b border-border bg-muted/50">
-								<th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-muted-foreground">Applicant</th>
-								<th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-muted-foreground">Specialization</th>
-								<th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-muted-foreground">Date</th>
-								<th className="px-4 py-3 text-center text-xs font-medium uppercase tracking-wider text-muted-foreground">Status</th>
-								<th className="px-4 py-3 text-center text-xs font-medium uppercase tracking-wider text-muted-foreground">Actions</th>
-							</tr>
-						</thead>
-						<tbody className="divide-y divide-border">
-							{paginatedApplicants.map((applicant) => (
-								<tr key={applicant.id} className="transition-colors hover:bg-muted/30">
-									<td className="px-4 py-3">
-										<div className="flex items-center gap-3">
-											<Image src={applicant.photo} alt={applicant.name} width={40} height={40} className="h-10 w-10 rounded-full bg-muted" />
-											<div><p className="font-medium">{applicant.name}</p><p className="text-sm text-muted-foreground">{applicant.email}</p></div>
-										</div>
-									</td>
-									<td className="px-4 py-3 text-sm">{applicant.specialization}</td>
-									<td className="whitespace-nowrap px-4 py-3 text-sm text-muted-foreground">{formatDate(applicant.registrationDate)}</td>
-									<td className="px-4 py-3 text-center"><StatusBadge status={applicant.status} /></td>
-									<td className="px-4 py-3 text-center">
-										<button onClick={() => setSelectedApplicant(applicant)} className="inline-flex items-center gap-1.5 rounded-lg bg-blue-50 px-3 py-1.5 text-sm font-medium text-blue-700 hover:bg-blue-100">
-											<Eye className="h-4 w-4" />Detail
-										</button>
-									</td>
+					<div className="overflow-x-auto overflow-y-hidden scrollbar-none">
+						<table className="w-full">
+							<thead>
+								<tr className="border-b border-border bg-muted/50">
+									<th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-muted-foreground">Applicant</th>
+									<th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-muted-foreground">Specialization</th>
+									<th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-muted-foreground">Date</th>
+									<th className="px-4 py-3 text-center text-xs font-medium uppercase tracking-wider text-muted-foreground">Status</th>
+									<th className="px-4 py-3 text-center text-xs font-medium uppercase tracking-wider text-muted-foreground">Actions</th>
 								</tr>
-							))}
-							{paginatedApplicants.length === 0 && (
-								<tr><td colSpan={5} className="px-4 py-8 text-center text-sm text-muted-foreground">No applicants found</td></tr>
-							)}
-						</tbody>
-					</table>
-				</div>
+							</thead>
+							<tbody className="divide-y divide-border">
+								{paginatedApplicants.map((applicant, index) => (
+									<SlideUpRow key={applicant.id} index={index}>
+										<td className="px-4 py-3">
+											<div className="flex items-center gap-3">
+												<Image src={applicant.photo} alt={applicant.name} width={40} height={40} className="h-10 w-10 rounded-full bg-muted" />
+												<div><p className="font-medium">{applicant.name}</p><p className="text-sm text-muted-foreground">{applicant.email}</p></div>
+											</div>
+										</td>
+										<td className="px-4 py-3 text-sm">{applicant.specialization}</td>
+										<td className="whitespace-nowrap px-4 py-3 text-sm text-muted-foreground">{formatDate(applicant.registrationDate)}</td>
+										<td className="px-4 py-3 text-center"><StatusBadge status={applicant.status} /></td>
+										<td className="px-4 py-3 text-center">
+											<button onClick={() => setSelectedApplicant(applicant)} className="inline-flex items-center gap-1.5 rounded-lg bg-blue-50 px-3 py-1.5 text-sm font-medium text-blue-700 hover:bg-blue-100">
+												<Eye className="h-4 w-4" />Detail
+											</button>
+										</td>
+									</SlideUpRow>
+								))}
+								{paginatedApplicants.length === 0 && (
+									<tr><td colSpan={5} className="px-4 py-8 text-center text-sm text-muted-foreground">No applicants found</td></tr>
+								)}
+							</tbody>
+						</table>
+					</div>
 
-				<Pagination currentPage={currentPage} totalPages={totalPages} totalItems={filteredApplicants.length} itemsPerPage={itemsPerPage} onPageChange={setCurrentPage} />
-			</div>
+					<Pagination currentPage={currentPage} totalPages={totalPages} totalItems={filteredApplicants.length} itemsPerPage={itemsPerPage} onPageChange={setCurrentPage} />
+				</div>
+			</SlideUp>
 
 			{selectedApplicant && (
 				<DetailModal

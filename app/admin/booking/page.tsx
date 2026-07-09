@@ -23,6 +23,7 @@ import {
 	Modal,
 	PageHeader,
 } from "@/components/admin";
+import { CardSlideUp, SlideUpRow } from "@/components/ui/loading";
 import { Pagination } from "@/components/admin/Pagination";
 
 // Types
@@ -119,6 +120,7 @@ export default function BookingPage() {
 	const [search, setSearch] = useState("");
 	const [currentPage, setCurrentPage] = useState(1);
 	const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null);
+	const [animKey, setAnimKey] = useState(0);
 
 	const itemsPerPage = 5;
 	const pendingCount = bookings.filter((b) => b.status === "Pending").length;
@@ -168,7 +170,7 @@ export default function BookingPage() {
 							{ value: "Cancelled", label: "Cancelled" },
 						]}
 						activeTab={statusFilter}
-						onTabChange={(v) => { setStatusFilter(v as BookingStatus | "All"); setCurrentPage(1); }}
+						onTabChange={(v) => { setStatusFilter(v as BookingStatus | "All"); setCurrentPage(1); setAnimKey((k) => k + 1); }}
 					/>
 				</div>
 
@@ -185,9 +187,9 @@ export default function BookingPage() {
 								<th className="px-4 py-3 text-center text-xs font-medium uppercase tracking-wider text-muted-foreground">Actions</th>
 							</tr>
 						</thead>
-						<tbody className="divide-y divide-border">
-							{paginatedBookings.map((booking) => (
-								<tr key={booking.id} className="transition-colors hover:bg-muted/30">
+						<tbody className="divide-y divide-border" key={animKey}>
+							{paginatedBookings.map((booking, i) => (
+								<SlideUpRow key={booking.id} index={i}>
 									<td className="px-4 py-3 text-sm font-medium">{booking.id}</td>
 									<td className="px-4 py-3">
 										<div className="flex items-center gap-2">
@@ -204,7 +206,7 @@ export default function BookingPage() {
 											<Eye className="h-3 w-3" />Detail
 										</button>
 									</td>
-								</tr>
+								</SlideUpRow>
 							))}
 							{paginatedBookings.length === 0 && (
 								<tr><td colSpan={7} className="px-4 py-8 text-center text-sm text-muted-foreground">No bookings found</td></tr>

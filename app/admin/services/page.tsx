@@ -24,6 +24,7 @@ import {
 	PageHeader,
 } from "../../../components/admin";
 import { Pagination } from "../../../components/admin/Pagination";
+import { SlideUp, CardSlideUp, SlideUpRow } from "@/components/ui/loading";
 
 // Types
 interface Service {
@@ -183,62 +184,69 @@ export default function ServicesPage() {
 
 	return (
 		<div className="p-6">
-			<PageHeader title="Services Management" description="Manage your service offerings and categories" />
+			<SlideUp delay={0}>
+				<PageHeader title="Services Management" description="Manage your service offerings and categories" />
+			</SlideUp>
 
 			<div className="mb-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-				<StatCard title="Total Services" value={totalServices} icon={Wrench} color="bg-blue-50 dark:bg-blue-900/30" delay={0} />
-				<StatCard title="Active Services" value={activeServices} icon={CheckCircle} color="bg-emerald-50 dark:bg-emerald-900/30" delay={100} />
-				<StatCard title="Avg. Price" value={formatPrice(avgPrice)} icon={DollarSign} color="bg-violet-50 dark:bg-violet-900/30" delay={200} />
-				<StatCard title="Popular Category" value={popularCategory} icon={Layers} color="bg-amber-50 dark:bg-amber-900/30" delay={300} />
+				<SlideUp delay={0}><StatCard title="Total Services" value={totalServices} icon={Wrench} color="bg-blue-50 dark:bg-blue-900/30" /></SlideUp>
+				<SlideUp delay={100}><StatCard title="Active Services" value={activeServices} icon={CheckCircle} color="bg-emerald-50 dark:bg-emerald-900/30" /></SlideUp>
+				<SlideUp delay={200}><StatCard title="Avg. Price" value={formatPrice(avgPrice)} icon={DollarSign} color="bg-violet-50 dark:bg-violet-900/30" /></SlideUp>
+				<SlideUp delay={300}><StatCard title="Popular Category" value={popularCategory} icon={Layers} color="bg-amber-50 dark:bg-amber-900/30" /></SlideUp>
 			</div>
 
-			<div className="mb-6 " style={{ animationDelay: "400ms" }}>
-				<div className="flex items-center justify-between mb-3">
-					<h2 className="text-lg font-semibold">Categories</h2>
-					<button onClick={() => setServiceModal({ open: true, service: null })} className="flex items-center gap-1.5 rounded-lg bg-blue-500 px-3 py-1.5 text-sm font-medium text-white hover:bg-blue-600">
-						<Plus className="h-4 w-4" />Add Category
-					</button>
+			<SlideUp delay={400}>
+				<div className="mb-6">
+					<div className="flex items-center justify-between mb-3">
+						<h2 className="text-lg font-semibold">Categories</h2>
+						<button onClick={() => setServiceModal({ open: true, service: null })} className="flex items-center gap-1.5 rounded-lg bg-blue-500 px-3 py-1.5 text-sm font-medium text-white hover:bg-blue-600">
+							<Plus className="h-4 w-4" />Add Category
+						</button>
+					</div>
+					<div className="flex flex-wrap gap-2">
+						{categories.map((cat, index) => (
+							<CardSlideUp key={cat.id} index={index}>
+								<div className="group flex items-center gap-2 rounded-lg border border-border bg-card px-3 py-1.5 shadow-sm">
+									<span className="text-sm font-medium">{cat.name}</span>
+									<span className="rounded-full bg-muted px-2 py-0.5 text-xs text-muted-foreground">{cat.serviceCount}</span>
+									<div className="flex gap-1 opacity-0 transition-opacity group-hover:opacity-100">
+										<button className="flex h-5 w-5 items-center justify-center rounded text-muted-foreground hover:text-foreground"><Pencil className="h-3 w-3" /></button>
+										<button className="flex h-5 w-5 items-center justify-center rounded text-muted-foreground hover:text-destructive"><Trash2 className="h-3 w-3" /></button>
+									</div>
+								</div>
+							</CardSlideUp>
+						))}
+					</div>
 				</div>
-				<div className="flex flex-wrap gap-2">
-					{categories.map((cat) => (
-						<div key={cat.id} className="group flex items-center gap-2 rounded-lg border border-border bg-card px-3 py-1.5 shadow-sm">
-							<span className="text-sm font-medium">{cat.name}</span>
-							<span className="rounded-full bg-muted px-2 py-0.5 text-xs text-muted-foreground">{cat.serviceCount}</span>
-							<div className="flex gap-1 opacity-0 transition-opacity group-hover:opacity-100">
-								<button className="flex h-5 w-5 items-center justify-center rounded text-muted-foreground hover:text-foreground"><Pencil className="h-3 w-3" /></button>
-								<button className="flex h-5 w-5 items-center justify-center rounded text-muted-foreground hover:text-destructive"><Trash2 className="h-3 w-3" /></button>
-							</div>
-						</div>
-					))}
-				</div>
-			</div>
+			</SlideUp>
 
-			<div className=" rounded-xl border border-border bg-card shadow-sm" style={{ animationDelay: "500ms" }}>
-				<div className="flex flex-col gap-4 border-b border-border p-4 sm:flex-row">
-					<SearchInput value={search} onChange={(v) => { setSearch(v); setCurrentPage(1); }} placeholder="Search services..." className="flex-1" />
-					<select value={categoryFilter} onChange={(e) => { setCategoryFilter(e.target.value); setCurrentPage(1); }} className="h-10 rounded-lg border border-input bg-background px-3 text-sm">
-						<option value="All">All Categories</option>
-						{categories.map((cat) => (<option key={cat.id} value={cat.name}>{cat.name}</option>))}
-					</select>
-					<button onClick={() => setServiceModal({ open: true, service: null })} className="flex items-center justify-center gap-1.5 rounded-lg bg-blue-500 px-4 py-2 text-sm font-medium text-white hover:bg-blue-600">
-						<Plus className="h-4 w-4" />Add Service
-					</button>
-				</div>
+			<SlideUp delay={500}>
+				<div className="rounded-xl border border-border bg-card shadow-sm">
+					<div className="flex flex-col gap-4 border-b border-border p-4 sm:flex-row">
+						<SearchInput value={search} onChange={(v) => { setSearch(v); setCurrentPage(1); }} placeholder="Search services..." className="flex-1" />
+						<select value={categoryFilter} onChange={(e) => { setCategoryFilter(e.target.value); setCurrentPage(1); }} className="h-10 rounded-lg border border-input bg-background px-3 text-sm">
+							<option value="All">All Categories</option>
+							{categories.map((cat) => (<option key={cat.id} value={cat.name}>{cat.name}</option>))}
+						</select>
+						<button onClick={() => setServiceModal({ open: true, service: null })} className="flex items-center justify-center gap-1.5 rounded-lg bg-blue-500 px-4 py-2 text-sm font-medium text-white hover:bg-blue-600">
+							<Plus className="h-4 w-4" />Add Service
+						</button>
+					</div>
 
-				<div className="overflow-x-auto">
-					<table className="w-full">
-						<thead>
-							<tr className="border-b border-border bg-muted/50">
-								<th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-muted-foreground">Service</th>
-								<th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-muted-foreground">Category</th>
-								<th className="px-4 py-3 text-right text-xs font-medium uppercase tracking-wider text-muted-foreground">Price</th>
-								<th className="px-4 py-3 text-center text-xs font-medium uppercase tracking-wider text-muted-foreground">Status</th>
-								<th className="px-4 py-3 text-right text-xs font-medium uppercase tracking-wider text-muted-foreground">Actions</th>
-							</tr>
-						</thead>
+					<div className="overflow-x-auto overflow-y-hidden scrollbar-none">
+						<table className="w-full">
+							<thead>
+								<tr className="border-b border-border bg-muted/50">
+									<th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-muted-foreground">Service</th>
+									<th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-muted-foreground">Category</th>
+									<th className="px-4 py-3 text-right text-xs font-medium uppercase tracking-wider text-muted-foreground">Price</th>
+									<th className="px-4 py-3 text-center text-xs font-medium uppercase tracking-wider text-muted-foreground">Status</th>
+									<th className="px-4 py-3 text-right text-xs font-medium uppercase tracking-wider text-muted-foreground">Actions</th>
+								</tr>
+							</thead>
 						<tbody className="divide-y divide-border">
-							{paginatedServices.map((service) => (
-								<tr key={service.id} className="transition-colors hover:bg-muted/30">
+							{paginatedServices.map((service, index) => (
+								<SlideUpRow key={service.id} index={index}>
 									<td className="px-4 py-3">
 										<div><p className="font-medium">{service.name}</p><p className="mt-0.5 text-sm text-muted-foreground line-clamp-1">{service.description}</p></div>
 									</td>
@@ -251,17 +259,18 @@ export default function ServicesPage() {
 											{ label: "Delete", icon: Trash2, variant: "danger", onClick: () => handleDeleteService(service.id) },
 										]} />
 									</td>
-								</tr>
+								</SlideUpRow>
 							))}
 							{paginatedServices.length === 0 && (
 								<tr><td colSpan={5} className="px-4 py-8 text-center text-sm text-muted-foreground">No services found</td></tr>
 							)}
 						</tbody>
-					</table>
-				</div>
+						</table>
+					</div>
 
-				<Pagination currentPage={currentPage} totalPages={totalPages} totalItems={filteredServices.length} itemsPerPage={itemsPerPage} onPageChange={setCurrentPage} />
-			</div>
+					<Pagination currentPage={currentPage} totalPages={totalPages} totalItems={filteredServices.length} itemsPerPage={itemsPerPage} onPageChange={setCurrentPage} />
+				</div>
+			</SlideUp>
 
 			<ServiceModal open={serviceModal.open} onClose={() => setServiceModal({ open: false, service: null })} onSave={handleSaveService} service={serviceModal.service} categories={categories} />
 		</div>
