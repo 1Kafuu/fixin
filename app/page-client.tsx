@@ -158,8 +158,10 @@ function Sparkle({ className = "" }: { className?: string }) {
 }
 
 function Header() {
+	const [mobileOpen, setMobileOpen] = useState(false);
+
 	return (
-		<header className="mx-auto flex max-w-7xl items-center justify-between px-6 py-6">
+		<header className="relative mx-auto flex max-w-7xl items-center justify-between px-6 py-6">
 			<Logo />
 			<nav className="hidden items-center gap-8 text-sm text-foreground md:flex">
 				<a href="#about" className="hover:text-blue-500">
@@ -178,11 +180,49 @@ function Header() {
 					Blog
 				</a>
 			</nav>
-			<Link href="/login">
-				<button className="rounded-lg border-2 border-blue-500 px-6 py-2 text-sm font-semibold text-blue-500 hover:bg-blue-500 hover:text-white transition-colors">
-					Login
+			<div className="flex items-center gap-4">
+				<Link href="/login">
+					<button className="rounded-lg border-2 border-blue-500 px-6 py-2 text-sm font-semibold text-blue-500 hover:bg-blue-500 hover:text-white transition-colors">
+						Login
+					</button>
+				</Link>
+				<button
+					className="flex md:hidden p-2 text-foreground"
+					onClick={() => setMobileOpen(!mobileOpen)}
+					aria-label="Toggle menu"
+				>
+					{mobileOpen ? (
+						<svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+						</svg>
+					) : (
+						<svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+						</svg>
+					)}
 				</button>
-			</Link>
+			</div>
+
+			{mobileOpen && (
+				<div className="fixed inset-y-0 right-0 left-auto z-50 flex w-[75%] flex-col bg-background shadow-xl md:hidden">
+					<button
+						className="absolute right-6 top-6 p-2 text-foreground"
+						onClick={() => setMobileOpen(false)}
+						aria-label="Close menu"
+					>
+						<svg className="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+						</svg>
+					</button>
+					<nav className="flex flex-col gap-6 pt-24 pl-8 text-xl text-foreground">
+						<a href="#about" className="hover:text-blue-500 underline underline-offset-4" onClick={() => setMobileOpen(false)}>About</a>
+						<a href="#how" className="hover:text-blue-500 underline underline-offset-4" onClick={() => setMobileOpen(false)}>How To Use</a>
+						<a href="#service" className="hover:text-blue-500 underline underline-offset-4" onClick={() => setMobileOpen(false)}>Service</a>
+						<a href="#contact" className="hover:text-blue-500 underline underline-offset-4" onClick={() => setMobileOpen(false)}>Contact</a>
+						<a href="https://blog-fixin.framer.website/" target="_blank" rel="noopener noreferrer" className="hover:text-blue-500 underline underline-offset-4" onClick={() => setMobileOpen(false)}>Blog</a>
+					</nav>
+				</div>
+			)}
 		</header>
 	);
 }
@@ -479,11 +519,11 @@ function Footer() {
 }
 
 export default function IndexClient() {
-	const { theme } = useTheme();
-	const isDark = theme === "dark";
+	const { resolvedTheme, mounted } = useTheme();
+	const isDark = mounted ? resolvedTheme === "dark" : false;
 
 	return (
-		<div className="min-h-screen bg-background">
+		<div className="min-h-screen bg-background" suppressHydrationWarning>
 			<Header />
 			<Hero isDark={isDark} />
 			<Stats isDark={isDark} />
