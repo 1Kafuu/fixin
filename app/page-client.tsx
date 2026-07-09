@@ -174,6 +174,9 @@ function Header() {
 				<a href="#contact" className="hover:text-blue-500">
 					Contact
 				</a>
+				<a href="https://blog-fixin.framer.website/" target="_blank" rel="noopener noreferrer" className="hover:text-blue-500">
+					Blog
+				</a>
 			</nav>
 			<Link href="/login">
 				<button className="rounded-lg border-2 border-blue-500 px-6 py-2 text-sm font-semibold text-blue-500 hover:bg-blue-500 hover:text-white transition-colors">
