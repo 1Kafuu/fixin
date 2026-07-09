@@ -11,6 +11,9 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "FixIn Admin Dashboard",
   description: "Laptop repair service platform admin dashboard",
+  icons: {
+    icon: "/icon.svg",
+  },
 };
 
 export default function RootLayout({
