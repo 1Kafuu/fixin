@@ -19,6 +19,7 @@ const tabs = [
   { name: "Overview", href: "/admin" },
   { name: "User", href: "/admin/users" },
   { name: "Services", href: "/admin/services" },
+  { name: "Booking", href: "/admin/booking" },
   { name: "Technician", href: "/admin/approval" },
   { name: "Content", href: "/admin/post" },
   { name: "Financial", href: "/admin/financial" },
