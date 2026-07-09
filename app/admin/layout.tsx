@@ -6,15 +6,14 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import {
   Settings,
-  Bell,
   ChevronDown,
   Search,
   LogOut,
-  User,
   HelpCircle,
   Menu,
   X,
 } from "lucide-react";
+import NotificationDropdown from "@/components/NotificationDropdown";
 
 const tabs = [
   { name: "Overview", href: "/admin" },
@@ -59,10 +58,7 @@ export default function AdminLayout({
             </div>
 
             {/* Notifications */}
-            <button className="relative rounded-lg p-2 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground">
-              <Bell className="h-5 w-5" />
-              <span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-red-500" />
-            </button>
+            <NotificationDropdown role="admin" />
 
             {/* Settings */}
             <Link

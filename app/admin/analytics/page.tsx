@@ -9,8 +9,6 @@ import {
 	Eye,
 	MessageSquare,
 	Bookmark,
-	ArrowUpRight,
-	ArrowDownRight,
 } from "lucide-react";
 import {
 	BarChart,
@@ -29,7 +27,6 @@ import {
 	Area,
 	Legend,
 } from "recharts";
-import { cn } from "@/lib/utils";
 import { StatCard, PageHeader } from "@/components/admin";
 
 // Mock Data
@@ -150,7 +147,7 @@ export default function AnalyticsPage() {
 					<ResponsiveContainer width="100%" height={240}>
 						<PieChart>
 							<Pie data={serviceDistribution} cx="50%" cy="50%" innerRadius={50} outerRadius={80} paddingAngle={2} dataKey="value">
-								{serviceDistribution.map((_, index) => <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />)}
+								{serviceDistribution.map((entry, index) => <Cell key={`cell-${entry.name}`} fill={COLORS[index % COLORS.length]} />)}
 							</Pie>
 							<Tooltip />
 						</PieChart>
@@ -174,7 +171,7 @@ export default function AnalyticsPage() {
 						<AreaChart data={revenueData}>
 							<CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
 							<XAxis dataKey="month" tick={{ fontSize: 12 }} stroke="#6b7280" />
-							<YAxis tick={{ fontSize: 12 }} stroke="#6b7280" />
+							<YAxis tick={{ fontSize: 10 }} stroke="#6b7280" tickFormatter={(v) => `${(v / 1000000).toFixed(0)}M`} />
 							<Tooltip />
 							<Legend />
 							<Area type="monotone" dataKey="revenue" stroke="#3B82F6" fill="#3B82F6" fillOpacity={0.1} name="Revenue" />

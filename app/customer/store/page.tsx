@@ -6,7 +6,6 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import {
   Search,
-  Bell,
   Menu,
   MessageCircle,
   Star,
@@ -28,6 +27,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCart, TechnicianBooking } from "@/app/context/CartContext";
+import NotificationDropdown from "@/components/NotificationDropdown";
 
 const technicians = [
   {
@@ -59,12 +59,12 @@ const technicians = [
     location: "Jakarta Pusat",
     distance: 5.1,
     isVerified: true,
-    bio: "Spesialis perbaikan smartphone dan tablet dengan pengalaman 4 tahun. Melayani berbagai merek seperti iPhone, Samsung, dan Xiaomi.",
+    bio: "Spesialis perbaikan laptop dan komputer dengan pengalaman 4 tahun. Melayani berbagai merek seperti ASUS, Acer, Lenovo, dan Dell.",
     yearsExperience: 4,
     completedJobs: 245,
     responseTime: "~10 menit",
     priceRange: "Rp 25.000 - 350.000",
-    skills: ["Screen Replacement", "Battery Change", "Charging Port", "Software Issue"],
+    skills: ["Screen Replacement", "Battery Change", "Keyboard Fix", "Software Issue"],
   },
   {
     id: "tech-003",
@@ -113,12 +113,12 @@ const technicians = [
     location: "Bandung",
     distance: 8.5,
     isVerified: true,
-    bio: "Teknisi smartphone profesional dengan fokus pada perbaikan iPhone dan iPad. Certified Apple Service.",
+    bio: "Teknisi laptop profesional bersertifikat dengan fokus pada perbaikan MacBook dan laptop branded. Certified Apple Service.",
     yearsExperience: 5,
     completedJobs: 523,
     responseTime: "~5 menit",
     priceRange: "Rp 100.000 - 1.500.000",
-    skills: ["iPhone Repair", "iPad Service", "Data Recovery", "Face ID Fix"],
+    skills: ["MacBook Repair", "Laptop Service", "Data Recovery", "Screen Fix"],
   },
   {
     id: "tech-006",
@@ -185,12 +185,12 @@ const technicians = [
     location: "Surabaya",
     distance: 22.3,
     isVerified: true,
-    bio: "Spesialis Android dan Samsung dengan pengalaman 4 tahun. Melayani berbagai型号.",
+    bio: "Spesialis laptop dan komputer dengan pengalaman 4 tahun. Melayani berbagai merek seperti ASUS, HP, dan Lenovo.",
     yearsExperience: 4,
     completedJobs: 334,
     responseTime: "~7 menit",
     priceRange: "Rp 50.000 - 800.000",
-    skills: ["Samsung Repair", "Android Fix", "Screen Replacement", "Battery Change"],
+    skills: ["Laptop Repair", "Hardware Fix", "Screen Replacement", "Battery Change"],
   },
   {
     id: "tech-010",
@@ -484,6 +484,7 @@ export default function StorePage() {
   const [selectedSpecialty, setSelectedSpecialty] = useState("all");
   const [selectedStatus, setSelectedStatus] = useState("all");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
   const [selectedTech, setSelectedTech] = useState<Technician | null>(null);
   const [hiredTech, setHiredTech] = useState<Technician | null>(null);
   const [showHireDrawer, setShowHireDrawer] = useState(false);
@@ -515,20 +516,26 @@ export default function StorePage() {
             <Image src="/logo.svg" alt="FixIn Logo" width={100} height={100} className="w-25 h-10" />
           </Link>
 
-          <div className="flex-1 max-w-md mx-4">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
-              <input
-                type="text"
-                placeholder="Cari teknisi..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="h-10 w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 pl-10 pr-4 text-sm text-slate-800 dark:text-slate-200 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all"
-              />
-            </div>
+          {/* Search Bar - Desktop */}
+          <div className="hidden sm:block relative flex-1 max-w-md mx-4">
+            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+            <input
+              type="text"
+              placeholder="Cari teknisi..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="h-10 w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 pl-10 pr-4 text-sm text-slate-800 dark:text-slate-200 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all"
+            />
           </div>
 
-          <div className="flex items-center gap-2 sm:gap-3">
+          <div className="flex items-center gap-1 sm:gap-2">
+            {/* Search Icon - Mobile */}
+            <button
+              onClick={() => setMobileSearchOpen(!mobileSearchOpen)}
+              className="sm:hidden rounded-lg p-2 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800"
+            >
+              <Search className="h-5 w-5" />
+            </button>
             <Button variant="ghost" size="sm" asChild className="hidden sm:flex">
               <Link href="/customer/community">
                 <MessageCircle className="h-4 w-4 mr-2" />
@@ -541,10 +548,7 @@ export default function StorePage() {
                 Pesanan Saya
               </Link>
             </Button>
-            <button className="relative rounded-lg p-2 text-slate-500 transition-colors hover:bg-slate-100 dark:hover:bg-slate-800">
-              <Bell className="h-5 w-5" />
-              <span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-red-500" />
-            </button>
+            <NotificationDropdown role="customer" />
             <div className="relative">
               <button
                 onClick={() => setShowProfileDropdown(!showProfileDropdown)}
@@ -644,6 +648,36 @@ export default function StorePage() {
               <MessageCircle className="h-4 w-4" />
               Community
             </Link>
+            <div className="border-t border-slate-200 dark:border-slate-800 mt-2 pt-2">
+              <Link href="/customer/settings" className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">
+                <Settings className="h-4 w-4" />
+                Pengaturan
+              </Link>
+              <button
+                onClick={() => { router.push("/login"); setMobileMenuOpen(false); }}
+                className="flex w-full items-center gap-2 px-3 py-2 rounded-lg text-sm text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20"
+              >
+                <LogOut className="h-4 w-4" />
+                Keluar
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Mobile Search Bar */}
+        {mobileSearchOpen && (
+          <div className="sm:hidden border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-4 py-3">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+              <input
+                type="text"
+                placeholder="Cari teknisi..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                autoFocus
+                className="h-10 w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 pl-10 pr-4 text-sm text-slate-800 dark:text-slate-200 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all"
+              />
+            </div>
           </div>
         )}
       </header>
@@ -838,9 +872,6 @@ function HireDrawer({ tech, onClose }: { tech: Technician; onClose: () => void }
                   <option value="">Pilih jenis</option>
                   <option value="laptop">Laptop</option>
                   <option value="pc">PC Desktop</option>
-                  <option value="smartphone">Smartphone</option>
-                  <option value="tablet">Tablet</option>
-                  <option value="printer">Printer</option>
                   <option value="other">Lainnya</option>
                 </select>
               </div>

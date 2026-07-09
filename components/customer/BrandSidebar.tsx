@@ -20,6 +20,7 @@ export interface BrandSidebarProps {
   onBrandChange: (brand: BrandKey) => void;
   postCounts?: Record<BrandKey, number>;
   className?: string;
+  variant?: "vertical" | "horizontal";
 }
 
 export function BrandSidebar({
@@ -27,9 +28,12 @@ export function BrandSidebar({
   onBrandChange,
   postCounts,
   className,
+  variant = "vertical",
 }: BrandSidebarProps) {
+  const isHorizontal = variant === "horizontal";
+
   return (
-    <nav className={cn("space-y-1", className)}>
+    <nav className={cn(isHorizontal ? "flex flex-nowrap gap-2 min-w-max" : "space-y-1", className)}>
       {BRANDS.map((brand) => {
         const isSelected = selectedBrand === brand.key;
         const count = postCounts?.[brand.key];
@@ -39,14 +43,25 @@ export function BrandSidebar({
             key={brand.key}
             onClick={() => onBrandChange(brand.key)}
             className={cn(
-              "w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all",
-              isSelected
-                ? "bg-indigo-500 text-white shadow-md"
-                : "text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
+              "flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all whitespace-nowrap",
+              isHorizontal
+                ? cn(
+                    "rounded-full",
+                    isSelected
+                      ? "bg-indigo-500 text-white"
+                      : "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700"
+                  )
+                : cn(
+                    "w-full",
+                    isSelected
+                      ? "bg-indigo-500 text-white shadow-md"
+                      : "text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
+                  )
             )}
           >
             <BrandIcon brand={brand} />
-            <span className="flex-1 text-left">{brand.label}</span>
+            {!isHorizontal && <span className="flex-1 text-left">{brand.label}</span>}
+            {isHorizontal && <span>{brand.label}</span>}
             {count !== undefined && (
               <span
                 className={cn(

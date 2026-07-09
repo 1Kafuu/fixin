@@ -1,9 +1,18 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useCallback } from "react";
 import { Wallet, TrendingUp, CheckCircle, Clock, Download, DollarSign, Calendar } from "lucide-react";
 import { useApiTimeout } from "@/hooks/useApiTimeout";
 import { cn } from "@/lib/utils";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer,
+  CartesianGrid,
+} from "recharts";
 
 const MOCK_EARNINGS = {
   totalBalance: 15750000,
@@ -56,8 +65,6 @@ export default function EarningsPage() {
   const pendingOrders = MOCK_ORDER_LIST.filter((o) => o.status === "pending");
   const totalPaid = paidOrders.reduce((sum, o) => sum + o.amount, 0);
   const totalPending = pendingOrders.reduce((sum, o) => sum + o.amount, 0);
-
-  const chartMax = Math.max(...(data?.monthlyEarnings.map((m) => m.amount) || [1]));
 
   if (isLoading) {
     return (
@@ -153,26 +160,20 @@ export default function EarningsPage() {
           </button>
         </div>
 
-        {/* Simple Bar Chart */}
-        <div className="h-48 flex items-end gap-3">
-          {data?.monthlyEarnings.map((item) => {
-            const heightPercent = (item.amount / chartMax) * 100;
-            return (
-              <div key={item.month} className="flex-1 flex flex-col items-center gap-2">
-                <div className="w-full flex flex-col items-center">
-                  <span className="text-xs text-muted-foreground mb-1">
-                    Rp {(item.amount / 1000000).toFixed(1)}jt
-                  </span>
-                  <div
-                    className="w-full rounded-t-lg bg-blue-500 transition-all hover:bg-blue-600"
-                    style={{ height: `${Math.max(heightPercent, 4)}%` }}
-                  />
-                </div>
-                <span className="text-xs text-muted-foreground">{item.month}</span>
-              </div>
-            );
-          })}
-        </div>
+        {/* Chart */}
+        <ResponsiveContainer width="100%" height={200}>
+          <BarChart data={data?.monthlyEarnings} margin={{ top: 5, right: 5, left: -20, bottom: 5 }}>
+            <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: "oklch(0.556 0 0)" }} />
+            <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: "oklch(0.556 0 0)" }} tickFormatter={(v) => `${v / 1000000}M`} />
+            <Tooltip
+              formatter={(value: number) => [formatCurrency(value), "Pendapatan"]}
+              contentStyle={{ borderRadius: "8px", border: "1px solid oklch(0.92 0 0)", backgroundColor: "oklch(0.15 0 0)" }}
+              labelStyle={{ color: "oklch(0.98 0 0)" }}
+            />
+            <CartesianGrid strokeDasharray="3 3" stroke="oklch(0.92 0 0)" vertical={false} />
+            <Bar dataKey="amount" fill="#3b82f6" radius={[4, 4, 0, 0]} />
+          </BarChart>
+        </ResponsiveContainer>
 
         <div className="mt-4 flex items-center justify-between border-t border-border pt-4">
           <div>

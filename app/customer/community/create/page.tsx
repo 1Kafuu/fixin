@@ -6,7 +6,6 @@ import { useRouter } from "next/navigation";
 import {
   ArrowLeft,
   Send,
-  Image,
   X,
   AlertTriangle,
   Check,
@@ -14,6 +13,7 @@ import {
   FileText,
   MessageSquare,
   Info,
+  Upload,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -315,7 +315,7 @@ export default function CreatePostPage() {
                     onChange={(e) => handleImageChange(e.target.files?.[0] || null)}
                     className="hidden"
                   />
-                  <Image className={`mx-auto h-10 w-10 ${isDragging ? "text-blue-500" : "text-muted-foreground"}`} />
+                  <Upload className={`mx-auto h-10 w-10 ${isDragging ? "text-blue-500" : "text-muted-foreground"}`} />
                   <p className="mt-3 text-sm font-medium text-foreground">
                     {isDragging ? "Lepaskan file di sini" : "Seret & lepas atau klik untuk upload"}
                   </p>
@@ -419,7 +419,7 @@ export default function CreatePostPage() {
 
               <div className="rounded-lg bg-emerald-50 p-3 dark:bg-emerald-950/30">
                 <div className="flex items-center gap-2 mb-2">
-                  <Image className="h-4 w-4 text-emerald-500" />
+                  <Upload className="h-4 w-4 text-emerald-500" />
                   <span className="text-sm font-medium text-emerald-700 dark:text-emerald-300">Foto yang Berguna</span>
                 </div>
                 <p className="text-xs text-emerald-600 dark:text-emerald-400">

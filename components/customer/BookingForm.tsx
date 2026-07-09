@@ -31,9 +31,6 @@ export interface BookingFormProps {
 const deviceTypeOptions = [
   { value: "laptop", label: "Laptop" },
   { value: "pc", label: "PC Desktop" },
-  { value: "smartphone", label: "Smartphone" },
-  { value: "tablet", label: "Tablet" },
-  { value: "printer", label: "Printer" },
   { value: "other", label: "Lainnya" },
 ];
 

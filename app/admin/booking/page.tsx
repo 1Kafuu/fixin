@@ -4,20 +4,14 @@ import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import {
 	Eye,
-	ChevronLeft,
-	ChevronRight,
 	CheckCircle,
 	XCircle,
 	Clock,
 	AlertTriangle,
 	ClipboardList,
-	Calendar,
 	User,
-	Home,
 	MapPin,
 	Phone,
-	ExternalLink,
-	Image as ImageIcon,
 } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";

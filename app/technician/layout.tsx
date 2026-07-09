@@ -1,19 +1,19 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import {
   Settings,
-  Bell,
   ChevronDown,
   Search,
   LogOut,
-  User,
   HelpCircle,
   Menu,
   X,
 } from "lucide-react";
+import NotificationDropdown from "@/components/NotificationDropdown";
 
 const tabs = [
   { name: "Pesanan", href: "/technician/order", icon: "clipboard" },
@@ -39,10 +39,7 @@ export default function TechnicianLayout({
         <div className="flex h-14 sm:h-16 items-center justify-between px-4 sm:px-6">
           {/* Logo */}
           <Link href="/technician" className="flex items-center gap-2">
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-500">
-              <span className="text-lg font-bold text-white">F</span>
-            </div>
-            <span className="text-lg font-semibold text-foreground">FixIn</span>
+            <Image src="/logo.svg" alt="FixIn Logo" width={80} height={80} className="w-16 h-16 sm:w-20 sm:h-20" />
           </Link>
 
           {/* Right side - Desktop */}
@@ -58,10 +55,7 @@ export default function TechnicianLayout({
             </div>
 
             {/* Notifications */}
-            <button className="relative rounded-lg p-2 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground">
-              <Bell className="h-5 w-5" />
-              <span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-red-500" />
-            </button>
+            <NotificationDropdown role="technician" />
 
             {/* Settings */}
             <Link
@@ -150,31 +144,50 @@ export default function TechnicianLayout({
 
         {/* Mobile Navigation */}
         {mobileMenuOpen && (
-          <nav className="md:hidden border-t border-border bg-card">
-            {tabs.map((tab) => {
-              const isActive = pathname.startsWith(tab.href);
+          <nav className="md:hidden border-t border-border bg-card overflow-x-auto">
+            <div className="min-w-max">
+              {tabs.map((tab) => {
+                const isActive = pathname.startsWith(tab.href);
 
-              return (
+                return (
+                  <Link
+                    key={tab.name}
+                    href={tab.href}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={`block px-4 py-3 text-sm font-medium transition-colors ${
+                      isActive
+                        ? "bg-blue-50 text-blue-500 dark:bg-blue-900/30 dark:text-blue-400"
+                        : "text-muted-foreground hover:bg-accent"
+                    }`}
+                  >
+                    {tab.name}
+                  </Link>
+                );
+              })}
+              <div className="border-t border-border mt-2 pt-2">
                 <Link
-                  key={tab.name}
-                  href={tab.href}
+                  href="/technician/settings"
                   onClick={() => setMobileMenuOpen(false)}
-                  className={`block px-4 py-3 text-sm font-medium transition-colors ${
-                    isActive
-                      ? "bg-blue-50 text-blue-500"
-                      : "text-muted-foreground hover:bg-accent"
-                  }`}
+                  className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-muted-foreground hover:bg-accent transition-colors"
                 >
-                  {tab.name}
+                  <Settings className="h-4 w-4" />
+                  Settings
                 </Link>
-              );
-            })}
+                <button
+                  onClick={() => { router.push("/login"); setMobileMenuOpen(false); }}
+                  className="flex w-full items-center gap-3 px-4 py-3 text-sm font-medium text-red-500 hover:bg-red-50 transition-colors"
+                >
+                  <LogOut className="h-4 w-4" />
+                  Keluar
+                </button>
+              </div>
+            </div>
           </nav>
         )}
       </header>
 
       {/* Page Content */}
-      <main className="px-4 sm:px-6 py-4 sm:py-6 pb-0">{children}</main>
+      <main className="px-4 sm:px-6 py-4 sm:py-6">{children}</main>
     </div>
   );
 }
