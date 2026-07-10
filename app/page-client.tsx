@@ -324,7 +324,7 @@ function Stats({ isDark }: { isDark: boolean }) {
 
 function HowToUse({ isDark }: { isDark: boolean }) {
 	const steps = [
-		"Pilih Jenis Service (Home Service/Online Consultion)",
+		"Pilih Jenis Service (Home Service/Pickup Service)",
 		"Deskripsikan Masalah Laptopmu, Dan Konfirmasi Booking",
 		"Teknisi Profesional akan menyelesaikan masalahmu",
 	];
@@ -335,13 +335,13 @@ function HowToUse({ isDark }: { isDark: boolean }) {
 					How To Use FixIn
 				</h2>
 				<div className="mt-12 grid items-center gap-10 md:grid-cols-2">
-					<div
-						className={`flex aspect-video items-center justify-center rounded-2xl ${isDark ? "bg-[oklch(0.25_0.02_250)]" : "bg-[oklch(0.55_0.01_250)]"}`}
-					>
-						<div className="flex h-20 w-20 items-center justify-center rounded-full bg-white/30">
-							<Play className="h-10 w-10 fill-white text-white" />
-						</div>
-					</div>
+					<iframe
+						className="aspect-video w-full rounded-2xl"
+						src="https://www.youtube.com/embed/q36LZs2oVOc"
+						title="FixIn Demo"
+						allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+						allowFullScreen
+					/>
 					<div className="space-y-8">
 						{steps.map((s, i) => (
 							<SlideUp key={i} delay={i * 200}>
